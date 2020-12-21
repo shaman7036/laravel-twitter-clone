@@ -13,9 +13,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+$controllers = 'App\Http\Controllers\\';
+
 /**
  * auth
  */
 Route::view('/', 'auth.auth', ['form' => '']);
 Route::view('/signup', 'auth.auth', ['form' => 'signup']);
 Route::view('/login', 'auth.auth', ['form' => 'login']);
+Route::post('/signup', $controllers . 'AuthController@signUp');
+Route::post('/login', $controllers . 'AuthController@logIn');
+Route::get('/logout', $controllers . 'AuthController@logout');

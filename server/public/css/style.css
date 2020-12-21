@@ -1,0 +1,53 @@
+body {
+    background: rgb(230, 236, 240);
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+    font-size: 14px;
+}
+
+body,
+a,
+a:hover {
+    color: #262626;
+    text-decoration: none;
+}
+
+body,
+ul,
+p {
+    padding: 0;
+    margin: 0;
+}
+
+ul {
+    list-style-type: none !important;
+}
+
+.btn-default {
+    border: 1px solid #888;
+    background: #fff;
+}
+
+.container {
+    width: 1190px;
+}
+
+nav ul li a,
+.nav ul li a {
+    color: rgb(102, 117, 127);
+}
+
+.btn,
+input.button,
+input.form-control {
+    font-size: 14px;
+    height: 31px;
+}
+
+input.form-control {
+    padding-top: 2px;
+    padding-left: 15px;
+}
+
+.parsley-errors-list {
+    color: rgba(255, 0, 0, 0.6);
+}

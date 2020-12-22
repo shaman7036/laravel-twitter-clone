@@ -34,3 +34,11 @@ Route::get('/profile/followers/{username}', $controllers . 'ProfileController@ge
 Route::get('/profile/likes/{username}', $controllers . 'ProfileController@getLikes');
 Route::get('/profile/edit/{username}', $controllers . 'ProfileController@edit');
 Route::post('/profile/edit/{username}', $controllers . 'ProfileController@update');
+
+/**
+ * navigation
+ */
+Route::view('/home', 'home');
+Route::view('/moments', 'moments');
+Route::view('/notifications', 'notifications');
+Route::view('/messages', 'messages');

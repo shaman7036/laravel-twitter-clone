@@ -3,7 +3,7 @@
     if (Session::get('auth')) $auth = Session::get('auth');
 
     $avatar = '';
-    if($tweet->avatar) $avatar = '/storage/media/'.$tweet->userId.'/avatar/thumbnail.'.$tweet->avatar;
+    if($tweet->avatar) $avatar = '/storage/media/'.$tweet->user_id.'/avatar/thumbnail.'.$tweet->avatar;
 
     $retweeted = '';
     if ($tweet->retweeted === 1) $retweeted = 'active';

@@ -123,17 +123,28 @@ class ProfileController extends Controller
      */
     public function getTweets(Request $request, $username)
     {
+        $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : null;
         $profile = User::where('username', $username)->first();
         $select = ['tweets.*', 'u.avatar', 'u.fullname', 'u.username'];
-        $tweets = Tweet::select($select)->selectRaw('count(distinct l.id) as num_likes')
+        $tweets = Tweet::select($select)
+            ->selectRaw('count(distinct l_a.id) as num_likes')
+            ->selectRaw('case when l_b.user_id = ' . $authId . ' then 1 else 0 end as is_liked')
             ->join('users as u', function ($join) use ($profile) {
                 $join->on('tweets.user_id', '=', 'u.id')
                     ->whereNull('u.deleted_at')
                     ->where('tweets.user_id', $profile->id);
-            })->leftJoin('likes as l', function ($join) {
-                $join->on('tweets.id', '=', 'l.tweet_id')
-                    ->whereNull('l.deleted_at');
-            })->groupBy('tweets.id')->orderBy('tweets.created_at', 'desc')->get();
+            })
+            ->leftJoin('likes as l_a', function ($join) {
+                $join->on('tweets.id', '=', 'l_a.tweet_id')
+                    ->whereNull('l_a.deleted_at');
+            })->groupBy('tweets.id')
+            ->leftJoin('likes as l_b', function ($join) use ($authId) {
+                $join->on('tweets.id', '=', 'l_b.tweet_id')
+                    ->whereNull('l_b.deleted_at')
+                    ->where('l_b.user_id', $authId);
+            })->groupBy('l_b.id')
+            ->orderBy('tweets.created_at', 'desc')->get();
+
         return view('profile.profile', ['profile' => $profile, 'tweets' => $tweets]);
     }
 

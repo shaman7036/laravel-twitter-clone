@@ -8,8 +8,7 @@
     $retweeted = '';
     if ($tweet->retweeted === 1) $retweeted = 'active';
 
-    $liked = '';
-    if ($tweet->liked === 1) $liked = 'active';
+    $is_liked = $tweet->is_liked ? 'active' : '';
 
     $replyTo = array();
     if($tweet->replyTo) $replyTo = json_decode($tweet->replyTo);
@@ -76,7 +75,7 @@
         </div>
         <!-- like icon -->
         <div class='like-icon' onclick='postLike("{{$tweet->id}}")'>
-            <i class="{{'fa fa-heart-o '.$liked}}"></i>
+            <i class="{{'fa fa-heart-o '.$is_liked}}"></i>
             <span class='span'>{{$tweet->num_likes ? $tweet->num_likes : 0}}</span>
         </div>
         <!-- chart icon -->

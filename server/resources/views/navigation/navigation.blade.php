@@ -43,7 +43,7 @@
         </div>
         </li>
         <!-- tweet button -->
-        <li class='right li_post'><div onclick='openTweetDialog()'>Tweet</div></li>
+        <li class='right li_post'><div onclick='tweetDialog.openTweetDialog()'>Tweet</div></li>
         <!-- avatar -->
         <li class='right li_user {{$links[4]}}'>
         <div class='avatar' onclick='showMenu()'>
@@ -53,14 +53,16 @@
             <img src="{{$avatar}}" onerror="this.style.display='none'" />
             @endif
         </div>
-        <a class='mobile' href="<?php echo (isset($auth)) ? '/profile/tweets/'.$auth->username : '/logIn'; ?>"><i class='fa fa-user-o mobile'></i></a>
+        <a class='mobile' href="<?php echo (isset($auth)) ? '/profile/tweets/'.$auth->username : '/logIn'; ?>">
+            <i class='fa fa-user-o mobile'></i>
+        </a>
         @include('navigation/menu')
         </li>
         <li class='right li_search'>
         @include('navigation/search')
         </li>
     </ul>
-    <div class='mobile createTweet' onclick='openTweetDialog()'>
+    <div class='mobile createTweet' onclick='tweetDialog.openTweetDialog()'>
         <i class='fa fa-pencil'></i>
     </div>
     {{-- @include('dialogs/tweet_dialog')

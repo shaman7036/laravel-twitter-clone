@@ -42,3 +42,8 @@ Route::view('/home', 'home');
 Route::view('/moments', 'moments');
 Route::view('/notifications', 'notifications');
 Route::view('/messages', 'messages');
+
+/**
+ * tweets
+ */
+Route::resource('/tweets', $controllers . 'TweetController', ['only' => ['store', 'destroy']]);

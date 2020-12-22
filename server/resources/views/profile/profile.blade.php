@@ -96,22 +96,28 @@
         <div class='left'>
         <div class='content'>
             <h1>
+                <!-- fullname -->
                 <span class='fullname'>{{$profile->fullname}}</span>
+                <!-- username -->
                 <span class='username'>{{'@'.$profile->username}}</span>
             </h1>
+            <!-- description -->
             <p class='bio'><?php echo htmlspecialchars_decode($bio); ?></p>
+            <!-- location -->
             <?php if(!empty($profile->location)) : ?>
                 <div class='location'>
                 <i class='fa fa-map-marker'></i>
                 {{$profile->location}}
                 </div>
             <?php endif; ?>
-            <?php if(!empty($profile->url)) : ?>
+            <!-- website -->
+            <?php if(!empty($profile->website)) : ?>
                 <div class='url'>
                 <i class='fa fa-link'></i>
                 <a href="{{'https://'.$url}}">{{$url}}</a>
                 </div>
             <?php endif; ?>
+            <!-- joined date -->
             <div class='date'>
                 <i class='fa fa-calendar'></i>
                 {{$date}}
@@ -129,19 +135,20 @@
             </div>
         </div>
         <div class='center'>
-            {{-- @if($links[0] || $links[3])
-            <div>
-                @include('tweets/tweets', ['tweets' => $tweets])
-            </div>
+            @if($links[0] || $links[3])
+                <!-- tweets -->
+                <div>
+                    @include('tweets/tweets', ['tweets' => $tweets])
+                </div>
             @else
-            <ul class='users'>
-                @isset($users)
-                @foreach($users as $u)
-                    @include('profile/user', ['user' => $u])
-                @endforeach
-                @endisset
-            </ul>
-            @endif --}}
+                {{-- <ul class='users'>
+                    @isset($users)
+                    @foreach($users as $u)
+                        @include('profile/user', ['user' => $u])
+                    @endforeach
+                    @endisset
+                </ul> --}}
+            @endif
         </div>
         <div class='right'>
         </div>

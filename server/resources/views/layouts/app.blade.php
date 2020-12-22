@@ -27,6 +27,8 @@
     <script src="{{ asset('js/moment.js') }}"></script>
     <script src="{{ asset('js/parsley.min.js') }}"></script>
     @include('navigation.navigation')
+    @include('dialogs.tweet_dialog')
+    @include('dialogs.delete_dialog')
     @yield('content')
 </body>
 </html>

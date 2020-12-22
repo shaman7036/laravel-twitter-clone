@@ -125,12 +125,15 @@ class ProfileController extends Controller
     {
         $profile = User::where('username', $username)->first();
         $select = ['tweets.*', 'u.avatar', 'u.fullname', 'u.username'];
-        $tweets = Tweet::select($select)
-            ->leftJoin('users as u', function ($join) use ($profile) {
+        $tweets = Tweet::select($select)->selectRaw('count(distinct l.id) as num_likes')
+            ->join('users as u', function ($join) use ($profile) {
                 $join->on('tweets.user_id', '=', 'u.id')
                     ->whereNull('u.deleted_at')
                     ->where('tweets.user_id', $profile->id);
-            })->orderBy('tweets.created_at', 'desc')->get();
+            })->leftJoin('likes as l', function ($join) {
+                $join->on('tweets.id', '=', 'l.tweet_id')
+                    ->whereNull('l.deleted_at');
+            })->groupBy('tweets.id')->orderBy('tweets.created_at', 'desc')->get();
         return view('profile.profile', ['profile' => $profile, 'tweets' => $tweets]);
     }
 

@@ -23,7 +23,7 @@ class AuthController extends Controller
         $user->password = null;
         $request->session()->regenerate();
         $request->session()->put('auth', $user);
-        // return redirect('/profile/tweets/' . $user->username);
+        return redirect('/profile/tweets/' . $user->username);
     }
 
     /**
@@ -37,7 +37,7 @@ class AuthController extends Controller
         }
         $request->session()->regenerate();
         $request->session()->put('auth', $user);
-        // return redirect('/profile/tweets/' . $user->username);
+        return redirect('/profile/tweets/' . $user->username);
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateProfileRequest;
 use App\Models\User;
+use App\Models\Tweet;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class ProfileController extends Controller
@@ -123,7 +124,13 @@ class ProfileController extends Controller
     public function getTweets(Request $request, $username)
     {
         $profile = User::where('username', $username)->first();
-        $tweets = collect([]);
+        $select = ['tweets.*', 'u.avatar', 'u.fullname', 'u.username'];
+        $tweets = Tweet::select($select)
+            ->leftJoin('users as u', function ($join) use ($profile) {
+                $join->on('tweets.user_id', '=', 'u.id')
+                    ->whereNull('u.deleted_at')
+                    ->where('tweets.user_id', $profile->id);
+            })->orderBy('tweets.created_at', 'desc')->get();
         return view('profile.profile', ['profile' => $profile, 'tweets' => $tweets]);
     }
 

@@ -96,7 +96,7 @@ class TweetController extends Controller
 
         $tweet = Tweet::findOrFail($id);
 
-        if ($auth->id != $tweet->userId) {
+        if ($auth->id != $tweet->user_id) {
             return response()->json(['success' => false], 402);
         } else {
             // delete tweet

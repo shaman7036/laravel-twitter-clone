@@ -67,17 +67,17 @@
         <!-- reply icon -->
         <div class='reply-icon' onclick='openReplyDialog("{{$tweet->id}}")'>
             <i class='fa fa-comment-o'></i>
-            <span class='span'>{{$tweet->replies}}</span>
+            <span class='span'>{{$tweet->num_replies ? $tweet->num_replies : 0}}</span>
         </div>
         <!-- retweet icon -->
         <div class='retweet-icon' onclick='postRetweet("{{$tweet->id}}")'>
             <i class="{{'fa fa-retweet '.$retweeted}}"></i>
-            <span class='span'>{{$tweet->retweets}}</span>
+            <span class='span'>{{$tweet->num_retweets ? $tweet->num_retweets : 0}}</span>
         </div>
         <!-- like icon -->
         <div class='like-icon' onclick='postLike("{{$tweet->id}}")'>
             <i class="{{'fa fa-heart-o '.$liked}}"></i>
-            <span class='span'>{{$tweet->likes}}</span>
+            <span class='span'>{{$tweet->num_likes ? $tweet->num_likes : 0}}</span>
         </div>
         <!-- chart icon -->
         <div class='chart-icon'>

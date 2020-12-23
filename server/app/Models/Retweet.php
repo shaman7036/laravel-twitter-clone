@@ -19,7 +19,8 @@ class Retweet extends Model
     public static function getRetweetsByUserId($userId, $authId)
     {
         $select = [
-            'retweets.id as retweet_id', 'retweets.created_at as time',
+            'retweets.created_at as time',
+            'retweeted_users.username as retweeted_username',
             'tweets.*',
             'u.avatar', 'u.fullname', 'u.username',
         ];
@@ -28,6 +29,10 @@ class Retweet extends Model
             ->selectRaw('case when l_b.user_id = ' . $authId . ' then 1 else 0 end as is_liked')
             ->selectRaw('count(distinct r_a.id) as num_retweets')
             ->selectRaw('case when r_b.user_id = ' . $authId . ' then 1 else 0 end as is_retweeted')
+            ->join('users as retweeted_users', function ($join) {
+                $join->on('retweets.user_id', '=', 'retweeted_users.id')
+                    ->whereNull('retweeted_users.deleted_at');
+            })
             ->join('tweets', function ($join) use ($userId) {
                 $join->on('retweets.tweet_id', '=', 'tweets.id')
                     ->whereNull('tweets.deleted_at')

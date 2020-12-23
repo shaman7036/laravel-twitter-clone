@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UpdateProfileRequest;
 use App\Models\User;
 use App\Models\Tweet;
+use App\Models\Retweet;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class ProfileController extends Controller
@@ -128,6 +129,15 @@ class ProfileController extends Controller
 
         // get tweets by profile id
         $tweets = Tweet::getTweetsByUserId($profile->id, $authId);
+
+        // get retweets by profile id
+        $retweets = Retweet::getRetweetsByUserId($profile->id, $authId);
+
+        // conbine tweets and retweets
+        $tweets = $tweets->concat($retweets);
+
+        // sort tweets by time property
+        $tweets = $tweets->sortByDesc('time');
 
         return view('profile.profile', ['profile' => $profile, 'tweets' => $tweets]);
     }

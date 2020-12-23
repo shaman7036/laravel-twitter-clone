@@ -18,12 +18,12 @@
     $str = preg_replace('|([\w\d]*)\s?(https?://([\d\w\.-]+\.[\w\.]{2,6})[^\s\]\[\<\>]*/?)|i', '$1 <a href="$2">$3</a>', $str);
     ?>
     <div class="{{'tweet tweet-'.$tweet->id}}" username={{$tweet->username}}>
-    {{-- @if($tweet->retweetedBy)
-        <div class='retweeted'>
-        <i class='fa fa-retweet'></i> {{'@'.$tweet->retweetedBy}} retweeted
-        </div>
+    @if($tweet->retweeted_username)
+        <a class="retweeted" href={{'/profile/tweets/'.$tweet->retweeted_username}}>
+            <i class="fa fa-retweet"></i> {{'@'.$tweet->retweeted_username}} retweeted
+        </a>
     @endif
-    @if(isset($replyTo->username))
+    {{-- @if(isset($replyTo->username))
         <div class='replyingTo replying'>
         <span class='replying' onclick='open_replied(event, "{{$replyTo->id}}")'>
             Replying to {{'@'.$replyTo->username}}

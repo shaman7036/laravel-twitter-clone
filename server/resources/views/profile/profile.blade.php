@@ -64,25 +64,25 @@
             <li class={{$links[0]}}>
             <a href={{'/profile/tweets/'.$profile->username}}>
                 <span>Tweets</span>
-                <span class="profile-tweets">{{$profile->tweets}}</span>
+                <span class="profile-tweets">{{$profile->num_tweets ? $profile->num_tweets : 0}}</span>
             </a>
             </li>
             <li class={{$links[1]}}>
             <a href={{'/profile/following/'.$profile->username}}>
                 <span>Following</span>
-                <span class="profile-following">{{$profile->following}}</span>
+                <span class="profile-following">{{$profile->num_following ? $profile->num_following : 0}}</span>
             </a>
             </li>
             <li class={{$links[2]}}>
             <a href={{'/profile/followers/'.$profile->username}}>
                 <span>Followers</span>
-                <span class="profile-followers">{{$profile->followers}}</span>
+                <span class="profile-followers">{{$profile->num_followers ? $profile->num_followers : 0}}</span>
             </a>
             </li>
             <li class={{$links[3]}}>
             <a href={{'/profile/likes/'.$profile->username}} >
                 <span>Likes</span>
-                <span class="profile-likes">{{$profile->likes}}</span>
+                <span class="profile-likes">{{$profile->num_likes ? $profile->num_likes : 0}}</span>
             </a>
             </li>
         </ul>
@@ -197,6 +197,26 @@ const profile = {
     },
 
     follow: (userId) => {
+        if (!auth) {
+            window.location.href = '/login';
+            return;
+        }
+        $.ajax({
+            type: 'POST',
+            url: '/follows',
+            data: {"_token": "{{ csrf_token() }}", followed_id: userId},
+            success: (res) => {
+                numFollowers = $('.profile-followers').html();
+                if (res.isFollowed) {
+                    $('.follow').addClass('followed');
+                    numFollowers++;
+                } else {
+                    $('.follow').removeClass('followed');
+                    if (numFollowers > 0) numFollowers--;
+                }
+                $('.profile-followers').html(numFollowers);
+            }
+        });
     },
 };
 </script>

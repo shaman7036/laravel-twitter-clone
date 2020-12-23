@@ -57,3 +57,8 @@ Route::resource('/likes', $controllers . 'LikeController', ['only' => ['inde', '
  * retweets
  */
 Route::resource('/retweets', $controllers . 'RetweetController', ['only' => ['inde', 'store']]);
+
+/**
+ * follows
+ */
+Route::resource('/follows', $controllers . 'FollowController', ['only' => ['inde', 'store']]);

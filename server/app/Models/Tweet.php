@@ -12,8 +12,6 @@ class Tweet extends Model
 
     protected $table = 'tweets';
 
-    public $incrementing = false;
-
     protected $fillable = [
         'id', 'user_id', 'text'
     ];

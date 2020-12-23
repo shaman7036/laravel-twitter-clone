@@ -19,7 +19,7 @@ class Retweet extends Model
     public static function getRetweetsByUserId($userId, $authId)
     {
         $select = [
-            'retweets.created_at as time',
+            'retweets.updated_at as time',
             'retweeted_users.username as retweeted_username',
             'tweets.*',
             'u.avatar', 'u.fullname', 'u.username',

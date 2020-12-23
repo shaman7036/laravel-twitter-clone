@@ -126,7 +126,9 @@ class ProfileController extends Controller
     public function getTweets(Request $request, $username)
     {
         $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
-        $profile = User::where('username', $username)->first();
+
+        // get a profile by username
+        $profile = User::getProfileByUsername($username);
 
         // get tweets by profile id
         $tweets = Tweet::getTweetsByUserId($profile->id, $authId);
@@ -149,7 +151,9 @@ class ProfileController extends Controller
      */
     public function getFollowers(Request $request, $username)
     {
-        $profile = User::where('username', $username)->first();
+        // get a profile by username
+        $profile = User::getProfileByUsername($username);
+
         $users = collect([]);
         return view('profile.profile', ['profile' => $profile, 'users' => $users]);
     }
@@ -160,7 +164,9 @@ class ProfileController extends Controller
      */
     public function getFollowing(Request $request, $username)
     {
-        $profile = User::where('username', $username)->first();
+        // get a profile by username
+        $profile = User::getProfileByUsername($username);
+
         $users = collect([]);
         return view('profile.profile', ['profile' => $profile, 'users' => $users]);
     }
@@ -172,7 +178,9 @@ class ProfileController extends Controller
     public function getLikes(Request $request, $username)
     {
         $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
-        $profile = User::where('username', $username)->first();
+
+        // get a profile by username
+        $profile = User::getProfileByUsername($username);
 
         // get liked tweets by profile id
         $tweets = Like::getLikedTweetsByUserId($profile->id, $authId);

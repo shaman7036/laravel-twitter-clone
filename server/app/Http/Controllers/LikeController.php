@@ -51,7 +51,7 @@ class LikeController extends Controller
             $like->user_id = $auth->id;
             $like->tweet_id = $request->tweet_id;
             $like->save();
-            $is_liked = true;
+            $isLiked = true;
         } else {
             if ($like->deleted_at) {
                 // like again

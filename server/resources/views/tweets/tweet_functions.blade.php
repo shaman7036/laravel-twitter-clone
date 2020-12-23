@@ -7,55 +7,55 @@ function openMenu(t) {
 
 function postLike(tweetId) {
     if(!auth) {
-        window.location.href = '/logIn';
+        window.location.href = '/login';
         return;
     }
-
     $.ajax({
-        url: '/likes',
         type: 'POST',
+        url: '/likes',
         data: {"_token": "{{ csrf_token() }}", tweet_id: tweetId},
         success: function(res) {
-            console.log(JSON.stringify(res));
             if(res.success) {
                 var tweet = $('.tweet-'+tweetId);
-                var currentLikes = tweet.find('.like-icon span').html();
-                if (!currentLikes) currentLikes = 0;
+                var numLikes = tweet.find('.like-icon span').html();
+                if (!numLikes) numLikes = 0;
                 if (res.isLiked) {
-                    currentLikes++;
+                    numLikes++;
                     tweet.find('.like-icon i').addClass('active');
-                } else if(!res.isLiked && currentLikes > 0) {
-                    currentLikes--;
+                } else if(!res.isLiked && numLikes > 0) {
+                    numLikes--;
                     tweet.find('.like-icon i').removeClass('active');
                 }
-                tweet.find('.like-icon span').html(currentLikes);
+                tweet.find('.like-icon span').html(numLikes);
             }
         }
     });
 }
 
-function postRetweet(id) {
-    // console.log('post_retweet('+id+')');
-    // var url = '/retweets';
-
-    // if(!auth) {
-    //     window.location.href = '/logIn';
-    //     return;
-    // }
-
-    // $.ajax({
-    //     url: url,
-    //     type: 'POST',
-    //     data: {"_token": "{{ csrf_token() }}", id: id},
-    //     success: function(res) {
-    //     console.log(JSON.stringify(res));
-    //     if(res.success) {
-    //         var tweet = $('.tweet-'+id);
-    //         tweet.find('.retweetIcon span').html(res.tweetRetweets);
-    //         if(res.retweeted) tweet.find('.retweetIcon i').addClass('active');
-    //         else tweet.find('.retweetIcon i').removeClass('active');
-    //     }
-    //     }
-    // });
+function postRetweet(tweetId) {
+    if(!auth) {
+        window.location.href = '/login';
+        return;
+    }
+    $.ajax({
+        type: 'POST',
+        url: '/retweets',
+        data: {"_token": "{{ csrf_token() }}", tweet_id: tweetId},
+        success: function(res) {
+            if(res.success) {
+                var tweet = $('.tweet-'+tweetId);
+                var numRetweets = tweet.find('.retweet-icon span').html();
+                if (!numRetweets) numRetweets = 0;
+                if (res.isRetweeted) {
+                    numRetweets++;
+                    tweet.find('.retweet-icon i').addClass('active');
+                } else if(!res.isRetweeted && numRetweets > 0) {
+                    numRetweets--;
+                    tweet.find('.retweet-icon i').removeClass('active');
+                }
+                tweet.find('.retweet-icon span').html(numRetweets);
+            }
+        }
+    });
 }
 </script>

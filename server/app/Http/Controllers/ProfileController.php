@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateProfileRequest;
 use App\Models\User;
 use App\Models\Tweet;
 use App\Models\Retweet;
+use App\Models\Like;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class ProfileController extends Controller
@@ -133,7 +134,7 @@ class ProfileController extends Controller
         // get retweets by profile id
         $retweets = Retweet::getRetweetsByUserId($profile->id, $authId);
 
-        // conbine tweets and retweets
+        // combine tweets and retweets
         $tweets = $tweets->concat($retweets);
 
         // sort tweets by time property
@@ -168,10 +169,14 @@ class ProfileController extends Controller
      * @param Request $request
      * @param string $username
      */
-    public function getLikes(Request $req, $username)
+    public function getLikes(Request $request, $username)
     {
+        $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
         $profile = User::where('username', $username)->first();
-        $tweets = collect([]);
+
+        // get liked tweets by profile id
+        $tweets = Like::getLikedTweetsByUserId($profile->id, $authId);
+
         return view('profile.profile', ['profile' => $profile, 'tweets' => $tweets]);
     }
 }

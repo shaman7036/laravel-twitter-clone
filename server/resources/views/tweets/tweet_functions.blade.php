@@ -5,36 +5,33 @@ function openMenu(t) {
     else menu.style.display = 'none';
 }
 
-function postLike(id) {
-    // var url = '/likes';
-    // if(!auth) {
-    //     window.location.href = '/logIn';
-    //     return;
-    // }
+function postLike(tweetId) {
+    if(!auth) {
+        window.location.href = '/logIn';
+        return;
+    }
 
-    // $.ajax({
-    //     url: url,
-    //     type: 'POST',
-    //     data: {"_token": "{{ csrf_token() }}", id: id},
-    //     success: function(res) {
-    //         console.log(JSON.stringify(res));
-    //         if(res.success) {
-    //             var tweet = $('.tweet-'+id);
-    //             tweet.find('.likeIcon span').html(res.tweetLikes);
-    //             if(res.liked) tweet.find('.likeIcon i').addClass('active');
-    //             else tweet.find('.likeIcon i').removeClass('active');
-
-    //             // update profile likes
-    //             if(auth) {
-    //                 var username = tweet.attr('username');
-    //                 if(username === auth.username) {
-    //                     $('.profile-likes').html(res.userLikes);
-    //                     $('.mobile-likes > span').html(res.userLikes);
-    //                 }
-    //             }
-    //         }
-    //     }
-    // });
+    $.ajax({
+        url: '/likes',
+        type: 'POST',
+        data: {"_token": "{{ csrf_token() }}", tweet_id: tweetId},
+        success: function(res) {
+            console.log(JSON.stringify(res));
+            if(res.success) {
+                var tweet = $('.tweet-'+tweetId);
+                var currentLikes = tweet.find('.like-icon span').html();
+                if (!currentLikes) currentLikes = 0;
+                if (res.isLiked) {
+                    currentLikes++;
+                    tweet.find('.like-icon i').addClass('active');
+                } else if(!res.isLiked && currentLikes > 0) {
+                    currentLikes--;
+                    tweet.find('.like-icon i').removeClass('active');
+                }
+                tweet.find('.like-icon span').html(currentLikes);
+            }
+        }
+    });
 }
 
 function postRetweet(id) {

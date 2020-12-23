@@ -2,7 +2,6 @@
 .tweet {
     padding-left: 70px;
     padding-top: 7.5px;
-    padding-bottom: 5px;
     border-bottom: 1px solid #ccc;
     font-size: 14px;
     overflow:;
@@ -90,10 +89,7 @@
 .tweet .icons i.active {
     color: #f15;
 }
-.tweet .icons > div:last-child {
-    border: 0px solid;
-    padding-top: 6px;
-}
+
 .tweet .retweeted {
     color: #888;
     font-size: 14px;

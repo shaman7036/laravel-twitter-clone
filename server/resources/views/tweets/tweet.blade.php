@@ -5,10 +5,9 @@
     $avatar = '';
     if($tweet->avatar) $avatar = '/storage/media/'.$tweet->user_id.'/avatar/thumbnail.'.$tweet->avatar;
 
-    $retweeted = '';
-    if ($tweet->retweeted === 1) $retweeted = 'active';
-
     $is_liked = $tweet->is_liked ? 'active' : '';
+
+    $is_retweeted = $tweet->is_retweeted ? 'active' : '';
 
     $replyTo = array();
     if($tweet->replyTo) $replyTo = json_decode($tweet->replyTo);
@@ -19,12 +18,12 @@
     $str = preg_replace('|([\w\d]*)\s?(https?://([\d\w\.-]+\.[\w\.]{2,6})[^\s\]\[\<\>]*/?)|i', '$1 <a href="$2">$3</a>', $str);
     ?>
     <div class="{{'tweet tweet-'.$tweet->id}}" username={{$tweet->username}}>
-    {{-- @if($tweet->retweetedBy)
-        <div class='retweeted'>
-        <i class='fa fa-retweet'></i> {{'@'.$tweet->retweetedBy}} retweeted
-        </div>
+    @if($tweet->retweeted_username)
+        <a class="retweeted" href={{'/profile/tweets/'.$tweet->retweeted_username}}>
+            <i class="fa fa-retweet"></i> {{'@'.$tweet->retweeted_username}} retweeted
+        </a>
     @endif
-    @if(isset($replyTo->username))
+    {{-- @if(isset($replyTo->username))
         <div class='replyingTo replying'>
         <span class='replying' onclick='open_replied(event, "{{$replyTo->id}}")'>
             Replying to {{'@'.$replyTo->username}}
@@ -70,7 +69,7 @@
         </div>
         <!-- retweet icon -->
         <div class='retweet-icon' onclick='postRetweet("{{$tweet->id}}")'>
-            <i class="{{'fa fa-retweet '.$retweeted}}"></i>
+            <i class="{{'fa fa-retweet '.$is_retweeted}}"></i>
             <span class='span'>{{$tweet->num_retweets ? $tweet->num_retweets : 0}}</span>
         </div>
         <!-- like icon -->

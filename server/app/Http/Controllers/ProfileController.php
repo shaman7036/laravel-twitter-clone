@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UpdateProfileRequest;
 use App\Models\User;
 use App\Models\Tweet;
+use App\Models\Retweet;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class ProfileController extends Controller
@@ -125,25 +126,18 @@ class ProfileController extends Controller
     {
         $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
         $profile = User::where('username', $username)->first();
-        $select = ['tweets.*', 'u.avatar', 'u.fullname', 'u.username'];
-        $tweets = Tweet::select($select)
-            ->selectRaw('count(distinct l_a.id) as num_likes')
-            ->selectRaw('case when l_b.user_id = ' . $authId . ' then 1 else 0 end as is_liked')
-            ->join('users as u', function ($join) use ($profile) {
-                $join->on('tweets.user_id', '=', 'u.id')
-                    ->whereNull('u.deleted_at')
-                    ->where('tweets.user_id', $profile->id);
-            })
-            ->leftJoin('likes as l_a', function ($join) {
-                $join->on('tweets.id', '=', 'l_a.tweet_id')
-                    ->whereNull('l_a.deleted_at');
-            })->groupBy('tweets.id')
-            ->leftJoin('likes as l_b', function ($join) use ($authId) {
-                $join->on('tweets.id', '=', 'l_b.tweet_id')
-                    ->whereNull('l_b.deleted_at')
-                    ->where('l_b.user_id', $authId);
-            })->groupBy('l_b.id')
-            ->orderBy('tweets.created_at', 'desc')->get();
+
+        // get tweets by profile id
+        $tweets = Tweet::getTweetsByUserId($profile->id, $authId);
+
+        // get retweets by profile id
+        $retweets = Retweet::getRetweetsByUserId($profile->id, $authId);
+
+        // conbine tweets and retweets
+        $tweets = $tweets->concat($retweets);
+
+        // sort tweets by time property
+        $tweets = $tweets->sortByDesc('time');
 
         return view('profile.profile', ['profile' => $profile, 'tweets' => $tweets]);
     }

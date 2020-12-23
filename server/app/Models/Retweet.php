@@ -6,40 +6,46 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
-class Tweet extends Model
+class Retweet extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'tweets';
+    protected $table = 'retweets';
 
     protected $fillable = [
-        'id', 'user_id', 'text'
+        'user_id', 'tweet_id',
     ];
 
-    protected $attributes = [
-        'text' => '',
-    ];
-
-    public static function getTweetsByUserId($userId, $authId)
+    public static function getRetweetsByUserId($userId, $authId)
     {
         $select = [
-            'tweets.*', 'tweets.created_at as time',
-            'u.avatar', 'u.fullname', 'u.username'
+            'retweets.updated_at as time',
+            'retweeted_users.username as retweeted_username',
+            'tweets.*',
+            'u.avatar', 'u.fullname', 'u.username',
         ];
-        $tweets = Tweet::select($select)
+        $retweets = Retweet::select($select)
             ->selectRaw('count(distinct l_a.id) as num_likes')
             ->selectRaw('case when l_b.user_id = ' . $authId . ' then 1 else 0 end as is_liked')
             ->selectRaw('count(distinct r_a.id) as num_retweets')
             ->selectRaw('case when r_b.user_id = ' . $authId . ' then 1 else 0 end as is_retweeted')
-            ->join('users as u', function ($join) use ($userId) {
-                $join->on('tweets.user_id', '=', 'u.id')
-                    ->whereNull('u.deleted_at')
+            ->join('users as retweeted_users', function ($join) {
+                $join->on('retweets.user_id', '=', 'retweeted_users.id')
+                    ->whereNull('retweeted_users.deleted_at');
+            })
+            ->join('tweets', function ($join) use ($userId) {
+                $join->on('retweets.tweet_id', '=', 'tweets.id')
+                    ->whereNull('tweets.deleted_at')
                     ->where('tweets.user_id', $userId);
+            })
+            ->join('users as u', function ($join) {
+                $join->on('tweets.user_id', '=', 'u.id')
+                    ->whereNull('u.deleted_at');
             })
             ->leftJoin('likes as l_a', function ($join) {
                 $join->on('tweets.id', '=', 'l_a.tweet_id')
                     ->whereNull('l_a.deleted_at');
-            })->groupBy('tweets.id')
+            })->groupBy('retweets.id')
             ->leftJoin('likes as l_b', function ($join) use ($authId) {
                 $join->on('tweets.id', '=', 'l_b.tweet_id')
                     ->whereNull('l_b.deleted_at')
@@ -48,14 +54,14 @@ class Tweet extends Model
             ->leftJoin('retweets as r_a', function ($join) {
                 $join->on('tweets.id', '=', 'r_a.tweet_id')
                     ->whereNull('r_a.deleted_at');
-            })->groupBy('tweets.id')
+            })->groupBy('retweets.id')
             ->leftJoin('retweets as r_b', function ($join) use ($authId) {
                 $join->on('tweets.id', '=', 'r_b.tweet_id')
                     ->whereNull('r_b.deleted_at')
                     ->where('r_b.user_id', $authId);
             })->groupBy('r_b.id')
-            ->orderBy('tweets.created_at', 'desc')->get();
+            ->orderBy('retweets.created_at', 'desc')->get();
 
-        return $tweets;
+        return $retweets;
     }
 }

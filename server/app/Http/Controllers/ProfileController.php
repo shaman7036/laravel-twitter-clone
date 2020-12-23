@@ -123,7 +123,7 @@ class ProfileController extends Controller
      */
     public function getTweets(Request $request, $username)
     {
-        $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : null;
+        $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
         $profile = User::where('username', $username)->first();
         $select = ['tweets.*', 'u.avatar', 'u.fullname', 'u.username'];
         $tweets = Tweet::select($select)

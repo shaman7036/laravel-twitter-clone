@@ -149,13 +149,16 @@
                         @include('tweets/tweets', ['tweets' => $tweets])
                     </div>
                 @else
-                    {{-- <ul class='users'>
+                    <!-- users -->
+                    <ul class='users'>
                         @isset($users)
                         @foreach($users as $u)
-                            @include('profile/user', ['user' => $u])
+                            @include('profile/user', [
+                                'user' => $u, 'isAuth' => ($u->username === $auth->username),
+                            ])
                         @endforeach
                         @endisset
-                    </ul> --}}
+                    </ul>
                 @endif
             </div>
             <!-- right -->

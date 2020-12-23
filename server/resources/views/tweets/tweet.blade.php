@@ -5,10 +5,9 @@
     $avatar = '';
     if($tweet->avatar) $avatar = '/storage/media/'.$tweet->user_id.'/avatar/thumbnail.'.$tweet->avatar;
 
-    $retweeted = '';
-    if ($tweet->retweeted === 1) $retweeted = 'active';
-
     $is_liked = $tweet->is_liked ? 'active' : '';
+
+    $is_retweeted = $tweet->is_retweeted ? 'active' : '';
 
     $replyTo = array();
     if($tweet->replyTo) $replyTo = json_decode($tweet->replyTo);
@@ -70,7 +69,7 @@
         </div>
         <!-- retweet icon -->
         <div class='retweet-icon' onclick='postRetweet("{{$tweet->id}}")'>
-            <i class="{{'fa fa-retweet '.$retweeted}}"></i>
+            <i class="{{'fa fa-retweet '.$is_retweeted}}"></i>
             <span class='span'>{{$tweet->num_retweets ? $tweet->num_retweets : 0}}</span>
         </div>
         <!-- like icon -->

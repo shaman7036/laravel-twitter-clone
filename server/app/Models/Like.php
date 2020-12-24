@@ -16,13 +16,20 @@ class Like extends Model
         'user_id', 'tweet_id',
     ];
 
+    /**
+     * get user's liked tweets
+     *
+     * @param int $userId
+     * @param int $authId
+     * @return Like (Tweet) $tweets
+     */
     public static function getLikedTweetsByUserId($userId, $authId)
     {
         $select = [
             'tweets.*',
             'u.avatar', 'u.fullname', 'u.username',
         ];
-        $tweets = Like::select($select)
+        $tweets = self::select($select)
             ->selectRaw('count(distinct l_a.id) as num_likes')
             ->selectRaw('case when l_b.user_id = ' . $authId . ' then 1 else 0 end as is_liked')
             ->selectRaw('count(distinct r_a.id) as num_retweets')

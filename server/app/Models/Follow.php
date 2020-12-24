@@ -16,6 +16,13 @@ class Follow extends Model
         'follower_id', 'followed_id',
     ];
 
+    /**
+     * get users who are followed by $userId
+     *
+     * @param int $userId
+     * @param int $authId
+     * @return Follow $following
+     */
     public static function getFollowingByUserId($userId, $authId)
     {
         $select = ['u.id', 'u.bg', 'u.avatar', 'u.fullname', 'u.username', 'u.description'];
@@ -30,6 +37,13 @@ class Follow extends Model
         return $following;
     }
 
+    /**
+     * get users who are following $userId
+     *
+     * @param int $userId
+     * @param int $authId
+     * @return Follow $followers
+     */
     public static function getFollowersByUserId($userId, $authId)
     {
         $select = ['u.id', 'u.bg', 'u.avatar', 'u.fullname', 'u.username', 'u.description'];

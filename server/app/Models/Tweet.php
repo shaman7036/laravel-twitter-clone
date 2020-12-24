@@ -12,14 +12,6 @@ class Tweet extends Model
 
     protected $table = 'tweets';
 
-    protected $fillable = [
-        'id', 'user_id', 'text'
-    ];
-
-    protected $attributes = [
-        'text' => '',
-    ];
-
     /**
      * get tweets
      *
@@ -27,13 +19,13 @@ class Tweet extends Model
      * @param int $authId
      * @return Tweet $tweets
      */
-    public static function getTweets($where = [], $authId = 0)
+    public static function getTweets($userIds = [], $authId = 0)
     {
         $select = [
             'tweets.*', 'tweets.created_at as time',
             'u.avatar', 'u.fullname', 'u.username'
         ];
-        $tweets = self::select($select)
+        $query = self::select($select)
             ->selectRaw('count(distinct l_a.id) as num_likes')
             ->selectRaw('count(distinct r_a.id) as num_retweets')
             ->selectRaw('case when l_b.user_id = ' . $authId . ' then 1 else 0 end as is_liked')
@@ -52,8 +44,13 @@ class Tweet extends Model
             })->groupBy('l_b.id')
             ->leftJoin('retweets as r_b', function ($join) use ($authId) {
                 $join->on('tweets.id', '=', 'r_b.tweet_id')->whereNull('r_b.deleted_at')->where('r_b.user_id', $authId);
-            })->groupBy('r_b.id')
-            ->where($where)->orderBy('tweets.created_at', 'desc')->get();
+            })->groupBy('r_b.id');
+
+        if (empty($userIds)) {
+            $tweets = $query->orderBy('tweets.created_at', 'desc')->get();
+        } else {
+            $tweets = $query->whereIn('tweets.user_id', $userIds)->orderBy('tweets.created_at', 'desc')->get();
+        }
 
         return $tweets;
     }

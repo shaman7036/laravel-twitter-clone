@@ -23,7 +23,7 @@ class Retweet extends Model
      * @param int $authId
      * @return Retweet $retweets
      */
-    public static function getRetweets($where = [], $authId = 0)
+    public static function getRetweets($userIds = [], $authId = 0)
     {
         $select = [
             'retweets.updated_at as time',
@@ -31,7 +31,7 @@ class Retweet extends Model
             'tweets.*',
             'u.avatar', 'u.fullname', 'u.username',
         ];
-        $retweets = self::select($select)
+        $query = self::select($select)
             ->selectRaw('count(distinct l_a.id) as num_likes')
             ->selectRaw('count(distinct r_a.id) as num_retweets')
             ->selectRaw('case when l_b.user_id = ' . $authId . ' then 1 else 0 end as is_liked')
@@ -58,8 +58,13 @@ class Retweet extends Model
             ->leftJoin('retweets as r_b', function ($join) use ($authId) {
                 $join->on('tweets.id', '=', 'r_b.tweet_id')->whereNull('r_b.deleted_at')
                     ->where('r_b.user_id', $authId);
-            })->groupBy('r_b.id')
-            ->where($where)->orderBy('retweets.created_at', 'desc')->get();
+            })->groupBy('r_b.id');
+
+        if (empty($userIds)) {
+            $retweets = $query->orderBy('retweets.created_at', 'desc')->get();
+        } else {
+            $retweets = $query->whereIn('retweets.user_id', $userIds)->orderBy('retweets.created_at', 'desc')->get();
+        }
 
         return $retweets;
     }

@@ -13,11 +13,11 @@
             <div class='auth-user'>
                 <!-- avatar -->
                 <a class='avatar' href={{ '/profile/tweets/'.$auth->username }}>
-                    <img src="{{$avatar}}" onerror="this.style.display='none'">
+                    <img src="{{ $avatar }}" onerror="this.style.display='none'">
                 </a>
                 <!-- bg -->
                 <a class='bg' href={{ '/profile/tweets/'.$auth->username }}>
-                    <img src={{ $bg }} onerror="this.style.display='none'">
+                    <img src="{{ $bg }}" onerror="this.style.display='none'">
                 </a>
                 <div class='content'>
                     <h2>

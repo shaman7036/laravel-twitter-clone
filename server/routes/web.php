@@ -38,7 +38,7 @@ Route::post('/profile/edit/{username}', $controllers . 'ProfileController@update
 /**
  * navigation
  */
-Route::get('/home', $controllers . 'HomeController@index');
+Route::get('/home', $controllers . 'HomeController@getTimeline');
 Route::view('/moments', 'moments');
 Route::view('/notifications', 'notifications');
 Route::view('/messages', 'messages');

@@ -4,7 +4,7 @@
 }
 
 .timeline .tweet .avatar {
-    margin-left: 10px;
+    margin-left: 15px;
     text-align: center;
 }
 

@@ -22,7 +22,7 @@ class Like extends Model
             'tweets.*',
             'u.avatar', 'u.fullname', 'u.username',
         ];
-        $tweets = Like::select($select)
+        $tweets = self::select($select)
             ->selectRaw('count(distinct l_a.id) as num_likes')
             ->selectRaw('case when l_b.user_id = ' . $authId . ' then 1 else 0 end as is_liked')
             ->selectRaw('count(distinct r_a.id) as num_retweets')

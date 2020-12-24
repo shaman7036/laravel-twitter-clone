@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @section('content')
 <?php
-    $auth = Session::get('auth') ? Session::get('auth') : null;
     $avatar = $auth && $auth->avatar ? '/storage/media/'.$auth->id.'/avatar/thumbnail.'.$auth->avatar : '';
     $bg = $auth && $auth->bg ? '/storage/media/'.$auth->id.'/bg/thumbnail.'.$auth->bg : '';
 ?>
@@ -32,21 +31,21 @@
                         <li>
                             <a href="{{ '/profile/tweets/'.$auth->username }}">
                                 <span>Tweets</span>
-                                <span>{{ $auth['tweets'] }}</span>
+                                <span>{{ $auth->num_tweets }}</span>
                             </a>
                         </li>
                         <!-- number of following -->
                         <li>
                             <a href="{{ '/profile/following/'.$auth->username }}">
                                 <span>Following</span>
-                                <span class='following'>{{ $auth['following'] }}</span>
+                                <span class='num-following'>{{ $auth->num_following }}</span>
                             </a>
                         </li>
                         <!-- number of followers -->
                         <li>
                             <a href="{{ '/profile/followers/'.$auth->username }}">
                                 <span>Followers</span>
-                                <span>{{ $auth['followers'] }}</span>
+                                <span class="num-followers">{{ $auth->num_followers }}</span>
                             </a>
                         </li>
                     </ul>
@@ -73,8 +72,8 @@
         <h3>Who to follow</h3>
         @if (isset($users))
             <ul>
-                @foreach($users as $user)
-                    @include('home.right_user', ['user' => $user])
+                @foreach($users as $u)
+                    @include('home.right_user', ['user' => $u, 'isAuth' => ($u->username === $auth->username)])
                 @endforeach
             </ul>
         @endif
@@ -93,11 +92,18 @@ function followUser(userId) {
         url: '/follows',
         data: {"_token": "{{ csrf_token() }}", followed_id: userId},
         success: (res) => {
+            let numFollowing = $('.home .num-following').html();
+            console.log(numFollowing);
             if (res.isFollowed) {
                 $('#right-user-' + userId + ' .follow-button').addClass('active');
+                numFollowing++;
             } else {
                 $('#right-user-' + userId + ' .follow-button').removeClass('active');
+                if(numFollowing > 0) {
+                    numFollowing--;
+                }
             }
+            $('.home .num-following').html(numFollowing);
         }
     });
 }

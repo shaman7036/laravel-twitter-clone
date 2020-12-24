@@ -129,7 +129,7 @@ class ProfileController extends Controller
         $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
 
         // get a profile by username
-        $profile = User::getProfileByUsername($username, $authId);
+        $profile = User::getProfile(['users.username' => $username], $authId);
 
         // get tweets by profile id
         $tweets = Tweet::getTweetsByUserId($profile->id, $authId);
@@ -155,7 +155,7 @@ class ProfileController extends Controller
         $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
 
         // get a profile by username
-        $profile = User::getProfileByUsername($username, $authId);
+        $profile = User::getProfile(['users.username' => $username], $authId);
 
         // get following users by profile id
         $users = Follow::getFollowingByUserId($profile->id, $authId);
@@ -172,7 +172,7 @@ class ProfileController extends Controller
         $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
 
         // get a profile by username
-        $profile = User::getProfileByUsername($username, $authId);
+        $profile = User::getProfile(['users.username' => $username], $authId);
 
         // get following by profile id
         $users = Follow::getFollowersByUserId($profile->id, $authId);
@@ -189,7 +189,7 @@ class ProfileController extends Controller
         $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
 
         // get a profile by username
-        $profile = User::getProfileByUsername($username, $authId);
+        $profile = User::getProfile(['users.username' => $username], $authId);
 
         // get liked tweets by profile id
         $tweets = Like::getLikedTweetsByUserId($profile->id, $authId);

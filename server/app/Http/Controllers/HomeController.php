@@ -50,6 +50,9 @@ class HomeController extends Controller
                 ->inRandomOrder()->limit(10)->get();
         }
 
-        return view('home.home', ['tweets' => $tweets, 'users' => $users]);
+        // get auth profile
+        $profile = $authId ? User::getProfile(['users.id' => $authId]) : null;
+
+        return view('home.home', ['tweets' => $tweets, 'users' => $users, 'auth' => $profile]);
     }
 }

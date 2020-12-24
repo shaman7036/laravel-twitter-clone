@@ -15,10 +15,12 @@
     </div>
     <!-- follow button -->
     <div class='bottom'>
-        @if ($user->is_followed)
-            <button class="{{'btn btn-default follow-button active'}}" onclick="followUser({{$user->id}})"></button>
-        @else
-            <button class="{{'btn btn-default follow-button'}}" onclick="followUser({{$user->id}})"></button>
+        @if (!$isAuth)
+            @if ($user->is_followed)
+                <button class="{{'btn btn-default follow-button active'}}" onclick="followUser({{$user->id}})"></button>
+            @else
+                <button class="{{'btn btn-default follow-button'}}" onclick="followUser({{$user->id}})"></button>
+            @endif
         @endif
     </div>
 </div>

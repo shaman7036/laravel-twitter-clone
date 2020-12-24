@@ -45,11 +45,11 @@ class User extends Authenticatable
     /**
      * get a user's profile
      *
-     * @param string $username
+     * @param array $where
      * @param int $authId
      * @return User $profile
      */
-    public static function getProfileByUsername($username, $authId)
+    public static function getProfile($where = [], $authId = 0)
     {
         $profile = self::select(['users.*'])
             ->selectRaw('count(distinct t.id) as num_tweets')
@@ -73,7 +73,7 @@ class User extends Authenticatable
                 $join->on('users.id', '=', 'follows.followed_id')->whereNull('follows.deleted_at')
                     ->where('follows.follower_id', $authId);
             })->GroupBy('follows.id')
-            ->GroupBy('users.id')->where('users.username', $username)->first();
+            ->GroupBy('users.id')->where($where)->first();
 
         return $profile;
     }

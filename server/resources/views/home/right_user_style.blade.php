@@ -46,7 +46,7 @@
     overflow: hidden;
 }
 
-.right-user .top > span.name {
+.right-user .top > span.fullname {
     font-weight: bold;
 }
 

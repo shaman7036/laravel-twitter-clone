@@ -84,6 +84,22 @@
 
 <script>
 function followUser(userId) {
+    if (!auth) {
+        window.location.href = '/login';
+        return;
+    }
+    $.ajax({
+        type: 'POST',
+        url: '/follows',
+        data: {"_token": "{{ csrf_token() }}", followed_id: userId},
+        success: (res) => {
+            if (res.isFollowed) {
+                $('#right-user-' + userId + ' .follow-button').addClass('active');
+            } else {
+                $('#right-user-' + userId + ' .follow-button').removeClass('active');
+            }
+        }
+    });
 }
 </script>
 

@@ -42,6 +42,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * get a user's profile
+     *
+     * @param string $username
+     * @param int $authId
+     * @return User $profile
+     */
     public static function getProfileByUsername($username, $authId)
     {
         $profile = self::select(['users.*'])

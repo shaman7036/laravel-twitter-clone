@@ -16,6 +16,13 @@ class Retweet extends Model
         'user_id', 'tweet_id',
     ];
 
+    /**
+     * get user's retweets
+     *
+     * @param int $userId
+     * @param int $authId
+     * @return Retweet $retweets
+     */
     public static function getRetweetsByUserId($userId, $authId)
     {
         $select = [

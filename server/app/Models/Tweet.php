@@ -20,6 +20,13 @@ class Tweet extends Model
         'text' => '',
     ];
 
+    /**
+     * get user's tweets
+     *
+     * @param int $userId
+     * @param int $authId
+     * @return Retweet $retweets
+     */
     public static function getTweetsByUserId($userId, $authId)
     {
         $select = [

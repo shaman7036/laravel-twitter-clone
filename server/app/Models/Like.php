@@ -16,6 +16,13 @@ class Like extends Model
         'user_id', 'tweet_id',
     ];
 
+    /**
+     * get user's liked tweets
+     *
+     * @param int $userId
+     * @param int $authId
+     * @return Like (Tweet) $tweets
+     */
     public static function getLikedTweetsByUserId($userId, $authId)
     {
         $select = [

@@ -38,6 +38,11 @@ class FollowController extends Controller
     {
         if (!$request->session()->get('auth')) return view('auth.auth', ['form' => 'login']);
         $authId = $request->session()->get('auth')->id;
+
+        if ($authId === $request->followed_id) {
+            return response()->json([], 400);
+        }
+
         $follow = Follow::withTrashed()
             ->where(['follower_id' => $authId, 'followed_id' => $request->followed_id])->first();
         $isFollowed = false;

@@ -21,6 +21,7 @@
     float: left;
 }
 .user .avatar {
+    display: inline-block;
     position: absolute;
     width: 70px;
     height: 70px;
@@ -40,6 +41,7 @@
     height: 100%;
 }
 .user .bg {
+    display: inline-block;
     position: relative;
     left: 0px;
     top: 0px;
@@ -89,7 +91,7 @@
 .user .info {
     position: relative;
 }
-.user .followButton {
+.user .user-follow-button {
     position: absolute;
     width: 85px;
     height: 28px;
@@ -103,22 +105,22 @@
     color: rgb(29, 161, 242);
     border: 1px solid rgb(29, 161, 242);
 }
-.user .followButton:after {
+.user .user-follow-button:after {
     content: 'Follow';
 }
-.user .followButton.followed {
+.user .user-follow-button.followed {
     border: 1px solid rgb(29, 161, 242);
     background: rgb(29, 161, 242);
     color: #fff;
 }
-.user .followButton.followed:after {
+.user .user-follow-button.followed:after {
     content: 'Following';
 }
-.user .followButton.followed:hover {
+.user .user-follow-button.followed:hover {
     border: 1px solid #f22;
     background: #f22;
 }
-.user .followButton.followed:hover:after {
+.user .user-follow-button.followed:hover:after {
     content: 'Unfollow';
 }
 .user .description {

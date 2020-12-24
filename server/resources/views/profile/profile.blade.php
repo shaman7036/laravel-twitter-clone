@@ -221,6 +221,25 @@ const profile = {
             }
         });
     },
+
+    followUser: (userId) => {
+        if (!auth) {
+            window.location.href = '/login';
+            return;
+        }
+        $.ajax({
+            type: 'POST',
+            url: '/follows',
+            data: {"_token": "{{ csrf_token() }}", followed_id: userId},
+            success: (res) => {
+                if (res.isFollowed) {
+                    $('#user-' + userId + ' .user-follow-button').addClass('followed');
+                } else {
+                    $('#user-' + userId + ' .user-follow-button').removeClass('followed');
+                }
+            }
+        });
+    },
 };
 </script>
 

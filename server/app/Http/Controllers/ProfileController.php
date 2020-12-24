@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Tweet;
 use App\Models\Retweet;
 use App\Models\Like;
+use App\Models\Follow;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class ProfileController extends Controller
@@ -126,7 +127,9 @@ class ProfileController extends Controller
     public function getTweets(Request $request, $username)
     {
         $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
-        $profile = User::where('username', $username)->first();
+
+        // get a profile by username
+        $profile = User::getProfileByUsername($username, $authId);
 
         // get tweets by profile id
         $tweets = Tweet::getTweetsByUserId($profile->id, $authId);
@@ -147,10 +150,16 @@ class ProfileController extends Controller
      * @param Request $request
      * @param string $username
      */
-    public function getFollowers(Request $request, $username)
+    public function getFollowing(Request $request, $username)
     {
-        $profile = User::where('username', $username)->first();
-        $users = collect([]);
+        $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
+
+        // get a profile by username
+        $profile = User::getProfileByUsername($username, $authId);
+
+        // get following users by profile id
+        $users = Follow::getFollowingByUserId($profile->id, $authId);
+
         return view('profile.profile', ['profile' => $profile, 'users' => $users]);
     }
 
@@ -158,10 +167,16 @@ class ProfileController extends Controller
      * @param Request $request
      * @param string $username
      */
-    public function getFollowing(Request $request, $username)
+    public function getFollowers(Request $request, $username)
     {
-        $profile = User::where('username', $username)->first();
-        $users = collect([]);
+        $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
+
+        // get a profile by username
+        $profile = User::getProfileByUsername($username, $authId);
+
+        // get following by profile id
+        $users = Follow::getFollowersByUserId($profile->id, $authId);
+
         return view('profile.profile', ['profile' => $profile, 'users' => $users]);
     }
 
@@ -172,7 +187,9 @@ class ProfileController extends Controller
     public function getLikes(Request $request, $username)
     {
         $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
-        $profile = User::where('username', $username)->first();
+
+        // get a profile by username
+        $profile = User::getProfileByUsername($username, $authId);
 
         // get liked tweets by profile id
         $tweets = Like::getLikedTweetsByUserId($profile->id, $authId);

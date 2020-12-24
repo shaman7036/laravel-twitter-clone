@@ -38,120 +38,131 @@
     $bio = preg_replace('/(?<!\S)@([0-9a-zA-Z_-]+)/', '<a class="link" href="/profile/tweets/$1">@$1</a>', $bio);
     $bio = preg_replace('|([\w\d]*)\s?(https?://([\d\w\.-]+\.[\w\.]{2,6})[^\s\]\[\<\>]*/?)|i', '$1 <a href="$2">$3</a>', $bio);
     ?>
-    <div class='profile'>
-    <div class='bg'>
-        <img src={{$profile->bg}} onerror="this.style.display='none'" />
+    <div class="profile">
+    <div class="bg">
+        @if (isset($profile->bg))
+            <img src={{$profile->bg}} onerror="this.style.display='none'" />
+        @endif
     </div>
-    <div class='nav'>
-        <div class='container'>
-        <a class='avatar' href={{'/profile/tweets/'.$profile->username}}>
-            <img src={{$profile->avatar}} onerror="this.style.display='none'" />
+    <div class="nav">
+        <div class="container">
+        <a class="avatar" href={{'/profile/tweets/'.$profile->username}}>
+            @if (isset($profile->avatar))
+                <img src={{$profile->avatar}} onerror="this.style.display='none'" />
+            @endif
         </a>
-        <a class='avatarCard' href={{'/profile/tweets/'.$profile->username}}>
-            <div class='ac-avatar'>
-            <img src={{$avatarThumb}} onerror="this.style.display='none'" />
+        <a class="avatarCard" href={{'/profile/tweets/'.$profile->username}}>
+            <div class="ac-avatar">
+                @if (isset($profile->avatar))
+                    <img src={{$avatarThumb}} onerror="this.style.display='none'" />
+                @endif
             </div>
-            <div class='ac-fullname'>{{$profile->fullname}}</div>
-            <div class='ac-username'>{{'@'.$profile->username}}</div>
+            <div class="ac-fullname">{{$profile->fullname}}</div>
+            <div class="ac-username">{{'@'.$profile->username}}</div>
         </a>
-        <ul class='profile_ul'>
+        <ul class="profile_ul">
             <li class={{$links[0]}}>
             <a href={{'/profile/tweets/'.$profile->username}}>
                 <span>Tweets</span>
-                <span class='profile-tweets'>{{$profile->tweets}}</span>
+                <span class="profile-tweets">{{$profile->num_tweets ? $profile->num_tweets : 0}}</span>
             </a>
             </li>
             <li class={{$links[1]}}>
             <a href={{'/profile/following/'.$profile->username}}>
                 <span>Following</span>
-                <span class='profile-following'>{{$profile->following}}</span>
+                <span class="profile-following">{{$profile->num_following ? $profile->num_following : 0}}</span>
             </a>
             </li>
             <li class={{$links[2]}}>
             <a href={{'/profile/followers/'.$profile->username}}>
                 <span>Followers</span>
-                <span class='profile-followers'>{{$profile->followers}}</span>
+                <span class="profile-followers">{{$profile->num_followers ? $profile->num_followers : 0}}</span>
             </a>
             </li>
             <li class={{$links[3]}}>
             <a href={{'/profile/likes/'.$profile->username}} >
                 <span>Likes</span>
-                <span class='profile-likes'>{{$profile->likes}}</span>
+                <span class="profile-likes">{{$profile->num_likes ? $profile->num_likes : 0}}</span>
             </a>
             </li>
         </ul>
-        @if($profile->username === $auth->username)
-            <button class='btn btn-default edit' onclick='editProfile("{{$profile->username}}")'>
+        @if ($profile->username === $auth->username)
+            <button class="btn btn-default edit" onclick="profile.edit('{{$profile->username}}')">
             Edit Profile
             </button>
-        @elseif($profile->followed === 1)
-            <button class='btn btn-primary follow followed' onclick='followProfile("{{$profile->id}}")'></button>
-        @elseif($profile->followed === 0)
-            <button class='btn btn-primary follow' onclick='followProfile("{{$profile->id}}")'></button>
+        @elseif ($profile->is_followed === 1)
+            <button class="btn btn-primary follow followed" onclick="profile.follow('{{$profile->id}}')"></button>
+        @else
+            <button class="btn btn-primary follow" onclick="profile.follow('{{$profile->id}}')"></button>
         @endif
         </div>
     </div>
-    <div class='main container'>
-    <div>
-        <div class='left'>
-        <div class='content'>
-            <h1>
-                <!-- fullname -->
-                <span class='fullname'>{{$profile->fullname}}</span>
-                <!-- username -->
-                <span class='username'>{{'@'.$profile->username}}</span>
-            </h1>
-            <!-- description -->
-            <p class='bio'><?php echo htmlspecialchars_decode($bio); ?></p>
-            <!-- location -->
-            <?php if(!empty($profile->location)) : ?>
-                <div class='location'>
-                <i class='fa fa-map-marker'></i>
-                {{$profile->location}}
+    <div class="main container">
+        <div>
+            <!-- left -->
+            <div class="left">
+                <div class="content">
+                    <h1>
+                        <!-- fullname -->
+                        <span class="fullname">{{$profile->fullname}}</span>
+                        <!-- username -->
+                        <span class="username">{{'@'.$profile->username}}</span>
+                    </h1>
+                    <!-- description -->
+                    <p class="bio"><?php echo htmlspecialchars_decode($bio); ?></p>
+                    <!-- location -->
+                    <?php if(!empty($profile->location)) : ?>
+                        <div class="location">
+                        <i class="fa fa-map-marker"></i>
+                        {{$profile->location}}
+                        </div>
+                    <?php endif; ?>
+                    <!-- website -->
+                    <?php if(!empty($profile->website)) : ?>
+                        <div class="url">
+                        <i class="fa fa-link"></i>
+                        <a href="{{'https://'.$url}}">{{$url}}</a>
+                        </div>
+                    <?php endif; ?>
+                    <!-- joined date -->
+                    <div class="date">
+                        <i class="fa fa-calendar"></i>
+                        {{$date}}
+                    </div>
+                    <div class="mobile">
+                        <a class="{{'mobile-tweets '.$links[0]}}" href={{'/profile/tweets/'.$profile->username}}>
+                        <span>{{$profile->tweets}}</span> Tweets</a>
+                        <a class="{{'mobile-likes '.$links[3]}}" href={{'/profile/likes/'.$profile->username}}>
+                        <span>{{$profile->likes}}</span> Likes</a>
+                        <a class="{{'mobile-following '.$links[1]}}" href={{'/profile/following/'.$profile->username}}>
+                        <span>{{$profile->following}}</span> Following</a>
+                        <a class="{{'mobile-followers '.$links[2]}}" href={{'/profile/followers/'.$profile->username}}>
+                        <span>{{$profile->followers}}</span> Followers</a>
+                    </div>
                 </div>
-            <?php endif; ?>
-            <!-- website -->
-            <?php if(!empty($profile->website)) : ?>
-                <div class='url'>
-                <i class='fa fa-link'></i>
-                <a href="{{'https://'.$url}}">{{$url}}</a>
-                </div>
-            <?php endif; ?>
-            <!-- joined date -->
-            <div class='date'>
-                <i class='fa fa-calendar'></i>
-                {{$date}}
             </div>
-            <div class='mobile'>
-                <a class="{{'mobile-tweets '.$links[0]}}" href={{'/profile/tweets/'.$profile->username}}>
-                <span>{{$profile->tweets}}</span> Tweets</a>
-                <a class="{{'mobile-likes '.$links[3]}}" href={{'/profile/likes/'.$profile->username}}>
-                <span>{{$profile->likes}}</span> Likes</a>
-                <a class="{{'mobile-following '.$links[1]}}" href={{'/profile/following/'.$profile->username}}>
-                <span>{{$profile->following}}</span> Following</a>
-                <a class="{{'mobile-followers '.$links[2]}}" href={{'/profile/followers/'.$profile->username}}>
-                <span>{{$profile->followers}}</span> Followers</a>
+            <!-- center -->
+            <div class="center">
+                @if($links[0] || $links[3])
+                    <!-- tweets -->
+                    <div>
+                        @include('tweets/tweets', ['tweets' => $tweets])
+                    </div>
+                @else
+                    <!-- users -->
+                    <ul class='users'>
+                        @isset($users)
+                        @foreach($users as $u)
+                            @include('profile/user', [
+                                'user' => $u, 'isAuth' => ($u->username === $auth->username),
+                            ])
+                        @endforeach
+                        @endisset
+                    </ul>
+                @endif
             </div>
-            </div>
-        </div>
-        <div class='center'>
-            @if($links[0] || $links[3])
-                <!-- tweets -->
-                <div>
-                    @include('tweets/tweets', ['tweets' => $tweets])
-                </div>
-            @else
-                {{-- <ul class='users'>
-                    @isset($users)
-                    @foreach($users as $u)
-                        @include('profile/user', ['user' => $u])
-                    @endforeach
-                    @endisset
-                </ul> --}}
-            @endif
-        </div>
-        <div class='right'>
-        </div>
+            <!-- right -->
+            <div class="right"></div>
         </div>
     </div>
 </div>
@@ -183,12 +194,53 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-function editProfile(username) {
-    window.location.href = '/profile/edit/' + username;
-}
+const profile = {
+    edit: (username) => {
+        window.location.href = '/profile/edit/' + username;
+    },
 
-function followProfile(id) {
-}
+    follow: (userId) => {
+        if (!auth) {
+            window.location.href = '/login';
+            return;
+        }
+        $.ajax({
+            type: 'POST',
+            url: '/follows',
+            data: {"_token": "{{ csrf_token() }}", followed_id: userId},
+            success: (res) => {
+                numFollowers = $('.profile-followers').html();
+                if (res.isFollowed) {
+                    $('.follow').addClass('followed');
+                    numFollowers++;
+                } else {
+                    $('.follow').removeClass('followed');
+                    if (numFollowers > 0) numFollowers--;
+                }
+                $('.profile-followers').html(numFollowers);
+            }
+        });
+    },
+
+    followUser: (userId) => {
+        if (!auth) {
+            window.location.href = '/login';
+            return;
+        }
+        $.ajax({
+            type: 'POST',
+            url: '/follows',
+            data: {"_token": "{{ csrf_token() }}", followed_id: userId},
+            success: (res) => {
+                if (res.isFollowed) {
+                    $('#user-' + userId + ' .user-follow-button').addClass('followed');
+                } else {
+                    $('#user-' + userId + ' .user-follow-button').removeClass('followed');
+                }
+            }
+        });
+    },
+};
 </script>
 
 @include('profile/profile_style')

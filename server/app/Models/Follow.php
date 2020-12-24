@@ -18,7 +18,7 @@ class Follow extends Model
 
     public static function getFollowingByUserId($userId, $authId)
     {
-        $select = ['follows.id', 'u.bg', 'u.avatar', 'u.fullname', 'u.username', 'u.description'];
+        $select = ['u.id', 'u.bg', 'u.avatar', 'u.fullname', 'u.username', 'u.description'];
         $following = self::select($select)
             ->selectRaw('case when follows.follower_id = ' . $authId . ' then 1 else 0 end as is_followed')
             ->join('users as u', function ($join) use ($userId) {
@@ -32,7 +32,7 @@ class Follow extends Model
 
     public static function getFollowersByUserId($userId, $authId)
     {
-        $select = ['follows.id', 'u.bg', 'u.avatar', 'u.fullname', 'u.username', 'u.description'];
+        $select = ['u.id', 'u.bg', 'u.avatar', 'u.fullname', 'u.username', 'u.description'];
         $followers = self::select($select)
             ->selectRaw('case when follows.follower_id = ' . $authId . ' then 1 else 0 end as is_followed')
             ->join('users as u', function ($join) use ($userId) {

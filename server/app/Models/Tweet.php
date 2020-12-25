@@ -95,4 +95,26 @@ class Tweet extends Model
 
         return $query;
     }
+
+    /**
+     * get number of tweets and retweets
+     *
+     * @param array $userIds
+     * @return DB $query
+     */
+    public static function countTweetsAndRetweets($userIds = [])
+    {
+        $query_t = self::select('tweets.id');
+        $query_r = self::select('tweets.id')
+            ->join('retweets', function ($join) {
+                $join->on('tweets.id', '=', 'retweets.tweet_id')->whereNull('retweets.deleted_at');
+            });
+        if (!empty($userIds)) {
+            $query_t->whereIn('tweets.user_id', $userIds);
+            $query_r->whereIn('retweets.user_id', $userIds);
+        }
+        $query_t->unionAll($query_r);
+
+        return $query_t->count();
+    }
 }

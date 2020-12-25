@@ -12,17 +12,16 @@ class HomeController extends Controller
 {
     public function getTimeline(Request $request)
     {
-        $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : null;
+        $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
 
         if (empty($authId)) {
             /**
              * get the timeline for public
              */
             // get tweets and retweets in all users
-            $tweets = Tweet::getTweetsByUserIds();
-            $retweets = Retweet::getRetweetsByUserIds();
-            $tweets = $tweets->concat($retweets);
-            $tweets = $tweets->sortByDesc('time');
+            $query_t = Tweet::getQueryForTweets();
+            $query_r = Tweet::getQueryForRetweets();
+            $tweets = $query_t->union($query_r)->orderBy('time', 'desc')->get();
 
             // get users in random order
             $users = User::select(['id', 'username', 'fullname', 'avatar'])
@@ -36,10 +35,9 @@ class HomeController extends Controller
             // push auth id to user ids
             array_push($userIds, $authId);
             // get tweets and retweets by user ids
-            $tweets = Tweet::getTweetsByUserIds($userIds, $authId);
-            $retweets = Retweet::getRetweetsByUserIds($userIds, $authId);
-            $tweets = $tweets->concat($retweets);
-            $tweets = $tweets->sortByDesc('time');
+            $query_t = Tweet::getQueryForTweets($authId)->whereIn('tweets.user_id', $userIds);
+            $query_r = Tweet::getQueryForRetweets($authId)->whereIn('retweets.user_id', $userIds);
+            $tweets = $query_t->union($query_r)->orderBy('time', 'desc')->get();
 
             // get users in random order
             $users = User::select(['users.id', 'users.username', 'users.fullname', 'users.avatar'])

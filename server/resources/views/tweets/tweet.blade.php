@@ -84,7 +84,7 @@
     </div>
     <script>
         var tweet = <?php echo $tweet; ?>;
-        var date = moment(tweet.created_at).format('MMM Do YYYY, HH:mm:ss');
+        var date = moment(tweet.time).format('MMM Do YYYY, HH:mm:ss');
         $('.tweet-'+tweet.id).find('.date').html('・'+date);
     </script>
 </div>

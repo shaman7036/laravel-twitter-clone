@@ -39,7 +39,7 @@ class FollowController extends Controller
         if (!$request->session()->get('auth')) return view('auth.auth', ['form' => 'login']);
         $authId = $request->session()->get('auth')->id;
 
-        if ($authId === $request->followed_id) {
+        if ($authId == $request->followed_id) {
             return response()->json([], 400);
         }
 

@@ -131,17 +131,10 @@ class ProfileController extends Controller
         // get a profile by username
         $profile = User::getProfile(['users.username' => $username], $authId);
 
-        // get tweets by profile id
-        $tweets = Tweet::getTweetsByUserId($profile->id, $authId);
-
-        // get retweets by profile id
-        $retweets = Retweet::getRetweetsByUserId($profile->id, $authId);
-
-        // combine tweets and retweets
-        $tweets = $tweets->concat($retweets);
-
-        // sort tweets by time property
-        $tweets = $tweets->sortByDesc('time');
+        // get tweets and retweets by profile id
+        $query_t = Tweet::getQueryForTweets($authId)->where('tweets.user_id', $profile->id);
+        $query_r = Tweet::getQueryForRetweets($authId)->where('retweets.user_id', $profile->id);
+        $tweets = $query_t->union($query_r)->orderBy('time', 'desc')->get();
 
         return view('profile.profile', ['profile' => $profile, 'tweets' => $tweets]);
     }

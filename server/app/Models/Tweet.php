@@ -95,19 +95,4 @@ class Tweet extends Model
 
         return $query;
     }
-
-    /**
-     * get user's tweets
-     *
-     * @param int $userId
-     * @param int $authId
-     * @return Tweet $tweets
-     */
-    public static function getTweetsByUserId($userId, $authId)
-    {
-        $query = self::getTweetsQuery($authId);
-        $tweets = $query->where('tweets.user_id', $userId)->orderBy('tweets.created_at', 'desc')->get();
-
-        return $tweets;
-    }
 }

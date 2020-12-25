@@ -19,8 +19,8 @@ class HomeController extends Controller
              * get the timeline for public
              */
             // get tweets and retweets in all users
-            $tweets = Tweet::getTweets();
-            $retweets = Retweet::getRetweets();
+            $tweets = Tweet::getTweetsByUserIds();
+            $retweets = Retweet::getRetweetsByUserIds();
             $tweets = $tweets->concat($retweets);
             $tweets = $tweets->sortByDesc('time');
 
@@ -36,8 +36,8 @@ class HomeController extends Controller
             // push auth id to user ids
             array_push($userIds, $authId);
             // get tweets and retweets by user ids
-            $tweets = Tweet::getTweets($userIds, $authId);
-            $retweets = Retweet::getRetweets($userIds, $authId);
+            $tweets = Tweet::getTweetsByUserIds($userIds, $authId);
+            $retweets = Retweet::getRetweetsByUserIds($userIds, $authId);
             $tweets = $tweets->concat($retweets);
             $tweets = $tweets->sortByDesc('time');
 

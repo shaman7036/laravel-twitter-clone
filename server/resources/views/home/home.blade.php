@@ -73,7 +73,7 @@
         @if (isset($users))
             <ul>
                 @foreach($users as $u)
-                    @include('home.right_user', ['user' => $u, 'isAuth' => ($u->username === $auth->username)])
+                    @include('home.right_user', ['user' => $u, 'isAuth' => ($auth && $u->username === $auth->username)])
                 @endforeach
             </ul>
         @endif

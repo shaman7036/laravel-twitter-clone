@@ -14,41 +14,41 @@ const tweetEvents = {
         }
         const tweet = $('.tweet-'+tweetId);
         const icon = tweet.find('.like-icon');
+        if (icon.hasClass('requesting')) return;
+        icon.addClass('requesting');
         if (!icon.hasClass('active')) {
             // like
-            icon.addClass('active');
             icon.find('i').addClass('fa-heart');
             icon.find('i').removeClass('fa-heart-o');
         } else {
             // unlike
-            icon.removeClass('active');
             icon.find('i').removeClass('fa-heart');
             icon.find('i').addClass('fa-heart-o');
         }
+        checkActivity(icon);
         $.ajax({
             type: 'POST',
             url: '/likes',
             data: {"_token": "{{ csrf_token() }}", tweet_id: tweetId},
-            success: function(res) {
-                if(res.success) {
-                    var numLikes = tweet.find('.like-icon span').html();
-                    if (!numLikes) numLikes = 0;
-                    if (res.isLiked) {
-                        // liked
-                        numLikes++;
-                        icon.addClass('active');
-                        icon.find('i').addClass('fa-heart');
-                        icon.find('i').removeClass('fa-heart-o');
-                    } else {
-                        // unliked
-                        if (numLikes > 0) numLikes--;
-                        icon.removeClass('active');
-                        icon.find('i').removeClass('fa-heart');
-                        icon.find('i').addClass('fa-heart-o');
-                    }
-                    tweet.find('.like-icon span').html(numLikes);
+            success: (res) => {
+                var numLikes = tweet.find('.like-icon span').html();
+                if (!numLikes) numLikes = 0;
+                if (res.isLiked) {
+                    // liked
+                    numLikes++;
+                    icon.addClass('active');
+                    icon.find('i').addClass('fa-heart');
+                    icon.find('i').removeClass('fa-heart-o');
+                } else {
+                    // unliked
+                    if (numLikes > 0) numLikes--;
+                    icon.removeClass('active');
+                    icon.find('i').removeClass('fa-heart');
+                    icon.find('i').addClass('fa-heart-o');
                 }
-            }
+                tweet.find('.like-icon span').html(numLikes);
+            },
+            complete: () => { icon.removeClass('requesting'); },
         });
     },
 
@@ -59,34 +59,29 @@ const tweetEvents = {
         }
         const tweet = $('.tweet-'+tweetId);
         const icon = tweet.find('.retweet-icon');
-        if (!icon.hasClass('active')) {
-            // retweet
-            icon.addClass('active');
-        } else {
-            // unretweet
-            icon.removeClass('active');
-        }
+        if (icon.hasClass('requesting')) return;
+        icon.addClass('requesting');
+        checkActivity(icon);
         $.ajax({
             type: 'POST',
             url: '/retweets',
             data: {"_token": "{{ csrf_token() }}", tweet_id: tweetId},
-            success: function(res) {
-                if(res.success) {
-                    var numRetweets = tweet.find('.retweet-icon span').html();
-                    if (!numRetweets) numRetweets = 0;
-                    if (res.isRetweeted) {
-                        // retweeted
-                        numRetweets++;
-                        tweet.find('.retweet-icon i').addClass('active');
-                        icon.addClass('active');
-                    } else {
-                        // unretweeted
-                        if (numRetweets > 0) numRetweets--;
-                        icon.removeClass('active');
-                    }
-                    tweet.find('.retweet-icon span').html(numRetweets);
+            success: (res) => {
+                var numRetweets = tweet.find('.retweet-icon span').html();
+                if (!numRetweets) numRetweets = 0;
+                if (res.isRetweeted) {
+                    // retweeted
+                    numRetweets++;
+                    tweet.find('.retweet-icon i').addClass('active');
+                    icon.addClass('active');
+                } else {
+                    // unretweeted
+                    if (numRetweets > 0) numRetweets--;
+                    icon.removeClass('active');
                 }
-            }
+                tweet.find('.retweet-icon span').html(numRetweets);
+            },
+            complete: () => { icon.removeClass('requesting'); },
         });
     }
 }
@@ -99,13 +94,9 @@ const followEvents = {
             return;
         }
         const button = $('.profile .follow');
-        if (!button.hasClass('active')) {
-            // follow
-            button.addClass('active');
-        } else {
-            // unfollow
-            button.removeClass('active');
-        }
+        if (button.hasClass('requesting')) return;
+        button.addClass('requesting');
+        checkActivity(button);
         $.ajax({
             type: 'POST',
             url: '/follows',
@@ -114,15 +105,16 @@ const followEvents = {
                 numFollowers = $('.profile-followers').html();
                 if (res.isFollowed) {
                     // followed
-                    $('.profile .follow').addClass('active');
+                    button.addClass('active');
                     numFollowers++;
                 } else {
                     // unfollowed
-                    $('.profile .follow').removeClass('');
+                    button.removeClass('');
                     if (numFollowers > 0) numFollowers--;
                 }
                 $('.profile-followers').html(numFollowers);
-            }
+            },
+            complete: () => { button.removeClass('requesting'); },
         });
     },
 
@@ -132,13 +124,9 @@ const followEvents = {
             return;
         }
         const button = $('#user-' + userId + ' .user-follow-button');
-        if (!button.hasClass('active')) {
-            // follow
-            button.addClass('active');
-        } else {
-            // unfollow
-            button.removeClass('active');
-        }
+        if (button.hasClass('requesting')) return;
+        button.addClass('requesting');
+        checkActivity(button);
         $.ajax({
             type: 'POST',
             url: '/follows',
@@ -151,7 +139,8 @@ const followEvents = {
                     // unfollowed
                     button.removeClass('active');
                 }
-            }
+            },
+            complete: () => { button.removeClass('requesting'); },
         });
     },
 
@@ -161,13 +150,9 @@ const followEvents = {
             return;
         }
         const button = $('#right-user-' + userId + ' .follow-button');
-        if (!button.hasClass('active')) {
-            // follow
-            button.addClass('active');
-        } else {
-            // unfollow
-            button.removeClass('active');
-        }
+        if (button.hasClass('requesting')) return;
+        button.addClass('requesting');
+        checkActivity(button);
         $.ajax({
             type: 'POST',
             url: '/follows',
@@ -186,8 +171,17 @@ const followEvents = {
                     }
                 }
                 $('.home .num-following').html(numFollowing);
-            }
+            },
+            complete: () => { button.removeClass('requesting'); },
         });
     },
 };
+
+function checkActivity(button) {
+    if (!button.hasClass('active')) {
+        button.addClass('active');
+    } else {
+        button.removeClass('active');
+    }
+}
 </script>

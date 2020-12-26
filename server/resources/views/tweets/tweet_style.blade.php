@@ -90,14 +90,20 @@
 
 /* retweet icon */
 .tweet .icons > .retweet-icon.active {
-    cursor: pointer;
     color: <?php echo $color_retweeted; ?>;
+}
+
+.tweet .icons > .retweet-icon:hover {
+    cursor: pointer;
 }
 
 /* like icon */
 .tweet .icons > .like-icon.active {
-    cursor: pointer;
     color: <?php echo $color_liked; ?>;
+}
+
+.tweet .icons > .like-icon:hover {
+    cursor: pointer;
 }
 .tweet .icons i {
     margin-right: 7.5px;

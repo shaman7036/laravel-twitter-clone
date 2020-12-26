@@ -1,5 +1,6 @@
 <?php
-    $active = 'rgb(224, 36, 94)';
+    $color_retweeted = 'rgb(23, 191, 99)';
+    $color_liked = 'rgb(224, 36, 94)';
 ?>
 <style>
 .tweet {
@@ -87,8 +88,18 @@
     font-size: 15px;
 }
 
-.tweet .icons > div.active {
-    color: <?php echo $active; ?>;
+/* retweet icon */
+.tweet .icons > .retweet-icon:hover,
+.tweet .icons > .retweet-icon.active {
+    cursor: pointer;
+    color: <?php echo $color_retweeted; ?>;
+}
+
+/* like icon */
+.tweet .icons > .like-icon:hover,
+.tweet .icons > .like-icon.active {
+    cursor: pointer;
+    color: <?php echo $color_liked; ?>;
 }
 .tweet .icons i {
     margin-right: 7.5px;

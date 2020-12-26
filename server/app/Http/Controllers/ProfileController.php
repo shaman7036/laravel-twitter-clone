@@ -126,17 +126,34 @@ class ProfileController extends Controller
      */
     public function getTweets(Request $request, $username)
     {
+        // create pagination object
+        $per_page = 10;
+        $pagination = (object)[
+            'total' => 0,
+            'per_page' => $per_page,
+            'current_page' => $request->input('page') ? $request->input('page') : 1,
+            'page_link' => '/profile/tweets/' . $username,
+        ];
+
+        // get auth id if user is logged in
         $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
 
         // get a profile by username
         $profile = User::getProfile(['users.username' => $username], $authId);
 
+        // count tweets and retweets by profile id, and set number in pagination
+        $pagination->total = Tweet::countTweetsAndRetweets([$profile->id]);
+
         // get tweets and retweets by profile id
         $query_t = Tweet::getQueryForTweets($authId)->where('tweets.user_id', $profile->id);
         $query_r = Tweet::getQueryForRetweets($authId)->where('retweets.user_id', $profile->id);
-        $tweets = $query_t->union($query_r)->orderBy('time', 'desc')->get();
+        $tweets = $query_t->union($query_r)
+            ->orderBy('time', 'desc')
+            ->offset($pagination->per_page * ($pagination->current_page - 1))
+            ->limit($pagination->per_page)
+            ->get();
 
-        return view('profile.profile', ['profile' => $profile, 'tweets' => $tweets]);
+        return view('profile.profile', ['profile' => $profile, 'tweets' => $tweets, 'pagination' => $pagination]);
     }
 
     /**
@@ -179,14 +196,31 @@ class ProfileController extends Controller
      */
     public function getLikes(Request $request, $username)
     {
+        // create pagination object
+        $per_page = 10;
+        $pagination = (object)[
+            'total' => 0,
+            'per_page' => $per_page,
+            'current_page' => $request->input('page') ? $request->input('page') : 1,
+            'page_link' => '/profile/likes/' . $username,
+        ];
+
+        // get auth id if user is logged in
         $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
 
         // get a profile by username
         $profile = User::getProfile(['users.username' => $username], $authId);
 
-        // get liked tweets by profile id
-        $tweets = Like::getLikedTweetsByUserId($profile->id, $authId);
+        // set number of profile likes in pagination
+        $pagination->total = $profile->num_likes;
 
-        return view('profile.profile', ['profile' => $profile, 'tweets' => $tweets]);
+        // get liked tweets by profile id
+        $tweets = Like::getQueryForUserLikes($profile->id, $authId)
+            ->orderBy('likes.updated_at', 'desc')
+            ->offset($pagination->per_page * ($pagination->current_page - 1))
+            ->limit($pagination->per_page)
+            ->get();
+
+        return view('profile.profile', ['profile' => $profile, 'tweets' => $tweets, 'pagination' => $pagination]);
     }
 }

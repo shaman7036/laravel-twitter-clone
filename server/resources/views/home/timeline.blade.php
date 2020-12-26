@@ -1,8 +1,5 @@
 <?php
-    $arr = array();
-    foreach($tweets as $t) {
-        array_push($arr, $t);
-    }
+    $p = $pagination;
 ?>
 <div class='timeline'>
     <?php if(isset($tweets)) : ?>
@@ -14,12 +11,10 @@
         <?php endforeach; ?>
         </ul>
     <?php endif; ?>
+    <!-- pagination -->
+    @include('layouts.pagination', ['pagination' => $pagination])
 </div>
 
 @include('tweets/tweet_functions')
-<script>
-var tweets = <?php echo json_encode($arr); ?>;
-</script>
-
 @include('home/timeline_style')
 @include('tweets/tweet_style')

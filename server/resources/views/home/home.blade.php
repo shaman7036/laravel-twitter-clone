@@ -86,41 +86,6 @@
 if (window.location.href.indexOf('?page=') === -1) {
     window.history.pushState({} , 'home', '/home?page=1');
 }
-
-function followUser(userId) {
-    if (!auth) {
-        window.location.href = '/login';
-        return;
-    }
-    const button = $('#right-user-' + userId + ' .follow-button');
-    if (!button.hasClass('active')) {
-        // follow
-        button.addClass('active');
-    } else {
-        // unfollow
-        button.removeClass('active');
-    }
-    $.ajax({
-        type: 'POST',
-        url: '/follows',
-        data: {"_token": "{{ csrf_token() }}", followed_id: userId},
-        success: (res) => {
-            let numFollowing = $('.home .num-following').html();
-            if (res.isFollowed) {
-                // followed
-                button.addClass('active');
-                numFollowing++;
-            } else {
-                // unfollowed
-                button.removeClass('active');
-                if(numFollowing > 0) {
-                    numFollowing--;
-                }
-            }
-            $('.home .num-following').html(numFollowing);
-        }
-    });
-}
 </script>
 
 @include('home.home_style')

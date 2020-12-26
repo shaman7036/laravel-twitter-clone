@@ -87,13 +87,14 @@
             </li>
         </ul>
         @if ($profile->username === $auth->username)
-            <button class="btn btn-default edit" onclick="profile.edit('{{$profile->username}}')">
-            Edit Profile
+            <button class="btn btn-default edit">
+                <a href="/profile/edit/{{$profile->username}}">Edit Profile</a>
             </button>
-        @elseif ($profile->is_followed === 1)
-            <button class="btn btn-primary follow followed" onclick="profile.follow('{{$profile->id}}')"></button>
         @else
-            <button class="btn btn-primary follow" onclick="profile.follow('{{$profile->id}}')"></button>
+            <button
+                class="btn btn-primary follow {{ $profile->is_followed ? 'active' : '' }}"
+                onclick="followEvents.followProfile('{{$profile->id}}')">
+            </button>
         @endif
         </div>
     </div>
@@ -200,74 +201,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
-
-const profile = {
-    edit: (username) => {
-        window.location.href = '/profile/edit/' + username;
-    },
-
-    follow: (userId) => {
-        if (!auth) {
-            window.location.href = '/login';
-            return;
-        }
-        const button = $('.profile .follow');
-        if (!button.hasClass('active')) {
-            // follow
-            button.addClass('active');
-        } else {
-            // unfollow
-            button.removeClass('active');
-        }
-        $.ajax({
-            type: 'POST',
-            url: '/follows',
-            data: {"_token": "{{ csrf_token() }}", followed_id: userId},
-            success: (res) => {
-                numFollowers = $('.profile-followers').html();
-                if (res.isFollowed) {
-                    // followed
-                    $('.profile .follow').addClass('active');
-                    numFollowers++;
-                } else {
-                    // unfollowed
-                    $('.profile .follow').removeClass('');
-                    if (numFollowers > 0) numFollowers--;
-                }
-                $('.profile-followers').html(numFollowers);
-            }
-        });
-    },
-
-    followUser: (userId) => {
-        if (!auth) {
-            window.location.href = '/login';
-            return;
-        }
-        const button = $('#user-' + userId + ' .user-follow-button');
-        if (!button.hasClass('active')) {
-            // follow
-            button.addClass('active');
-        } else {
-            // unfollow
-            button.removeClass('active');
-        }
-        $.ajax({
-            type: 'POST',
-            url: '/follows',
-            data: {"_token": "{{ csrf_token() }}", followed_id: userId},
-            success: (res) => {
-                if (res.isFollowed) {
-                    // followed
-                    button.addClass('active');
-                } else {
-                    // unfollowed
-                    button.removeClass('active');
-                }
-            }
-        });
-    },
-};
 </script>
 
 @include('profile/profile_style')

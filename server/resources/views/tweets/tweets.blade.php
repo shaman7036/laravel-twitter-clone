@@ -47,5 +47,4 @@ function back_to_top() {
 }
 </script>
 
-@include('tweets/tweet_functions')
 @include('tweets/tweets_style')

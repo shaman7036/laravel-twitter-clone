@@ -89,14 +89,12 @@
 }
 
 /* retweet icon */
-.tweet .icons > .retweet-icon:hover,
 .tweet .icons > .retweet-icon.active {
     cursor: pointer;
     color: <?php echo $color_retweeted; ?>;
 }
 
 /* like icon */
-.tweet .icons > .like-icon:hover,
 .tweet .icons > .like-icon.active {
     cursor: pointer;
     color: <?php echo $color_liked; ?>;

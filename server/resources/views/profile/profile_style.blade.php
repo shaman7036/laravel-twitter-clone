@@ -135,6 +135,9 @@
 .profile .nav button.edit {
     padding-top: 0px;
 }
+.profile .nav button.edit > a {
+    color: #0ae;
+}
 .profile .nav button.follow:after {
     content: 'Follow';
 }

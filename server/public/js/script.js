@@ -1,31 +1,6 @@
-var _id = function(id) {
-    var id = id.replace('#', '');
-    return document.getElementById(id);
-}
-
-var _cn = function(cn) {
-    var cn = cn.replace('.', '');
-    return document.getElementsByClassName(cn);
-}
-
 var _ = function(qs) {
     var ele = document.querySelector(qs);
     return ele;
-}
-
-var _all = function(id) {
-    return document.querySelectorAll(id);
-}
-
-var set_css = function(ele, obj) {
-    if(typeof ele == 'string') {
-    ele = _(ele);
-    }
-    if(!ele.length) {
-    Object.assign(ele[0].style, obj);
-    } else {
-    Object.assign(ele.style, obj);
-    }
 }
 
 var from_now = function(oldTime) {
@@ -75,13 +50,3 @@ var from_now = function(oldTime) {
     else return 's';
     }
 }
-
-function add_event(ele, name, cb) {
-    ele.addEventListener(name, function() {
-    cb();
-    });
-}
-
-(function() {
-
-})();

@@ -42,7 +42,7 @@
         <!-- date -->
         <span class='date'>・</span>
         <!-- menu -->
-        <div class='toggle' onclick='openMenu(this)'>
+        <div class='toggle' onclick='tweetEvents.openMenu(this)'>
         @if(!$tweet->retweetedBy)
             <i class='fa fa-angle-down'></i>
             @include('tweets.tweet_menu', ['id' => 'tweetMenu-'.$tweet->id, 'tweetId' => $tweet->id])
@@ -61,12 +61,12 @@
             <span class="span">{{$tweet->num_replies ? $tweet->num_replies : 0}}</span>
         </div>
         <!-- retweet icon -->
-        <div class="retweet-icon {{ $tweet->is_retweeted ? 'active' : '' }}" onclick="postRetweet('{{$tweet->id}}')">
+        <div class="retweet-icon {{ $tweet->is_retweeted ? 'active' : '' }}" onclick="tweetEvents.postRetweet('{{$tweet->id}}')">
             <i class="fa fa-retweet"></i>
             <span class="span">{{$tweet->num_retweets ? $tweet->num_retweets : 0}}</span>
         </div>
         <!-- like icon -->
-        <div class="like-icon {{ $tweet->is_liked ? 'active' : '' }}" onclick="postLike('{{$tweet->id}}')">
+        <div class="like-icon {{ $tweet->is_liked ? 'active' : '' }}" onclick="tweetEvents.postLike('{{$tweet->id}}')">
             <i class="fa {{ $tweet->is_liked ? 'fa-heart' : 'fa-heart-o' }}"></i>
             <span class='span'>{{$tweet->num_likes ? $tweet->num_likes : 0}}</span>
         </div>

@@ -26,7 +26,7 @@
             @if (!$isAuth)
                 <button
                     class="btn btn-default user-follow-button {{ $user->is_followed ? 'active' : '' }}"
-                    onclick="profile.followUser('{{$user->id}}')">
+                    onclick="followEvents.followUserInProfile('{{$user->id}}')">
                 </button>
             @endif
         </div>

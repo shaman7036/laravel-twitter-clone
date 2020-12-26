@@ -147,6 +147,9 @@
                     <!-- tweets -->
                     <div>
                         @include('tweets/tweets', ['tweets' => $tweets])
+                        @include('layouts.pagination', [
+                            'pagination' => $pagination, 'page_link' => '/profile/tweets/'.$profile->username,
+                        ])
                     </div>
                 @else
                     <!-- users -->

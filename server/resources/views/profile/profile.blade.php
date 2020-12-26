@@ -170,8 +170,13 @@
 </div>
 
 <script>
-var authId = "<?php echo (Auth::check()) ? Auth::user()->id : ''; ?>";
-var profileId = "<?php echo $profile->id; ?>";
+var profileUsername = "<?php echo $profile->username; ?>";
+
+// add page parameter if url doesn't have
+if (window.location.href.indexOf('?page=') === -1) {
+    var url = window.location.href;
+    window.history.pushState({} , url, url + '?page=1');
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     var bgh = parseInt($('.profile .bg').css('height'));

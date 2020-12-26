@@ -82,6 +82,11 @@
 @endsection
 
 <script>
+// add page parameter if url doesn't have
+if (window.location.href.indexOf('?page=') === -1) {
+    window.history.pushState({} , 'home', '/home?page=1');
+}
+
 function followUser(userId) {
     if (!auth) {
         window.location.href = '/login';

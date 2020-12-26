@@ -131,7 +131,7 @@ class ProfileController extends Controller
         $pagination = (object)[
             'total' => 0,
             'per_page' => $per_page,
-            'current_page' => $request->input('page'),
+            'current_page' => $request->input('page') ? $request->input('page') : 1,
             'page_link' => '/profile/tweets/' . $username,
         ];
 
@@ -201,7 +201,7 @@ class ProfileController extends Controller
         $pagination = (object)[
             'total' => 0,
             'per_page' => $per_page,
-            'current_page' => $request->input('page'),
+            'current_page' => $request->input('page') ? $request->input('page') : 1,
             'page_link' => '/profile/likes/' . $username,
         ];
 

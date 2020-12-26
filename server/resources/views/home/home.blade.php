@@ -92,18 +92,27 @@ function followUser(userId) {
         window.location.href = '/login';
         return;
     }
+    const button = $('#right-user-' + userId + ' .follow-button');
+    if (!button.hasClass('active')) {
+        // follow
+        button.addClass('active');
+    } else {
+        // unfollow
+        button.removeClass('active');
+    }
     $.ajax({
         type: 'POST',
         url: '/follows',
         data: {"_token": "{{ csrf_token() }}", followed_id: userId},
         success: (res) => {
             let numFollowing = $('.home .num-following').html();
-            console.log(numFollowing);
             if (res.isFollowed) {
-                $('#right-user-' + userId + ' .follow-button').addClass('active');
+                // followed
+                button.addClass('active');
                 numFollowing++;
             } else {
-                $('#right-user-' + userId + ' .follow-button').removeClass('active');
+                // unfollowed
+                button.removeClass('active');
                 if(numFollowing > 0) {
                     numFollowing--;
                 }

@@ -138,19 +138,19 @@
 .profile .nav button.follow:after {
     content: 'Follow';
 }
-.profile .nav button.followed {
+.profile .nav button.active {
     border: 1px solid #0ae;
     background: #0ae;
     color: #fff;
 }
-.profile .nav button.followed:after {
+.profile .nav button.active:after {
     content: 'Following';
 }
-.profile .nav button.followed:hover {
+.profile .nav button.active:hover {
     border: 1px solid #f22;
     background: #f22;
 }
-.profile .nav button.followed:hover:after {
+.profile .nav button.active:hover:after {
     content: 'Unfollow';
 }
 .profile .main {

@@ -37,8 +37,8 @@
     $bio = preg_replace('/(?<!\S)#([0-9a-zA-Z]+)/', '<a class="link" href="/hashtag/$1">#$1</a>', $profile->description);
     $bio = preg_replace('/(?<!\S)@([0-9a-zA-Z_-]+)/', '<a class="link" href="/profile/tweets/$1">@$1</a>', $bio);
     $bio = preg_replace('|([\w\d]*)\s?(https?://([\d\w\.-]+\.[\w\.]{2,6})[^\s\]\[\<\>]*/?)|i', '$1 <a href="$2">$3</a>', $bio);
-    ?>
-    <div class="profile">
+?>
+<div class="profile">
     <div class="bg">
         @if (isset($profile->bg))
             <img src={{$profile->bg}} onerror="this.style.display='none'" />
@@ -211,6 +211,14 @@ const profile = {
             window.location.href = '/login';
             return;
         }
+        const button = $('.profile .follow');
+        if (!button.hasClass('active')) {
+            // follow
+            button.addClass('active');
+        } else {
+            // unfollow
+            button.removeClass('active');
+        }
         $.ajax({
             type: 'POST',
             url: '/follows',
@@ -218,10 +226,12 @@ const profile = {
             success: (res) => {
                 numFollowers = $('.profile-followers').html();
                 if (res.isFollowed) {
-                    $('.follow').addClass('followed');
+                    // followed
+                    $('.profile .follow').addClass('active');
                     numFollowers++;
                 } else {
-                    $('.follow').removeClass('followed');
+                    // unfollowed
+                    $('.profile .follow').removeClass('');
                     if (numFollowers > 0) numFollowers--;
                 }
                 $('.profile-followers').html(numFollowers);
@@ -234,15 +244,25 @@ const profile = {
             window.location.href = '/login';
             return;
         }
+        const button = $('#user-' + userId + ' .user-follow-button');
+        if (!button.hasClass('active')) {
+            // follow
+            button.addClass('active');
+        } else {
+            // unfollow
+            button.removeClass('active');
+        }
         $.ajax({
             type: 'POST',
             url: '/follows',
             data: {"_token": "{{ csrf_token() }}", followed_id: userId},
             success: (res) => {
                 if (res.isFollowed) {
-                    $('#user-' + userId + ' .user-follow-button').addClass('followed');
+                    // followed
+                    button.addClass('active');
                 } else {
-                    $('#user-' + userId + ' .user-follow-button').removeClass('followed');
+                    // unfollowed
+                    button.removeClass('active');
                 }
             }
         });

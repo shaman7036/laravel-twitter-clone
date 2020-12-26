@@ -108,19 +108,19 @@
 .user .user-follow-button:after {
     content: 'Follow';
 }
-.user .user-follow-button.followed {
+.user .user-follow-button.active {
     border: 1px solid rgb(29, 161, 242);
     background: rgb(29, 161, 242);
     color: #fff;
 }
-.user .user-follow-button.followed:after {
+.user .user-follow-button.active:after {
     content: 'Following';
 }
-.user .user-follow-button.followed:hover {
+.user .user-follow-button.active:hover {
     border: 1px solid #f22;
     background: #f22;
 }
-.user .user-follow-button.followed:hover:after {
+.user .user-follow-button.active:hover:after {
     content: 'Unfollow';
 }
 .user .description {

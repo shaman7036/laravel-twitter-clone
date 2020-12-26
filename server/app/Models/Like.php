@@ -17,19 +17,19 @@ class Like extends Model
     ];
 
     /**
-     * get user's liked tweets
+     * get a query for user's likes
      *
      * @param int $userId
      * @param int $authId
-     * @return Like (Tweet) $tweets
+     * @return DB $query
      */
-    public static function getLikedTweetsByUserId($userId, $authId)
+    public static function getQueryForUserLikes($userId, $authId)
     {
         $select = [
             'tweets.id', 'tweets.user_id', 'tweets.text', 'tweets.created_at as time',
             'u.avatar', 'u.fullname', 'u.username',
         ];
-        $tweets = self::select($select)
+        $query = self::select($select)
             ->selectRaw('count(distinct l_a.id) as num_likes')
             ->selectRaw('count(distinct r_a.id) as num_retweets')
             ->selectRaw('case when l_b.user_id = ' . $authId . ' then 1 else 0 end as is_liked')
@@ -56,9 +56,8 @@ class Like extends Model
                 $join->on('tweets.id', '=', 'r_b.tweet_id')
                     ->whereNull('r_b.deleted_at')
                     ->where('r_b.user_id', $authId);
-            })->groupBy('r_b.id')
-            ->orderBy('likes.updated_at', 'desc')->get();
+            })->groupBy('r_b.id');
 
-        return $tweets;
+        return $query;
     }
 }

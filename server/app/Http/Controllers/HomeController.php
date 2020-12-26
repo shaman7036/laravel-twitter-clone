@@ -18,6 +18,7 @@ class HomeController extends Controller
             'total' => 0,
             'per_page' => $per_page,
             'current_page' => $request->input('page'),
+            'page_link' => '/home',
         ];
 
         // get auth id if user is logged in

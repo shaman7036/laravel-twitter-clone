@@ -12,7 +12,7 @@
         </ul>
     <?php endif; ?>
     <!-- pagination -->
-    @include('layouts.pagination', ['pagination' => $pagination, 'page_link' => '/home'])
+    @include('layouts.pagination', ['pagination' => $pagination])
 </div>
 
 @include('tweets/tweet_functions')

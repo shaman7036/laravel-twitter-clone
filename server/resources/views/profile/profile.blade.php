@@ -144,12 +144,11 @@
             <!-- center -->
             <div class="center">
                 @if($links[0] || $links[3])
-                    <!-- tweets -->
                     <div>
+                        <!-- tweets -->
                         @include('tweets/tweets', ['tweets' => $tweets])
-                        @include('layouts.pagination', [
-                            'pagination' => $pagination, 'page_link' => '/profile/tweets/'.$profile->username,
-                        ])
+                        <!-- pagination -->
+                        @include('layouts.pagination', ['pagination' => $pagination])
                     </div>
                 @else
                     <!-- users -->

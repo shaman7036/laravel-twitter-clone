@@ -1,3 +1,6 @@
+<?php
+    $active = 'rgb(224, 36, 94)';
+?>
 <style>
 .tweet {
     padding-left: 70px;
@@ -83,11 +86,12 @@
     width: 75px;
     font-size: 15px;
 }
-.tweet .icons i {
-    margin-right: 10px;
+
+.tweet .icons > div.active {
+    color: <?php echo $active; ?>;
 }
-.tweet .icons i.active {
-    color: #f15;
+.tweet .icons i {
+    margin-right: 7.5px;
 }
 
 .tweet .retweeted {

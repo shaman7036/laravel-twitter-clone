@@ -5,13 +5,6 @@
     $avatar = '';
     if($tweet->avatar) $avatar = '/storage/media/'.$tweet->user_id.'/avatar/thumbnail.'.$tweet->avatar;
 
-    $is_liked = $tweet->is_liked ? 'active' : '';
-
-    $is_retweeted = $tweet->is_retweeted ? 'active' : '';
-
-    $replyTo = array();
-    if($tweet->replyTo) $replyTo = json_decode($tweet->replyTo);
-
     // add links in tweet
     $str = preg_replace('/(?<!\S)#([0-9a-zA-Z]+)/', '<a class="link" href="/hashtag/$1">#$1</a>', $tweet->text);
     $str = preg_replace('/(?<!\S)@([0-9a-zA-Z_-]+)/', '<a class="link" href="/profile/tweets/$1">@$1</a>', $str);
@@ -63,18 +56,18 @@
     <!-- footer -->
     <div class='icons'>
         <!-- reply icon -->
-        <div class='reply-icon' onclick='openReplyDialog("{{$tweet->id}}")'>
+        <div class="reply-icon" onclick="openReplyDialog('{{$tweet->id}}'')">
             <i class='fa fa-comment-o'></i>
-            <span class='span'>{{$tweet->num_replies ? $tweet->num_replies : 0}}</span>
+            <span class="span">{{$tweet->num_replies ? $tweet->num_replies : 0}}</span>
         </div>
         <!-- retweet icon -->
-        <div class='retweet-icon' onclick='postRetweet("{{$tweet->id}}")'>
-            <i class="{{'fa fa-retweet '.$is_retweeted}}"></i>
-            <span class='span'>{{$tweet->num_retweets ? $tweet->num_retweets : 0}}</span>
+        <div class="retweet-icon {{ $tweet->is_retweeted ? 'active' : '' }}" onclick="postRetweet('{{$tweet->id}}')">
+            <i class="fa fa-retweet"></i>
+            <span class="span">{{$tweet->num_retweets ? $tweet->num_retweets : 0}}</span>
         </div>
         <!-- like icon -->
-        <div class='like-icon' onclick='postLike("{{$tweet->id}}")'>
-            <i class="{{'fa fa-heart-o '.$is_liked}}"></i>
+        <div class="like-icon {{ $tweet->is_liked ? 'active' : '' }}" onclick="postLike('{{$tweet->id}}')">
+            <i class="fa {{ $tweet->is_liked ? 'fa-heart' : 'fa-heart-o' }}"></i>
             <span class='span'>{{$tweet->num_likes ? $tweet->num_likes : 0}}</span>
         </div>
         <!-- chart icon -->

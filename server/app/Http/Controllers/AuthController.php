@@ -19,6 +19,7 @@ class AuthController extends Controller
         $user->username = $request->username;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
+        $user->fullname = 'Name';
         $user->save();
 
         $auth = User::getProfile(['users.id' => $user->id]);

@@ -10,7 +10,8 @@
             @endif
         </li>
         <!-- page items -->
-        @for ($i = 1; $i <= ($p->total / $p->per_page) + 1; $i++)
+        <?php $remainder = $p->total % $p->per_page; ?>
+        @for ($i = 1; $i <= ($p->total / $p->per_page) + ($remainder > 0 ? 1 : 0); $i++)
             <li class="page-item {{ $p->current_page == $i ? 'active' : '' }}">
                 <a class="page-link" href="{{ $p->page_link . '?page=' . $i }}">{{ $i }}</a>
             </li>

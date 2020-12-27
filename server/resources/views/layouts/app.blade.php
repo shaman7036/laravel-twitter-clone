@@ -30,6 +30,6 @@
         @include('dialogs.tweet_dialog')
         @include('dialogs.delete_dialog')
         @yield('content')
-        @include('layouts.events')
+        @include('layouts.ajax_events')
     </body>
 </html>

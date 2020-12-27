@@ -1,12 +1,6 @@
 <script>
 // tweet events
 const tweetEvents = {
-    openMenu: (t) => {
-        var menu = t.children[1];
-        if(menu.style.display === 'none') menu.style.display = 'inline-block';
-        else menu.style.display = 'none';
-    },
-
     postLike: (tweetId) => {
         if(!auth) {
             window.location.href = '/login';

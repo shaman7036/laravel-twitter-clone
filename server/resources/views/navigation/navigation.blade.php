@@ -109,6 +109,12 @@ function add_active(index) {
     var li = $('.navigation > ul > li').eq(index);
     li.addClass('active');
 }
+
+function openTweetMenu(tweet) {
+    var menu = tweet.children[1];
+    if(menu.style.display === 'none') menu.style.display = 'inline-block';
+    else menu.style.display = 'none';
+}
 </script>
 
 @include('navigation/navigation_style')

@@ -14,7 +14,9 @@
     width: 100%;
 }
 
-.auth .right .wrapper, .auth .right .logIn, .auth .right .signUp {
+.auth .right .wrapper,
+.auth .right .login,
+.auth .right .signup {
     position: relative;
     left: 0px;
     width: 100%;

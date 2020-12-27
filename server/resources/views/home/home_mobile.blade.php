@@ -1,9 +1,5 @@
 <style>
-@media screen and (max-width: 1000px) {
-    .home .left {
-        display:;
-
-    }
+@media screen and (max-width: 960px) {
 
     .home.container .left .bg {
         padding-top: 33%;
@@ -35,9 +31,20 @@
         width: 100%;
         height: auto;
     }
-    .home.container .left.loggedIn {
-        height: auto;
+
+    .home .logout {
+        position: absolute;
+        border: 1px solid #fff;
+        border-radius: 30px;
+        line-height: 15px;
+        width: 80px;
+        height: 30px;
+        right: 7.5px;
+        bottom: 125px;
+        color: #fff;
+        background: rgba(0, 0, 0, 0);
     }
+
     .home.container .left .auth-user {
         position: relative;
         height: auto;
@@ -52,6 +59,10 @@
     .home.container .center .tweet {
         padding-top: 10px;
         padding-bottom: 10px;
+    }
+
+    .home .timeline .tweet .avatar {
+        margin-left: 0px;
     }
 }
 
@@ -82,25 +93,16 @@
         width: 100%;
     }
 
-    .home .logout {
-        position: absolute;
-        border: 1px solid #fff;
-        border-radius: 30px;
-        line-height: 15px;
-        width: 80px;
-        height: 30px;
-        right: 7.5px;
-        bottom: 125px;
-        color: #fff;
-        background: rgba(0, 0, 0, 0);
-    }
-
     .home.container .left {
         margin-bottom: 15px;
     }
 
     .home.container .center {
         margin-bottom: -15px;
+    }
+
+    .home .timeline .tweet .avatar {
+        margin-left: 7.5px;
     }
 }
 </style>

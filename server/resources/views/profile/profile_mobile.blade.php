@@ -1,11 +1,11 @@
 <style>
 @media screen and (min-width: 960px) {
-    .profile .mobile {
+    .profile .mobile-profile-nav {
         display: none;
     }
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 960px) {
     .profile .nav .profile-ul {
         display: none;
     }
@@ -65,28 +65,28 @@
         z-index: 0;
     }
 
-    .profile .main > div > .left .mobile {
+    .profile .main > div > .left .mobile-profile-nav {
         width: 100%;
         padding-top: 7.5px;
         padding-bottom: 7.5px;
     }
 
-    .profile .main > div > .left .mobile > a {
+    .profile .main > div > .left .mobile-profile-nav > a {
         display: inline-block;
         width: 48%;
         padding: 2px 0px;
         padding-bottom:;
         color: #888;
-        font-size: 16px;
+        font-size: 14px;
     }
 
-    .profile .main > div > .left .mobile > a > span {
+    .profile .main > div > .left .mobile-profile-nav > a > span {
         font-weight: bold;
         color: #262626;
     }
 
-    .profile .main > div > .left .mobile > a.active,
-    .profile .main > div > .left .mobile > a.active > span {
+    .profile .main > div > .left .mobile-profile-nav > a.active,
+    .profile .main > div > .left .mobile-profile-nav > a.active > span {
         color: #0ae;
     }
 
@@ -161,6 +161,14 @@
         right: 7.5px;
     }
 
+    .profile .center .users .user .info .fullname {
+        font-size: 16px;
+    }
+
+    .profile .users .user .description {
+        height: 95px;
+    }
+
     @media screen and (max-width: 420px) {
         .profile .tweets .tweet .icons, .reply .icons {
         width: 100%;
@@ -176,10 +184,6 @@
 
     .profile .nav button {
         height: 30px;
-    }
-
-    .profile .users .user .bio {
-        height: 95px;
     }
 }
 </style>

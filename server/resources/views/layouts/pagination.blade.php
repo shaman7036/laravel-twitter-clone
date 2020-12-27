@@ -1,5 +1,5 @@
 <?php $p = $pagination; ?>
-<div style="text-align: right">
+<div class="pagination-wrapper">
     <ul class="pagination">
         <!-- previous button -->
         <li class="page-item {{ $p->current_page <= 1 ? 'disabled' : '' }}">
@@ -26,3 +26,15 @@
         </li>
     </ul>
 </div>
+
+<style>
+.pagination-wrapper {
+    text-align: right;
+}
+
+@media screen and (max-width: 960px) {
+    .pagination-wrapper {
+        text-align: center;
+    }
+}
+</style>

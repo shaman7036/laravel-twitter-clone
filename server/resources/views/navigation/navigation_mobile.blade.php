@@ -1,5 +1,5 @@
 <style>
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 960px) {
     .navigation > ul > li > a > span,
     .navigation .center,
     .navigation > ul .li-user .menu,

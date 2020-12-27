@@ -1,3 +1,6 @@
+<?php
+    $twitter_blue = 'rgb(29, 161, 242)';
+?>
 <style>
 .auth {
     position: fixed;
@@ -22,7 +25,7 @@
 }
 
 .auth > .left {
-    background: #1da1f2;
+    background: <?php echo $twitter_blue; ?>;
     left: 0px;
 }
 
@@ -86,7 +89,7 @@
 
 .auth .right .wrapper i.fa-twitter {
     font-size: 46px;
-    color: rgb(14, 146, 227);
+    color: <?php echo $twitter_blue; ?>;
     margin-bottom: 7px;
 }
 
@@ -102,7 +105,8 @@
     margin-bottom: 16px;
     }
 
-.auth .right .wrapper button {
+.auth .right .wrapper .btn {
+    display: inline-block;
     border-radius: 30px !important;
     width: 350px;
     height: 32px;
@@ -110,15 +114,115 @@
     font-weight: bold;
     }
 
-.auth .right .wrapper button.toSignUp {
-    display: inline-block;
+.auth .right .wrapper .to-signup {
     margin-bottom: 16px !important;
     border: 0px solid;
-    background: #09e;
-    }
+}
 
-.auth .right .wrapper button.toLogIn {
-    color: #0ae;
+.auth .right .wrapper .to-signup {
+    background: <?php echo $twitter_blue; ?>;
+}
+
+.auth .right .wrapper .to-login {
     background: #fff;
+    color: <?php echo $twitter_blue; ?>;
+}
+
+.signup {
+    position: absolute;
+    width: 350px;
+    left: 25%;
+    top: 50%;
+    transform: translateX(-50%);
+    transform: translateY(-50%);
+}
+
+.signup header i {
+    font-size: 46px;
+    color: <?php echo $twitter_blue; ?>;
+    margin-bottom: 7px;
+}
+
+.signup h1 {
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 32px;
+}
+
+.signup label {
+}
+
+.signup input {
+    border-radius: 30px;
+    font-weight: normal;
+    padding-top: 5px;
+}
+
+.signup input.button {
+    background: <?php echo $twitter_blue; ?>;
+    color: #fff;
+    border: 0px solid;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.signup .message {
+    color: #f00;
+}
+
+.signup .signup-button input {
+    padding-top: 3px;
+}
+
+.signup .to-login p a {
+    color: <?php echo $twitter_blue; ?>;
+    cursor: pointer;
+}
+
+.login {
+    position: absolute;
+    width: 350px;
+    left: 25%;
+    top: 50%;
+    transform: translateX(-50%);
+    transform: translateY(-50%);
+}
+
+.login header i {
+    font-size: 46px;
+    color: <?php echo $twitter_blue; ?>;
+    margin-bottom: 7px;
+}
+
+.login h1 {
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 32px;
+}
+
+.login input {
+    border-radius: 30px;
+    padding-top: 6px;
+}
+
+.login input.button {
+    background: #fff;
+    color: <?php echo $twitter_blue; ?>;
+    border: 1px solid  <?php echo $twitter_blue; ?>;
+    font-weight: bold;
+    margin-top: 15px;
+    padding-top: 3px;
+}
+
+.login .message {
+    color: #f00;
+}
+
+.login .to-signup p a {
+    color: <?php echo $twitter_blue; ?>;
+    cursor: pointer;
+}
+strong {
+    color: #f00;
 }
 </style>

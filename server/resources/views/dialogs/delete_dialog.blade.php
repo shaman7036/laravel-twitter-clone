@@ -31,22 +31,18 @@ $(document).ready(function() {
 });
 
 const deleteDialog = {
-    tweet: null,
+    tweetId: null,
 
     open: (tweetId) => {
         if(!auth) {
             window.location.href = 'logIn';
             return;
         }
-        for(var t of tweets) {
-            if(t.id == tweetId) {
-                this.tweet = t;
-            }
-        }
+        this.tweetId = tweetId;
         var dialog = _('.delete-dialog');
         dialog.style.display = 'block';
-        dialog.querySelector('body h6').innerHTML = '@'+this.tweet.username;
-        dialog.querySelector('body p').innerHTML = this.tweet.text;
+        dialog.querySelector('body h6').innerHTML = $('.tweet-'+tweetId).find('.username').html();
+        dialog.querySelector('body p').innerHTML = $('.tweet-'+tweetId).find('.content').html();
     },
 
     close: () => {
@@ -56,7 +52,7 @@ const deleteDialog = {
     deleteTweet: () => {
         this.close();
         $.ajax({
-            url: '/tweets/'+this.tweet.id,
+            url: '/tweets/'+this.tweetId,
             type: 'DELETE',
             data: {"_token": "{{ csrf_token() }}"},
             success: function(res) {

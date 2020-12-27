@@ -55,8 +55,8 @@
             <!-- link to login -->
             <div class='left-login'>
                 <a href='/login'>
-                <span>Have an account?</span><br>
-                <span>Log In</span>
+                    <span>Have an account?</span><br>
+                    <span>Log In</span>
                 </a>
             </div>
         @endif

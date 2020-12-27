@@ -43,9 +43,9 @@
         </div>
         </li>
         <!-- tweet button -->
-        <li class='right li_post'><div onclick='tweetDialog.openTweetDialog()'>Tweet</div></li>
+        <li class='right li-post'><div onclick='tweetDialog.openTweetDialog()'>Tweet</div></li>
         <!-- auth icon -->
-        <li class='right li_user {{$links[4]}}'>
+        <li class='right li-user {{$links[4]}}'>
             <div class='avatar' onclick='showMenu()'>
                 @if(!$avatar)
                     <i class='fa fa-user'></i>
@@ -60,7 +60,7 @@
         @include('navigation/menu', ['auth' => $auth])
         </li>
         <!-- search -->
-        <li class='right li_search'>@include('navigation/search')</li>
+        <li class='right li-search'>@include('navigation/search')</li>
     </ul>
     <div class='mobile createTweet' onclick='tweetDialog.openTweetDialog()'>
         <i class='fa fa-pencil'></i>

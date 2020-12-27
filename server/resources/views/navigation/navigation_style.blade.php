@@ -83,11 +83,11 @@
     border: 0px solid;
 }
 
-.navigation > ul li.right.li_user {
+.navigation > ul li.right.li-user {
     padding-top: 8px;
 }
 
-.navigation ul li.right.li_user > div:first-child {
+.navigation ul li.right.li-user > div:first-child {
     width: 30px;
     height: 30px;
     background: #fafafa;
@@ -97,24 +97,24 @@
     text-align: center;
 }
 
-.navigation ul li.right.li_user > div:first-child i {
+.navigation ul li.right.li-user > div:first-child i {
     position: relative;
     top: 5px;
     font-size: 30px;
     color: #888;
 }
 
-.navigation > ul li.right.li_user > div:first-child img {
+.navigation > ul li.right.li-user > div:first-child img {
     width: 100%;
     height: 100%;
 }
 
-.navigation ul li.right.li_post {
+.navigation ul li.right.li-post {
     padding-top: 6px;
     right: 0px;
 }
 
-.navigation ul li.right.li_post > div {
+.navigation ul li.right.li-post > div {
     background: #0ae;
     color: #fff;
     padding: 6px 14px;

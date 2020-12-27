@@ -2,9 +2,9 @@
 @media screen and (max-width: 1000px) {
     .navigation > ul > li > a > span,
     .navigation .center,
-    .navigation > ul .li_user .menu,
-    .navigation > ul .li_user .avatar,
-    .navigation > ul .li_post {
+    .navigation > ul .li-user .menu,
+    .navigation > ul .li-user .avatar,
+    .navigation > ul .li-post {
         display: none;
     }
 
@@ -26,7 +26,7 @@
         border-bottom: 0px solid;
     }
 
-    .navigation ul li.li_user {
+    .navigation ul li.li-user {
         position: relative;
         float: left;
         margin: 0px;
@@ -34,22 +34,22 @@
         text-align: center;
     }
 
-    .navigation ul li.li_user > div {
+    .navigation ul li.li-user > div {
         margin: 0px auto;
     }
 
-    .navigation ul li.li_user i.mobile {
+    .navigation ul li.li-user i.mobile {
         position: relative;
         top: 4px;
         font-size: 18px;
         color: #555;
     }
 
-    .navigation ul li.li_user.active, .navigation ul li.li_user.active i.mobile {
+    .navigation ul li.li-user.active, .navigation ul li.li-user.active i.mobile {
         color: #0ae;
     }
 
-    .navigation ul .li_user .menu {
+    .navigation ul .li-user .menu {
         display: none;
     }
 

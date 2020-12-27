@@ -13,6 +13,7 @@
     box-shadow: 0px 3px 4px #ccc;
     color: #262626;
 }
+
 .tweet-menu > div {
     position: absolute;
     left: 12px;
@@ -23,6 +24,7 @@
 	border-right: 8px solid transparent;
 	border-bottom: 8px solid #ccc;
 }
+
 .tweet-menu > div > div {
     position: relative;
     left: -8px;
@@ -33,6 +35,7 @@
 	border-right: 8px solid transparent;
 	border-bottom: 8px solid #fff;
 }
+
 .tweet-menu li {
     white-space: nowrap;
     padding: 5px 0px;

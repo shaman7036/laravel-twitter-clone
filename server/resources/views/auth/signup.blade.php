@@ -64,7 +64,7 @@
             <input class="form-control button" id="submit" value="Sign Up" type="submit" />
         </div>
     </form>
-    <div class='toLogIn'>
+    <div class='to-login'>
         <p>If you have an account, <span onclick='switchForm("login")'>Log In »</span></p>
     </div>
 </div>
@@ -120,7 +120,7 @@
     padding-top: 3px;
 }
 
-.signup .toLogIn p span {
+.signup .to-login p span {
     color: #1da1f2;
     cursor: pointer;
 }

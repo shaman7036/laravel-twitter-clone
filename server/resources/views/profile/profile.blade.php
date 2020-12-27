@@ -60,7 +60,7 @@
             <div class="ac-fullname">{{$profile->fullname}}</div>
             <div class="ac-username">{{'@'.$profile->username}}</div>
         </a>
-        <ul class="profile_ul">
+        <ul class="profile-ul">
             <li class={{$links[0]}}>
             <a href={{'/profile/tweets/'.$profile->username}}>
                 <span>Tweets</span>

@@ -16,9 +16,9 @@
     <div class='bg'>
         <img class='img-bg' src={{$profile->bg}} />
         <div class='message'>
-        <i class='fa fa-camera'></i><br />
-        <span>Add a header photo</span>
-        <input id='input_bg' class='form-control' type='file' name='bg' onchange='changeBg(event)' />
+            <i class='fa fa-camera'></i><br />
+            <span>Add a header photo</span>
+            <input id='input_bg' class='form-control' type='file' name='bg' onchange='changeBg(event)' />
         </div>
     </div>
     <!-- navbar -->

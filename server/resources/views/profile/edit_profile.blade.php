@@ -34,7 +34,7 @@
             <input id='input_avatar' class='form-control' type='file' name='avatar' onchange='changeAvatar(event)' />
         </div>
         <!-- save button -->
-        <input class='button btn btn-default desktop' type='submit' value='Save cahnges' />
+        <input class='button btn btn-default desktop' type='submit' value='Save changes' />
         <input class='button btn btn-default mobile' type='submit' value='Save' />
         <a class='button btn btn-default' href={{'/profile/tweets/'.$profile->username}}>Cancel</a>
     </div>

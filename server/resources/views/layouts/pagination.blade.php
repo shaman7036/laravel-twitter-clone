@@ -1,4 +1,5 @@
 <?php $p = $pagination; ?>
+@if (($p->total / $p->per_page) > 1)
 <div class="pagination-wrapper">
     <ul class="pagination">
         <!-- previous button -->
@@ -26,6 +27,7 @@
         </li>
     </ul>
 </div>
+@endif
 
 <style>
 .pagination-wrapper {

@@ -1,3 +1,7 @@
+<?php
+    $color_retweeted = 'rgb(23, 191, 99)';
+    $color_liked = 'rgb(224, 36, 94)';
+?>
 <style>
 .tweet {
     padding-left: 70px;
@@ -83,11 +87,26 @@
     width: 75px;
     font-size: 15px;
 }
-.tweet .icons i {
-    margin-right: 10px;
+
+/* retweet icon */
+.tweet .icons > .retweet-icon.active {
+    color: <?php echo $color_retweeted; ?>;
 }
-.tweet .icons i.active {
-    color: #f15;
+
+.tweet .icons > .retweet-icon:hover {
+    cursor: pointer;
+}
+
+/* like icon */
+.tweet .icons > .like-icon.active {
+    color: <?php echo $color_liked; ?>;
+}
+
+.tweet .icons > .like-icon:hover {
+    cursor: pointer;
+}
+.tweet .icons i {
+    margin-right: 7.5px;
 }
 
 .tweet .retweeted {

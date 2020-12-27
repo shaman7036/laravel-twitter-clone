@@ -37,8 +37,8 @@
     $bio = preg_replace('/(?<!\S)#([0-9a-zA-Z]+)/', '<a class="link" href="/hashtag/$1">#$1</a>', $profile->description);
     $bio = preg_replace('/(?<!\S)@([0-9a-zA-Z_-]+)/', '<a class="link" href="/profile/tweets/$1">@$1</a>', $bio);
     $bio = preg_replace('|([\w\d]*)\s?(https?://([\d\w\.-]+\.[\w\.]{2,6})[^\s\]\[\<\>]*/?)|i', '$1 <a href="$2">$3</a>', $bio);
-    ?>
-    <div class="profile">
+?>
+<div class="profile">
     <div class="bg">
         @if (isset($profile->bg))
             <img src={{$profile->bg}} onerror="this.style.display='none'" />
@@ -87,13 +87,14 @@
             </li>
         </ul>
         @if ($profile->username === $auth->username)
-            <button class="btn btn-default edit" onclick="profile.edit('{{$profile->username}}')">
-            Edit Profile
+            <button class="btn btn-default edit">
+                <a href="/profile/edit/{{$profile->username}}">Edit Profile</a>
             </button>
-        @elseif ($profile->is_followed === 1)
-            <button class="btn btn-primary follow followed" onclick="profile.follow('{{$profile->id}}')"></button>
         @else
-            <button class="btn btn-primary follow" onclick="profile.follow('{{$profile->id}}')"></button>
+            <button
+                class="btn btn-primary follow {{ $profile->is_followed ? 'active' : '' }}"
+                onclick="followEvents.followProfile('{{$profile->id}}')">
+            </button>
         @endif
         </div>
     </div>
@@ -200,54 +201,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
-
-const profile = {
-    edit: (username) => {
-        window.location.href = '/profile/edit/' + username;
-    },
-
-    follow: (userId) => {
-        if (!auth) {
-            window.location.href = '/login';
-            return;
-        }
-        $.ajax({
-            type: 'POST',
-            url: '/follows',
-            data: {"_token": "{{ csrf_token() }}", followed_id: userId},
-            success: (res) => {
-                numFollowers = $('.profile-followers').html();
-                if (res.isFollowed) {
-                    $('.follow').addClass('followed');
-                    numFollowers++;
-                } else {
-                    $('.follow').removeClass('followed');
-                    if (numFollowers > 0) numFollowers--;
-                }
-                $('.profile-followers').html(numFollowers);
-            }
-        });
-    },
-
-    followUser: (userId) => {
-        if (!auth) {
-            window.location.href = '/login';
-            return;
-        }
-        $.ajax({
-            type: 'POST',
-            url: '/follows',
-            data: {"_token": "{{ csrf_token() }}", followed_id: userId},
-            success: (res) => {
-                if (res.isFollowed) {
-                    $('#user-' + userId + ' .user-follow-button').addClass('followed');
-                } else {
-                    $('#user-' + userId + ' .user-follow-button').removeClass('followed');
-                }
-            }
-        });
-    },
-};
 </script>
 
 @include('profile/profile_style')

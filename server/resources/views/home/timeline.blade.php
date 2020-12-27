@@ -15,6 +15,5 @@
     @include('layouts.pagination', ['pagination' => $pagination])
 </div>
 
-@include('tweets/tweet_functions')
 @include('home/timeline_style')
 @include('tweets/tweet_style')

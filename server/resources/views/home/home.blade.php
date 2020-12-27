@@ -86,32 +86,6 @@
 if (window.location.href.indexOf('?page=') === -1) {
     window.history.pushState({} , 'home', '/home?page=1');
 }
-
-function followUser(userId) {
-    if (!auth) {
-        window.location.href = '/login';
-        return;
-    }
-    $.ajax({
-        type: 'POST',
-        url: '/follows',
-        data: {"_token": "{{ csrf_token() }}", followed_id: userId},
-        success: (res) => {
-            let numFollowing = $('.home .num-following').html();
-            console.log(numFollowing);
-            if (res.isFollowed) {
-                $('#right-user-' + userId + ' .follow-button').addClass('active');
-                numFollowing++;
-            } else {
-                $('#right-user-' + userId + ' .follow-button').removeClass('active');
-                if(numFollowing > 0) {
-                    numFollowing--;
-                }
-            }
-            $('.home .num-following').html(numFollowing);
-        }
-    });
-}
 </script>
 
 @include('home.home_style')

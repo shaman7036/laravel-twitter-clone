@@ -1,7 +1,7 @@
 <?php
     $delete = true;
 ?>
-<div class='tweet-menu' id={{$id}}>
+<div class='tweet-menu' id={{$id}} style="display: none">
     <div><div></div></div>
     <ul>
         <li class='menu-item'>Pin to your profile page</li>
@@ -11,10 +11,5 @@
         @endif
     </ul>
 </div>
-
-<script>
-var id = "<?php echo $id ?>";
-_id(id).style.display = 'none';
-</script>
 
 @include('tweets/tweet_menu_style')

@@ -15,4 +15,9 @@
 .timeline .tweet {
     padding-bottom: 7.5px;
 }
+
+.timeline .tweet .chart-icon {
+    position: relative;
+    top: 5px;
+}
 </style>

@@ -116,7 +116,13 @@ class ProfileController extends Controller
             $user->avatar = $ext;
         }
 
+        // save profile
         $user->save();
+
+        // update auth data in session
+        $auth = User::getProfile(['users.id' => $user->id]);
+        $request->session()->put('auth', $auth);
+
         return redirect('/profile/tweets/' . $user->username);
     }
 

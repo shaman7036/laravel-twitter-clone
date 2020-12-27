@@ -44,32 +44,27 @@
         </li>
         <!-- tweet button -->
         <li class='right li_post'><div onclick='tweetDialog.openTweetDialog()'>Tweet</div></li>
-        <!-- avatar -->
+        <!-- auth icon -->
         <li class='right li_user {{$links[4]}}'>
-        <div class='avatar' onclick='showMenu()'>
-            @if(!$avatar)
-            <i class='fa fa-user'></i>
-            @else
-            <img src="{{$avatar}}" onerror="this.style.display='none'" />
-            @endif
-        </div>
-        <a class='mobile' href="<?php echo (isset($auth)) ? '/profile/tweets/'.$auth->username : '/logIn'; ?>">
-            <i class='fa fa-user-o mobile'></i>
-        </a>
-        @include('navigation/menu')
+            <div class='avatar' onclick='showMenu()'>
+                @if(!$avatar)
+                    <i class='fa fa-user'></i>
+                @else
+                    <img src="{{$avatar}}" onerror="this.style.display='none'" />
+                @endif
+            </div>
+            <a class='mobile' href="<?php echo (isset($auth)) ? '/profile/tweets/'.$auth->username : '/logIn'; ?>">
+                <i class='fa fa-user-o mobile'></i>
+            </a>
+        <!-- auth menu -->
+        @include('navigation/menu', ['auth' => $auth])
         </li>
-        <li class='right li_search'>
-        @include('navigation/search')
-        </li>
+        <!-- search -->
+        <li class='right li_search'>@include('navigation/search')</li>
     </ul>
     <div class='mobile createTweet' onclick='tweetDialog.openTweetDialog()'>
         <i class='fa fa-pencil'></i>
     </div>
-    {{-- @include('dialogs/tweet_dialog')
-    @include('dialogs/delete_dialog')
-    @include('dialogs/reply_dialog')
-    @include('dialogs/replies')
-    @include('dialogs/dialog_mobile') --}}
 </nav>
 
 <script>

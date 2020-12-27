@@ -19,11 +19,14 @@ class AuthController extends Controller
         $user->username = $request->username;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
+        $user->fullname = 'Name';
         $user->save();
-        $user->password = null;
+
+        $auth = User::getProfile(['users.id' => $user->id]);
         $request->session()->regenerate();
-        $request->session()->put('auth', $user);
-        return redirect('/profile/tweets/' . $user->username);
+        $request->session()->put('auth', $auth);
+
+        return redirect('/profile/tweets/' . $auth->username);
     }
 
     /**
@@ -35,9 +38,12 @@ class AuthController extends Controller
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->view('auth.auth', ['form' => 'login', 'success' => false], 402);
         }
+
+        $auth = User::getProfile(['users.id' => $user->id]);
         $request->session()->regenerate();
-        $request->session()->put('auth', $user);
-        return redirect('/profile/tweets/' . $user->username);
+        $request->session()->put('auth', $auth);
+
+        return redirect('/profile/tweets/' . $auth->username);
     }
 
     /**

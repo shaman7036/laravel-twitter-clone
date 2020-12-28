@@ -25,7 +25,7 @@
     top: 15px;
     color: #888;
 }
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 960px) {
     .search {
         display: none;
     }

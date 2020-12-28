@@ -136,7 +136,7 @@
 
 .tweet-dialog .modal-footer .add-button i {
     position: relative;
-    top: 1px;
+    top: 0px;
     width: 32px;
 }
 

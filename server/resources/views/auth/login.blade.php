@@ -1,6 +1,6 @@
 <div class='login'>
     <header>
-        <a href='/home'><i class='fa fa-twitter'></i></a>
+        <a href='/'><i class='fa fa-twitter'></i></a>
         <h1>Log In to Twitter</h1>
     </header>
     <form method="POST" action="{{ URL('/login') }}"
@@ -27,6 +27,7 @@
         <input class="form-control" id="password" name="password" type="password"
             data-parsley-type="password"
             data-parsley-maxlength="64"
+            data-parsley-minlength="8"
             required
         />
         @if ($errors->has('password'))
@@ -43,56 +44,10 @@
     </form>
     <!-- to signup -->
     <div class='to-signup'>
-        <p>New to Twitter? <span onclick='switchForm("signup")'>Sign up now »</span></p>
+        <p>New to Twitter? <a href="signup">Sign up now »</a></p>
     </div>
 </div>
 
-<style>
-.login {
-    position: absolute;
-    width: 350px;
-    left: 25%;
-    top: 50%;
-    transform: translateX(-50%);
-    transform: translateY(-50%);
-}
-
-.login header i {
-    font-size: 46px;
-    color: #0ae;
-    margin-bottom: 7px;
-}
-
-.login h1 {
-    font-size: 26px;
-    font-weight: bold;
-    margin-bottom: 32px;
-}
-
-.login input {
-    border-radius: 30px;
-    padding-top: 6px;
-}
-
-.login input.button {
-    background: #fff;
-    color: #09e;
-    border: 1px solid  #09e;
-    font-weight: bold;
-    margin-top: 15px;
-    padding-top: 3px;
-}
-
-.login .message {
-    color: #f00;
-}
-
-.login .to-signup p span {
-    color: #1da1f2;
-    cursor: pointer;
-}
-
-strong {
-    color: #f00;
-}
-</style>
+<script>
+    $('#form').parsley();
+</script>

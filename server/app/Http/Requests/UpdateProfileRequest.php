@@ -30,8 +30,8 @@ class UpdateProfileRequest extends FormRequest
             'description' => 'nullable|string|max:256',
             'location' => 'nullable|max:128',
             'website' => 'nullable|max:128',
-            'bg' => 'nullable|mimes:jpeg,jpg,png,gif|max:128',
-            'avatar' => 'nullable|mimes:jpeg,jpg,png,gif|max:128',
+            'bg' => 'nullable|mimes:jpeg,jpg,png,gif|max:2048',
+            'avatar' => 'nullable|mimes:jpeg,jpg,png,gif|max:2048',
         ];
     }
 

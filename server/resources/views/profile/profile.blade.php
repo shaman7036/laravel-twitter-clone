@@ -60,7 +60,7 @@
             <div class="ac-fullname">{{$profile->fullname}}</div>
             <div class="ac-username">{{'@'.$profile->username}}</div>
         </a>
-        <ul class="profile_ul">
+        <ul class="profile-ul">
             <li class={{$links[0]}}>
             <a href={{'/profile/tweets/'.$profile->username}}>
                 <span>Tweets</span>
@@ -130,15 +130,16 @@
                         <i class="fa fa-calendar"></i>
                         {{$date}}
                     </div>
-                    <div class="mobile">
+                    <!-- mobile profile nav -->
+                    <div class="mobile-profile-nav">
                         <a class="{{'mobile-tweets '.$links[0]}}" href={{'/profile/tweets/'.$profile->username}}>
-                        <span>{{$profile->tweets}}</span> Tweets</a>
+                        <span>{{$profile->num_tweets}}</span> Tweets</a>
                         <a class="{{'mobile-likes '.$links[3]}}" href={{'/profile/likes/'.$profile->username}}>
-                        <span>{{$profile->likes}}</span> Likes</a>
+                        <span>{{$profile->num_likes}}</span> Likes</a>
                         <a class="{{'mobile-following '.$links[1]}}" href={{'/profile/following/'.$profile->username}}>
-                        <span>{{$profile->following}}</span> Following</a>
+                        <span>{{$profile->num_following}}</span> Following</a>
                         <a class="{{'mobile-followers '.$links[2]}}" href={{'/profile/followers/'.$profile->username}}>
-                        <span>{{$profile->followers}}</span> Followers</a>
+                        <span>{{$profile->num_followers}}</span> Followers</a>
                     </div>
                 </div>
             </div>

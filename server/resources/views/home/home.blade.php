@@ -12,7 +12,11 @@
             <div class='auth-user'>
                 <!-- avatar -->
                 <a class='avatar' href={{ '/profile/tweets/'.$auth->username }}>
-                    <img src="{{ $avatar }}" onerror="this.style.display='none'">
+                    @if ($avatar)
+                        <img src="{{$avatar}}" />
+                    @else
+                        <i class='fa fa-user'></i>
+                    @endif
                 </a>
                 <!-- bg -->
                 <a class='bg' href={{ '/profile/tweets/'.$auth->username }}>
@@ -55,8 +59,8 @@
             <!-- link to login -->
             <div class='left-login'>
                 <a href='/login'>
-                <span>Have an account?</span><br>
-                <span>Log In</span>
+                    <span>Have an account?</span><br>
+                    <span>Log In</span>
                 </a>
             </div>
         @endif

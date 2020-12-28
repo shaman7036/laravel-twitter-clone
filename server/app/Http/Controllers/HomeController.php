@@ -13,10 +13,9 @@ class HomeController extends Controller
     public function getTimeline(Request $request)
     {
         // create pagination object
-        $per_page = 10;
         $pagination = (object)[
             'total' => 0,
-            'per_page' => $per_page,
+            'per_page' => env('TWEETS_PER_PAGE', 10),
             'current_page' => $request->input('page') ? $request->input('page') : 1,
             'page_link' => '/home',
         ];

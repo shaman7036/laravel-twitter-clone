@@ -12,15 +12,18 @@
     text-align: left;
     background: #fff;
 }
+
 .tweet:hover {
     background: #fdfdfd;
 }
+
 .tweet > div:not('avatar') {
     position: relative;
     display: block;
     width: 100%;
     border: 0px solid;
 }
+
 .tweet > .avatar {
     position: absolute;
     width: 48px;
@@ -34,6 +37,7 @@
     padding-top: 5px;
     margin-top: 5px;
 }
+
 .tweet .avatar i {
     position: relative;
     left: 2px;
@@ -41,6 +45,7 @@
     font-size: 50px;
     color: #888;
 }
+
 .tweet .avatar img {
     position: absolute;
     left: 0px;
@@ -48,18 +53,22 @@
     width: 100%;
     height: 100%;
 }
+
 .tweet .info {
     position: relative;
     font-size: 15px;
 }
+
 .tweet .info .name {
     font-weight: bold;
 }
+
 .tweet .info .date {
     color: #888;
     font-size: 13px;
     margin-left: 0px;
 }
+
 .tweet .info .toggle {
     position: relative;
     float: right;
@@ -68,20 +77,24 @@
     font-size: 18px;
     color: #888;
 }
+
 .tweet .content {
     padding-right: 16px;
     margin-top: 0px;
     margin-bottom: 10px;
 }
+
 .tweet .content a {
     color: #0ae;
 }
+
 .tweet .icons {
     display: inline-block;
     padding-top: 10px;
     color: #888;
     border: 0px solid;
 }
+
 .tweet .icons > div {
     float: left;
     width: 75px;
@@ -105,6 +118,7 @@
 .tweet .icons > .like-icon:hover {
     cursor: pointer;
 }
+
 .tweet .icons i {
     margin-right: 7.5px;
 }
@@ -115,6 +129,7 @@
     display: block;
     padding-right: 7.5px;
 }
+
 .tweet .replyingTo {
     color: #0ae;
     margin-bottom: 4px;

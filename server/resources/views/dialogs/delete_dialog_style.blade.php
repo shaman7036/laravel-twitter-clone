@@ -11,6 +11,7 @@
     animation-delay: 0s;
     animation-duration: 0.25s;
 }
+
 .delete-dialog > div {
     position: relative;
     display: inline-block;
@@ -24,6 +25,7 @@
     animation-delay: 0s;
     animation-duration: 0.25s;
 }
+
 .delete-dialog > div > .header {
     position: relative;
     width: 100%;
@@ -34,6 +36,7 @@
     font-size: 16px;
     line-height: 50px;
 }
+
 .delete-dialog > div > .body {
     position: relative;
     width: 100%;
@@ -42,15 +45,18 @@
     border-bottom: 1px solid #ccc;
     text-align: left;
 }
+
 .delete-dialog > div > .body h6 {
     margin-bottom: 5px;
     font-size: 14px;
 }
+
 .delete-dialog > div > .footer {
     position: relative;
     width: 100%;
     height: 50px;
 }
+
 .delete-dialog > div > .footer .button {
     position: relative;
     float: right;
@@ -63,15 +69,18 @@
     margin-right: 15px;
     padding: 0 15px;
 }
+
 .delete-dialog > div > .footer .button.close-button {
     background: #fff;
     color: #262626;
     border: 1px solid #ccc;
     margin-right: 10px;
 }
+
 .delete-dialog > div > .footer .button.delete-button {
     background: #f00;
 }
+
 .delete-dialog .msg {
     position: relative;
     width: 100%;

@@ -7,6 +7,7 @@ services:
       - ./server:/var/www
     ports:
       - 80:80
+    # command: php artisan serv --host=0.0.0.0 --port=80"
 
   nginx:
     image: nginx:1.18-alpine
@@ -18,7 +19,7 @@ services:
   db:
     build: ./_/db
     environment:
-      MYSQL_DATABASE: twitter_laravel_mvc
+      MYSQL_DATABASE: b_twitter_laravel
       MYSQL_USER: root
       MYSQL_PASSWORD: docker
       MYSQL_ROOT_PASSWORD: docker

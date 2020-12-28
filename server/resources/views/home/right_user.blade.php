@@ -4,8 +4,11 @@
 <div class="right-user" id="{{'right-user-'.$user->id}}">
     <!-- avatar -->
     <a class='avatar' href="{{'/profile/tweets/'.$user->username}}">
-        <img src={{$avatar}} onerror="this.style.display='none'" />
-        <i class='fa fa-user'></i>
+        @if ($avatar)
+            <img src="{{$avatar}}" />
+        @else
+            <i class='fa fa-user'></i>
+        @endif
     </a>
     <div class='top'>
         <!-- fullname -->

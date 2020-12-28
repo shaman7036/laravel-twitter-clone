@@ -62,6 +62,7 @@ class Tweet extends Model
         $query = self::select($select)->addSelect(DB::raw('"" as retweeted_username'))
             ->selectRaw('count(distinct l_a.id) as num_likes')
             ->selectRaw('count(distinct r_a.id) as num_retweets')
+            ->selectRaw('count(distinct replies.id) as num_replies')
             ->selectRaw('case when l_b.user_id = ' . $authId . ' then 1 else 0 end as is_liked')
             ->selectRaw('case when r_b.user_id = ' . $authId . ' then 1 else 0 end as is_retweeted')
             ->join('users as u', function ($join) {
@@ -72,6 +73,9 @@ class Tweet extends Model
             })->groupBy('tweets.id')
             ->leftJoin('retweets as r_a', function ($join) {
                 $join->on('tweets.id', '=', 'r_a.tweet_id')->whereNull('r_a.deleted_at');
+            })->groupBy('tweets.id')
+            ->leftJoin('replies', function ($join) {
+                $join->on('tweets.id', '=', 'replies.reply_to')->whereNull('replies.deleted_at');
             })->groupBy('tweets.id')
             ->leftJoin('likes as l_b', function ($join) use ($authId) {
                 $join->on('tweets.id', '=', 'l_b.tweet_id')->whereNull('l_b.deleted_at')->where('l_b.user_id', $authId);
@@ -100,6 +104,7 @@ class Tweet extends Model
         $query = self::select($select)
             ->selectRaw('count(distinct l_a.id) as num_likes')
             ->selectRaw('count(distinct r_a.id) as num_retweets')
+            ->selectRaw('count(distinct replies.id) as num_replies')
             ->selectRaw('case when l_b.user_id = ' . $authId . ' then 1 else 0 end as is_liked')
             ->selectRaw('case when r_b.user_id = ' . $authId . ' then 1 else 0 end as is_retweeted')
             ->join('retweets', function ($join) {
@@ -117,6 +122,9 @@ class Tweet extends Model
             ->leftJoin('retweets as r_a', function ($join) {
                 $join->on('tweets.id', '=', 'r_a.tweet_id')->whereNull('r_a.deleted_at');
             })->groupBy('retweets.id')
+            ->leftJoin('replies', function ($join) {
+                $join->on('tweets.id', '=', 'replies.reply_to')->whereNull('replies.deleted_at');
+            })->groupBy('tweets.id')
             ->leftJoin('likes as l_b', function ($join) use ($authId) {
                 $join->on('tweets.id', '=', 'l_b.tweet_id')->whereNull('l_b.deleted_at')
                     ->where('l_b.user_id', $authId);

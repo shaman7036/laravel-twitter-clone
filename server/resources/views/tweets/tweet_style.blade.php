@@ -130,7 +130,8 @@
     padding-right: 7.5px;
 }
 
-.tweet .replyingTo {
+.tweet .replying-to {
+    cursor: pointer;
     color: #0ae;
     margin-bottom: 4px;
 }

@@ -17,13 +17,14 @@
             <i class="fa fa-retweet"></i> {{'@'.$tweet->retweeted_username}} retweeted
         </a>
     @endif
-    {{-- @if(isset($replyTo->username))
-        <div class='replyingTo replying'>
-        <span class='replying' onclick='open_replied(event, "{{$replyTo->id}}")'>
-            Replying to {{'@'.$replyTo->username}}
-        </span>
+    <!-- replying to -->
+    @if(!empty($tweet->replying_to))
+        <div class='replying-to replying'>
+            <span class='replying'>
+                Replying to {{'@'.$tweet->replying_to}}
+            </span>
         </div>
-    @endif --}}
+    @endif
     <!-- avatar -->
     <a class="avatar" href={{'/profile/tweets/'.$tweet->username}}>
         @if(isset($tweet->avatar))

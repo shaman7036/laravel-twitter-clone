@@ -62,3 +62,8 @@ Route::resource('/retweets', $controllers . 'RetweetController', ['only' => ['in
  * follows
  */
 Route::resource('/follows', $controllers . 'FollowController', ['only' => ['inde', 'store']]);
+
+/**
+ * replies
+ */
+Route::resource('/replies', $controllers . 'ReplyController', ['only' => ['index', 'store']]);

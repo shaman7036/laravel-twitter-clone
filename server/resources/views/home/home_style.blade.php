@@ -45,6 +45,7 @@
     z-index: 10;
     background: #ddd;
     overflow: hidden;
+    text-align: center;
 }
 
 .home .auth-user .avatar img {
@@ -53,6 +54,14 @@
     top: 0;
     width: 100%;
     height: 100%;
+}
+
+.home .auth-user .avatar i {
+    position: relative;
+    margin: 0 auto;
+    font-size: 60px;
+    top: 15px;
+    color: #888;
 }
 
 .home .auth-user .bg {

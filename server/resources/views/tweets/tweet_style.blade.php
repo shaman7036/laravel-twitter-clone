@@ -78,19 +78,19 @@
     color: #888;
 }
 
-.tweet .content {
+.tweet .text {
     padding-right: 16px;
     margin-top: 0px;
     margin-bottom: 10px;
 }
 
-.tweet .content a {
+.tweet .text a {
     color: #0ae;
 }
 
 .tweet .icons {
     display: inline-block;
-    padding-top: 10px;
+    padding-top: 7.5px;
     color: #888;
     border: 0px solid;
 }

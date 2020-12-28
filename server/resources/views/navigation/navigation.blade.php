@@ -43,7 +43,7 @@
         </div>
         </li>
         <!-- tweet button -->
-        <li class='right li-post'><div onclick='tweetDialog.openTweetDialog()'>Tweet</div></li>
+        <li class='right li-post'><div onclick='tweetDialog.open()'>Tweet</div></li>
         <!-- auth icon -->
         <li class='right li-user {{$links[4]}}'>
             <div class='avatar' onclick='showMenu()'>

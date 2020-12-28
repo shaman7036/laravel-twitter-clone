@@ -11,6 +11,7 @@
     $str = preg_replace('|([\w\d]*)\s?(https?://([\d\w\.-]+\.[\w\.]{2,6})[^\s\]\[\<\>]*/?)|i', '$1 <a href="$2">$3</a>', $str);
 ?>
 <div class="{{'tweet tweet-'.$tweet->id}}" username={{$tweet->username}}>
+    <!-- retweeted username -->
     @if($tweet->retweeted_username)
         <a class="retweeted" href={{'/profile/tweets/'.$tweet->retweeted_username}}>
             <i class="fa fa-retweet"></i> {{'@'.$tweet->retweeted_username}} retweeted
@@ -24,55 +25,57 @@
         </div>
     @endif --}}
     <!-- avatar -->
-    <a class='avatar' href={{'/profile/tweets/'.$tweet->username}}>
+    <a class="avatar" href={{'/profile/tweets/'.$tweet->username}}>
         @if(isset($tweet->avatar))
-        <img class='avatarImg' src={{$avatar}} onerror="this.style.display='none'" />
+        <img class="avatarImg" src={{$avatar}} onerror="this.style.display='none'" />
         @else
-        <i class='fa fa-user'></i>
+        <i class="fa fa-user"></i>
         @endif
     </a>
     <!-- header -->
-    <div class='info'>
+    <div class="info">
         <!-- fullname -->
-        <span class='fullname'>{{$tweet->fullname}}</span>
+        <span class="fullname">{{$tweet->fullname}}</span>
         <!-- username -->
-        <span class='username'>
+        <span class="username">
         <a href={{'/profile/tweets/'.$tweet->username}}>{{'@'.$tweet->username}}</a>
         </span>
         <!-- date -->
-        <span class='date'>・</span>
+        <span class="date">・</span>
         <!-- menu -->
-        <div class='toggle' onclick='openTweetMenu(this)'>
+        <div class="toggle" onclick="openTweetMenu(this)">
         @if(!$tweet->retweetedBy)
-            <i class='fa fa-angle-down'></i>
+            <i class="fa fa-angle-down"></i>
             @include('tweets.tweet_menu', ['id' => 'tweetMenu-'.$tweet->id, 'tweetId' => $tweet->id])
         @endif
         </div>
     </div>
     <!-- text -->
-    <div class='content' onclick='openReplies(event, "{{$tweet->id}}")'>
+    <div class="text" onclick="openReplies(event, '{{$tweet->id}}')">
         <p><?php echo htmlspecialchars_decode($str); ?></p>
     </div>
     <!-- footer -->
-    <div class='icons'>
+    <div class="icons">
         <!-- reply icon -->
-        <div class="reply-icon" onclick="openReplyDialog('{{$tweet->id}}'')">
-            <i class='fa fa-comment-o'></i>
+        <div class="reply-icon" onclick="tweetDialog.open('{{$tweet}}')">
+            <i class="fa fa-comment-o"></i>
             <span class="span">{{$tweet->num_replies ? $tweet->num_replies : 0}}</span>
         </div>
         <!-- retweet icon -->
-        <div class="retweet-icon {{ $tweet->is_retweeted ? 'active' : '' }}" onclick="tweetEvents.postRetweet('{{$tweet->id}}')">
+        <div class="retweet-icon {{ $tweet->is_retweeted ? 'active' : '' }}"
+            onclick="tweetEvents.postRetweet('{{$tweet->id}}')">
             <i class="fa fa-retweet"></i>
             <span class="span">{{$tweet->num_retweets ? $tweet->num_retweets : 0}}</span>
         </div>
         <!-- like icon -->
-        <div class="like-icon {{ $tweet->is_liked ? 'active' : '' }}" onclick="tweetEvents.postLike('{{$tweet->id}}')">
+        <div class="like-icon {{ $tweet->is_liked ? 'active' : '' }}"
+            onclick="tweetEvents.postLike('{{$tweet->id}}')">
             <i class="fa {{ $tweet->is_liked ? 'fa-heart' : 'fa-heart-o' }}"></i>
-            <span class='span'>{{$tweet->num_likes ? $tweet->num_likes : 0}}</span>
+            <span class="span">{{$tweet->num_likes ? $tweet->num_likes : 0}}</span>
         </div>
         <!-- chart icon -->
-        <div class='chart-icon'>
-            <i class='fa fa-bar-chart'></i>
+        <div class="chart-icon">
+            <i class="fa fa-bar-chart"></i>
         </div>
     </div>
     <script>

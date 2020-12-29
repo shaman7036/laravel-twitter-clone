@@ -40,10 +40,6 @@ const tweetDetailsDialog = {
         const dialog = $('.tweet-details-dialog');
         dialog.show();
 
-        // set max-height of dialog's body
-        const h = $(window).height() * 0.9;
-        $('.tweet-details-dialog .modal-body').css('max-height', h);
-
         // set target tweet
         $('.tweet-details-dialog .target').empty();
         tweetDOM.appendTo('.tweet-details-dialog .target', tweet);
@@ -52,6 +48,15 @@ const tweetDetailsDialog = {
         dialog.find('.links > .num-replies').html(tweet.num_replies + ' <span>Replies</span>');
         dialog.find('.links > .num-retweets').html(tweet.num_retweets + ' <span>Retweets</span>');
         dialog.find('.links > .num-likes').html(tweet.num_likes + ' <span>Likes</span>');
+
+        // set dialog max height
+        const wh = $(window).height();
+        dialog.find('.wrapper').css('max-height', wh * 0.9);
+
+        // make dialog center
+        let h = dialog.find('.wrapper').height();
+        dialog.find('.wrapper').css('top', (wh - h) / 2);
+
 
         // get replies
         dialog.find('.replies').empty();
@@ -65,6 +70,9 @@ const tweetDetailsDialog = {
                     res.replies.forEach(item => {
                         tweetDOM.appendTo('.tweet-details-dialog .replies', item);
                     });
+                    // make dialog center again
+                    h = dialog.find('.wrapper').height();
+                    dialog.find('.wrapper').css('top', (wh - h) / 2);
                 }
 
             },

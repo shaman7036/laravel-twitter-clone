@@ -14,10 +14,10 @@
 .tweet-details-dialog .wrapper {
     position: relative;
     margin: 0 auto;
-    top: 150px;
     width: 610px;
     animation-delay: 0s;
     animation-duration: 0.25s;
+    overflow-y: scroll;
 }
 
 .tweet-details-dialog .modal-header {
@@ -41,10 +41,6 @@
     top: 0px;
     font-size: 18px;
     padding: 15px;
-}
-
-.tweet-details-dialog .modal-body  {
-    overflow-y: scroll;
 }
 
 .tweet-details-dialog .modal-body .target .text {

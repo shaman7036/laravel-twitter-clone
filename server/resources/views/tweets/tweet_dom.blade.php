@@ -1,14 +1,14 @@
-<div class="tweet-dom tweet">
+<div class="tweet-dom tweet default" style="display: none">
     <input class="reply-to" name="reply_to" value="" type="hidden" />
     <!-- avatar -->
-    <a class="avatar" href=""></a>
+    <a class="avatar a" href=""></a>
     <!-- header -->
     <div class="info">
         <!-- fullname -->
         <span class="fullname"></span>
         <!-- username -->
-        <span class="username">
-            <a href=""></a>
+        <span class="username a">
+            <a class="a" href=""></a>
         </span>
         <!-- date -->
         <span class="date">・</span>
@@ -20,22 +20,22 @@
     <!-- footer -->
     <div class="icons">
         <!-- reply icon -->
-        <div class="reply-icon">
+        <div class="reply-icon a">
             <i class="fa fa-comment-o"></i>
             <span class="span"></span>
         </div>
         <!-- retweet icon -->
-        <div class="retweet-icon">
+        <div class="retweet-icon a">
             <i class="fa fa-retweet"></i>
             <span class="span"></span>
         </div>
         <!-- like icon -->
-        <div class="like-icon">
+        <div class="like-icon a">
             <i class="fa fa-heart-o"></i>
             <span class="span"></span>
         </div>
         <!-- chart icon -->
-        <div class="chart-icon">
+        <div class="chart-icon a">
             <i class="fa fa-bar-chart"></i>
         </div>
     </div>

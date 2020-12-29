@@ -1,4 +1,4 @@
-<div class="target-tweet tweet">
+<div class="tweet-dom tweet">
     <input class="reply-to" name="reply_to" value="" type="hidden" />
     <!-- avatar -->
     <a class="avatar" href=""></a>

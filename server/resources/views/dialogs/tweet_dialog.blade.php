@@ -16,7 +16,7 @@
             <i class="fa fa-times close-dialog" onclick="tweetDialog.close(event)"></i>
         </div>
         <!-- target tweet -->
-        @include('tweets.target_tweet')
+        @include('tweets.tweet_dom')
         <!-- body -->
         <div class="modal-body">
             <div class="avatar">
@@ -61,7 +61,7 @@ const tweetDialog = {
         dialog.find('form').attr('action', '/tweets');
         dialog.find('textarea').val('');
         dialog.find('.tweet-button').removeClass('active');
-        dialog.find('.target-tweet').hide();
+        dialog.find('.tweet-dom').hide();
         dialog.find('.tweet-button').val('Tweet');
 
         // open dialog
@@ -100,7 +100,7 @@ const tweetDialog = {
         dialog.find('form').attr('action', '/replies');
         dialog.find('.tweet-button').val('Reply');
         // show the target tweet
-        const target = $('.tweet-dialog .target-tweet');
+        const target = $('.tweet-dialog .tweet-dom');
         target.show();
         // fix style in home
         if (window.location.href.indexOf('/home') > 0) {
@@ -108,7 +108,7 @@ const tweetDialog = {
         }
         // id
         target.removeClass();
-        target.addClass('target-tweet tweet tweet-' + tweet.id);
+        target.addClass('tweet-dom tweet tweet-' + tweet.id);
         target.find('input.reply-to').val(tweet.id);
         // avatar
         target.find('.avatar').attr('href', '/profile/tweets/' + tweet.username)

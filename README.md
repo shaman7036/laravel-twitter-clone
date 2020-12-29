@@ -5,10 +5,10 @@
 - git 
  
 必須メモリー
-- 2GB
+- 1GB
 
 ### リポジトリーのクローン
-> git clone -b release/v0.1 https://github.com/goartisan/b-twitter-laravel.git b_twitter_laravel  
+> git clone https://github.com/goartisan/b-twitter-laravel.git b_twitter_laravel  
 > cd b_twitter_laravel
 
 ### コンテナの作成と起動

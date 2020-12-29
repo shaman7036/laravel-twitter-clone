@@ -9,22 +9,24 @@
         <!-- body -->
         <div class="modal-body" style="padding: 0px">
             <!-- target tweet -->
-            <div class="target">
-                @include('tweets.tweet_dom')
-                <!-- links -->
-                <div class="links">
-                    <!-- link to user list of retweets -->
-                    <div class="retweets"></div>
-                    <!-- link to user list of likes -->
-                    <div class="likes"></div>
-                </div>
+            <div class="target"></div>
+            <!-- links -->
+            <div class="links">
+                <!-- number of replies -->
+                <div class="num-replies"></div>
+                <!-- link to user list of retweets -->
+                <div class="num-retweets"></div>
+                <!-- link to user list of likes -->
+                <div class="num-likes"></div>
             </div>
             <!-- replies -->
             <div class="replies">
             </div>
         </div>
         <!-- footer -->
-        <div class="modal-footer"></div>
+        <div class="modal-footer">
+            <span>Back to Top</span>
+        </div>
     </form>
 </div>
 
@@ -35,24 +37,48 @@ const tweetDetailsDialog = {
         if (cl.indexOf('a') > -1 || cl.indexOf('fa') > -1 || cl.indexOf('menu-item') > -1) {
             return;
         }
-        $('.tweet-details-dialog').show();
+        const dialog = $('.tweet-details-dialog');
+        dialog.show();
 
-        // set data to target tweet
-        const target = $('.tweet-details-dialog .target .tweet-dom');
-        target.show();
-        target.addClass('tweet-dom-'+tweet.id);
-        tweetDOM.setData(tweet);
+        // set max-height of dialog's body
+        const h = $(window).height() * 0.9;
+        $('.tweet-details-dialog .modal-body').css('max-height', h);
 
-        // set retweets and likes
-        $('.target .links .retweets').html(tweet.num_retweets + ' <span>Retweets</span>');
-        $('.target .links .likes').html(tweet.num_likes + ' <span>Likes</span>');
+        // set target tweet
+        $('.tweet-details-dialog .target').empty();
+        tweetDOM.appendTo('.tweet-details-dialog .target', tweet);
+
+        // set numbers
+        dialog.find('.links > .num-replies').html(tweet.num_replies + ' <span>Replies</span>');
+        dialog.find('.links > .num-retweets').html(tweet.num_retweets + ' <span>Retweets</span>');
+        dialog.find('.links > .num-likes').html(tweet.num_likes + ' <span>Likes</span>');
+
+        // get replies
+        dialog.find('.replies').empty();
+        $.ajax({
+            type: 'GET',
+            url: '/replies?reply_to=' + tweet.id,
+            data: {"_token": "{{ csrf_token() }}"},
+            success: (res) => {
+                if (res.replies) {
+                    // set replies
+                    res.replies.forEach(item => {
+                        tweetDOM.appendTo('.tweet-details-dialog .replies', item);
+                    });
+                }
+
+            },
+        });
     },
 
     close: (e) => {
         e.stopPropagation();
         var list = e.target.classList.toString();
         if(list.indexOf('tweet-details-dialog') > -1 || list.indexOf('close-dialog') > -1) {
-            $('.tweet-details-dialog').hide();
+            const dialog = $('.tweet-details-dialog');
+            dialog.find('.target').empty();
+            dialog.find('.replies').empty();
+            dialog.hide();
         }
     },
 }

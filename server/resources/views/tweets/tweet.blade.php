@@ -58,7 +58,7 @@
     <!-- footer -->
     <div class="icons">
         <!-- reply icon -->
-        <div class="reply-icon a" onclick="tweetDialog.open('{{$tweet}}')">
+        <div class="reply-icon a" onclick="tweetDialog.open({{$tweet}})">
             <i class="fa fa-comment-o"></i>
             <span class="span">{{$tweet->num_replies ? $tweet->num_replies : 0}}</span>
         </div>

@@ -10,7 +10,7 @@
     $str = preg_replace('/(?<!\S)@([0-9a-zA-Z_-]+)/', '<a class="link" href="/profile/tweets/$1">@$1</a>', $str);
     $str = preg_replace('|([\w\d]*)\s?(https?://([\d\w\.-]+\.[\w\.]{2,6})[^\s\]\[\<\>]*/?)|i', '$1 <a href="$2">$3</a>', $str);
 ?>
-<div class="{{'tweet tweet-'.$tweet->id}}" username={{$tweet->username}}>
+<div class="tweet tweet-{{$tweet->id}}" id="tweet-{{$tweet->id}}" username={{$tweet->username}}>
     <!-- retweeted username -->
     @if($tweet->retweeted_username)
         <a class="retweeted" href={{'/profile/tweets/'.$tweet->retweeted_username}}>

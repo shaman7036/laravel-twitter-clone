@@ -107,7 +107,8 @@ const tweetDialog = {
             target.css('padding-bottom', '7.5px');
         }
         // id
-        target.addClass('tweet-' + tweet.id);
+        target.removeClass();
+        target.addClass('target-tweet tweet tweet-' + tweet.id);
         target.find('input.reply-to').val(tweet.id);
         // avatar
         target.find('.avatar').attr('href', '/profile/tweets/' + tweet.username)
@@ -130,17 +131,29 @@ const tweetDialog = {
         // reply icon
         target.find('.reply-icon span').html(tweet.num_replies ? tweet.num_replies : 0);
         // retweet icon
-        target.find('.retweet-icon span').html(tweet.num_retweets ? tweet.num_retweets : 0);
-        if (tweet.is_retweeted) {
+        const num_retweets = $('#tweet-' + tweet.id).find('.retweet-icon span').html();
+        target.find('.retweet-icon span').html(num_retweets ? num_retweets : 0);
+        const is_retweeted = $('#tweet-' + tweet.id).find('.retweet-icon').hasClass('active');
+        target.find('.retweet-icon').removeClass('active');
+        if (is_retweeted) {
             target.find('.retweet-icon').addClass('active');
         }
+        target.find('.retweet-icon').click('click', () => {
+            tweetEvents.postRetweet(tweet.id);
+        });
         // like icon
-        target.find('.like-icon span').html(tweet.num_likes ? tweet.num_likes : 0);
-        if (tweet.is_liked) {
+        const num_likes = $('#tweet-' + tweet.id).find('.like-icon span').html();
+        target.find('.like-icon span').html(num_likes ? num_likes : 0);
+        const is_liked = $('#tweet-' + tweet.id).find('.like-icon').hasClass('active');
+        target.find('.like-icon').removeClass('active');
+        if (is_liked) {
             target.find('.like-icon').addClass('active');
             target.find('.like-icon i').addClass('fa-heart');
             target.find('.like-icon i').removeClass('fa-heart-o');
         }
+        target.find('.like-icon').on('click', () => {
+            tweetEvents.postLike(tweet.id);
+        });
     },
 };
 </script>

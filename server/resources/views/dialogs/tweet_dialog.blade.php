@@ -127,12 +127,20 @@ const tweetDialog = {
         target.find('.date').html('・'+date);
         // text
         target.find('.text p').html(tweet.text);
-        // number of replies
+        // reply icon
         target.find('.reply-icon span').html(tweet.num_replies ? tweet.num_replies : 0);
-        // number of retweets
+        // retweet icon
         target.find('.retweet-icon span').html(tweet.num_retweets ? tweet.num_retweets : 0);
-        // number of likes
+        if (tweet.is_retweeted) {
+            target.find('.retweet-icon').addClass('active');
+        }
+        // like icon
         target.find('.like-icon span').html(tweet.num_likes ? tweet.num_likes : 0);
+        if (tweet.is_liked) {
+            target.find('.like-icon').addClass('active');
+            target.find('.like-icon i').addClass('fa-heart');
+            target.find('.like-icon i').removeClass('fa-heart-o');
+        }
     },
 };
 </script>

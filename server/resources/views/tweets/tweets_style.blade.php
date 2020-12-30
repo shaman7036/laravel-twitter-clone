@@ -56,4 +56,8 @@
     color: #888;
     line-height: 55px;
 }
+
+.tweets > .footer:hover {
+    background: #fdfdfd;
+}
 </style>

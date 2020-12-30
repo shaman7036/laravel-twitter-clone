@@ -24,7 +24,7 @@
             </div>
         </div>
         <!-- footer -->
-        <div class="modal-footer">
+        <div class="modal-footer" onclick="tweetDetailsDialog.backToTop()">
             <span>Back to Top</span>
         </div>
     </form>
@@ -57,7 +57,6 @@ const tweetDetailsDialog = {
         let h = dialog.find('.wrapper').height();
         dialog.find('.wrapper').css('top', (wh - h) / 2);
 
-
         // get replies
         dialog.find('.replies').empty();
         $.ajax({
@@ -88,6 +87,10 @@ const tweetDetailsDialog = {
             dialog.find('.replies').empty();
             dialog.hide();
         }
+    },
+
+    backToTop() {
+        $('.tweet-details-dialog .wrapper').stop().animate({ scrollTop: 0 }, 150);
     },
 }
 </script>

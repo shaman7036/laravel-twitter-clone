@@ -66,15 +66,13 @@
     font-weight: normal;
     opacity: 0.6;
 }
-/*
-.tweet-details-dialog .modal-body .replies .avatar {
-    display: inline-block;
-    position: relative;
-    left: -50px;
-} */
 
 .tweet-details-dialog .modal-footer {
     text-align: center;
     opacity: 0.6;
+}
+
+.tweet-details-dialog .modal-footer:hover {
+    background: #fdfdfd;
 }
 </style>

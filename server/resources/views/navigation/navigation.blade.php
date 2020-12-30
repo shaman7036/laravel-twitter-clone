@@ -115,6 +115,10 @@ function openTweetMenu(tweet) {
     if(menu.style.display === 'none') menu.style.display = 'inline-block';
     else menu.style.display = 'none';
 }
+
+function backToTop() {
+    $('html, body').stop().animate({ scrollTop: 0 }, 150);
+}
 </script>
 
 @include('navigation/navigation_style')

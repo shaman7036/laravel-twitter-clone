@@ -46,22 +46,22 @@ Route::view('/messages', 'messages');
 /**
  * tweets
  */
-Route::resource('/tweets', $controllers . 'TweetController', ['only' => ['store', 'destroy']]);
+Route::resource('/tweets', $controllers . 'TweetController', ['only' => ['show', 'store', 'destroy']]);
 
 /**
  * likes
  */
-Route::resource('/likes', $controllers . 'LikeController', ['only' => ['inde', 'store']]);
+Route::resource('/likes', $controllers . 'LikeController', ['only' => ['index', 'store']]);
 
 /**
  * retweets
  */
-Route::resource('/retweets', $controllers . 'RetweetController', ['only' => ['inde', 'store']]);
+Route::resource('/retweets', $controllers . 'RetweetController', ['only' => ['index', 'store']]);
 
 /**
  * follows
  */
-Route::resource('/follows', $controllers . 'FollowController', ['only' => ['inde', 'store']]);
+Route::resource('/follows', $controllers . 'FollowController', ['only' => ['index', 'store']]);
 
 /**
  * replies

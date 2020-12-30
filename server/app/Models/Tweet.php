@@ -66,6 +66,7 @@ class Tweet extends Model
             ->selectRaw('case when l_b.user_id = ' . $authId . ' then 1 else 0 end as is_liked')
             ->selectRaw('case when rt_b.user_id = ' . $authId . ' then 1 else 0 end as is_retweeted')
             ->selectRaw('case when rp_b.reply_id = tweets.id then u_a.username else "" end as replying_to')
+            ->selectRaw('case when rp_b.reply_id = tweets.id then rp_b.reply_to else 0 end as reply_to')
             ->join('users as u', function ($join) {
                 $join->on('tweets.user_id', '=', 'u.id')->whereNull('u.deleted_at');
             })
@@ -118,6 +119,7 @@ class Tweet extends Model
             ->selectRaw('case when l_b.user_id = ' . $authId . ' then 1 else 0 end as is_liked')
             ->selectRaw('case when rt_b.user_id = ' . $authId . ' then 1 else 0 end as is_retweeted')
             ->selectRaw('case when rp_b.reply_id = tweets.id then u_a.username else "" end as replying_to')
+            ->selectRaw('case when rp_b.reply_id = tweets.id then rp_b.reply_to else 0 end as reply_to')
             ->join('retweets', function ($join) {
                 $join->on('tweets.id', '=', 'retweets.tweet_id')->whereNull('retweets.deleted_at');
             })

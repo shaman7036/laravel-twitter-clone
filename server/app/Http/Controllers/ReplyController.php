@@ -13,9 +13,15 @@ class ReplyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->input('reply_to')) {
+            $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
+            $replyIds = Reply::where('reply_to', $request->input('reply_to'))->pluck('reply_id')->toArray();
+            $replies = Tweet::getQueryForTweets($authId)->whereIn('tweets.id', $replyIds)->get();
+        }
+
+        return response()->json(['replies' => $replies]);
     }
 
     /**

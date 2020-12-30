@@ -16,7 +16,15 @@
     top: 5px;
 }
 
-.timeline .tweet .icons {
-    padding-bottom: 5px;
+.timeline .footer {
+    height: 60px;
+    text-align: center;
+    background: #fff;
+    color: #888;
+    line-height: 55px;
+}
+
+.timeline .footer:hover {
+    background: #fdfdfd;
 }
 </style>

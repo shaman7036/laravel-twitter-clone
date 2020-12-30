@@ -29,7 +29,10 @@
         @include('navigation.navigation')
         @include('dialogs.tweet_dialog')
         @include('dialogs.delete_dialog')
+        @include('dialogs.tweet_details_dialog')
         @yield('content')
         @include('layouts.ajax_events')
+        @include('tweets.tweet_dom');
+        @include('tweets.tweet_dom_script');
     </body>
 </html>

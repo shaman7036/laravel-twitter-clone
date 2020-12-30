@@ -23,16 +23,9 @@
         @endforeach
         </ul>
     </div>
-    <div class="footer" onclick="back_to_top()">
+    <div class="footer" onclick="backToTop()">
         <span>Back to Top</span>
     </div>
 </div>
-<script>
-function back_to_top() {
-    $([document.documentElement, document.body]).animate({
-        scrollTop: $(".profile .nav ").offset().top
-    }, 500);
-}
-</script>
 
 @include('tweets/tweets_style')

@@ -47,7 +47,7 @@
         <div class="toggle a" onclick="openTweetMenu(this)">
         @if(!$tweet->retweetedBy)
             <i class="fa fa-angle-down"></i>
-            @include('tweets.tweet_menu', ['id' => 'tweetMenu-'.$tweet->id, 'tweetId' => $tweet->id])
+            @include('tweets.tweet_menu', ['tweet' => $tweet])
         @endif
         </div>
     </div>

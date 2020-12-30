@@ -19,7 +19,7 @@
     top: 35%;
     transform: translateY(-50%);
     left: auto;
-    width: 350px;
+    width: 535px;
     height: auto;
     border-radius: 4px;
     animation-delay: 0s;
@@ -30,7 +30,7 @@
     position: relative;
     width: 100%;
     height: 50px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid rgb(235, 238, 240);
     text-align: center;
     font-weight: bold;
     font-size: 16px;
@@ -41,14 +41,8 @@
     position: relative;
     width: 100%;
     min-height: 50px;
-    padding: 7.5px 15px;
-    border-bottom: 1px solid #ccc;
+    padding: 0px;
     text-align: left;
-}
-
-.delete-dialog > div > .body h6 {
-    margin-bottom: 5px;
-    font-size: 14px;
 }
 
 .delete-dialog > div > .footer {

@@ -43,6 +43,9 @@ const tweetDOM = {
         clone.find('.text p').html(data.text);
         // reply icon
         clone.find('.reply-icon span').html(data.num_replies ? data.num_replies : 0);
+        clone.find('.reply-icon').on('click', function() {
+            tweetDialog.open(data);
+        });
         // retweet icon
         const num_retweets = $('#tweet-' + data.id).find('.retweet-icon span').html();
         clone.find('.retweet-icon span').html(num_retweets ? num_retweets : 0);

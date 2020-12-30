@@ -1,4 +1,4 @@
-<div class='tweet-details-dialog animated fadeIn' onclick='tweetDetailsDialog.close(event)'>
+<div class='tweet-details-dialog dialog animated fadeIn' onclick='tweetDetailsDialog.close(event)'>
     <form class="wrapper modal-content animated fadeInUp" method="POST" action="/tweets">
         {{ csrf_field() }}
         <!-- header -->
@@ -38,6 +38,7 @@ const tweetDetailsDialog = {
             return;
         }
         const dialog = $('.tweet-details-dialog');
+        $('.dialog').hide();
         dialog.show();
 
         // clear dialog's data
@@ -48,7 +49,7 @@ const tweetDetailsDialog = {
         tweetDOM.appendTo('.tweet-details-dialog .target', tweet);
 
         // set numbers
-        dialog.find('.links > .num-replies').html(tweet.num_replies ? tweet_num_replies : 0 + ' <span>Replies</span>');
+        dialog.find('.links > .num-replies').html(tweet.num_replies ? tweet.num_replies : 0 + ' <span>Replies</span>');
         dialog.find('.links > .num-retweets').html(tweet.num_retweets + ' <span>Retweets</span>');
         dialog.find('.links > .num-likes').html(tweet.num_likes + ' <span>Likes</span>');
 
@@ -83,6 +84,7 @@ const tweetDetailsDialog = {
     openForReplyingTo(e, replyTo) {
         e.stopPropagation();
         const dialog = $('.tweet-details-dialog');
+        $('.dialog').hide();
         dialog.show();
 
         // clear dialog's data

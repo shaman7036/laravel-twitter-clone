@@ -7,7 +7,7 @@
         if($auth->avatar) $avatar = '/storage/media/'.$auth->id.'/avatar/thumbnail.'.$auth->avatar;
     }
 ?>
-<div class='tweet-dialog animated fadeIn' onclick='tweetDialog.close(event)'>
+<div class='tweet-dialog dialog animated fadeIn' onclick='tweetDialog.close(event)'>
     <form class="wrapper modal-content animated fadeInUp" method="POST" action="/tweets">
         {{ csrf_field() }}
         <!-- header -->
@@ -67,6 +67,7 @@ const tweetDialog = {
 
         // open dialog
         if(auth && auth.username) {
+            $('.dialog').hide();
             $('.tweet-dialog').show();
         } else {
             window.location.href = '/';

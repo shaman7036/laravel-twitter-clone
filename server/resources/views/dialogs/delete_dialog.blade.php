@@ -5,7 +5,7 @@
         $authUsername = Session::get('auth')->username;
     }
 ?>
-<div class='delete-dialog animated fadeIn' id='deleteDialog' onclick='deleteDialog.close(event)'>
+<div class='delete-dialog dialog animated fadeIn' id='deleteDialog' onclick='deleteDialog.close(event)'>
     <div class='wrapper animated fadeInUp'>
         <div class='header'>Delete tweet?</div>
         <div class='body'>
@@ -39,10 +39,11 @@ const deleteDialog = {
             return;
         }
         this.tweetId = tweetId;
-        var dialog = _('.delete-dialog');
-        dialog.style.display = 'block';
-        dialog.querySelector('body h6').innerHTML = $('.tweet-'+tweetId).find('.username').html();
-        dialog.querySelector('body p').innerHTML = $('.tweet-'+tweetId).find('.content').html();
+        var dialog = $('.delete-dialog');
+        $('.dialog').hide();
+        dialog.show();
+        dialog.find('h6').html($('.tweet-'+tweetId).find('.username').html());
+        dialog.find('p').html($('.tweet-'+tweetId).find('.text').html());
     },
 
     close: () => {

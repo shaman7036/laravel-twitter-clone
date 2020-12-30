@@ -137,6 +137,7 @@ const tweetDetailsDialog = {
         const dialog = $('.tweet-details-dialog');
         dialog.find('.target').empty();
         dialog.find('.links > *').empty();
+        dialog.find('.links > *').unbind();
         dialog.find('.replies').empty();
     },
 

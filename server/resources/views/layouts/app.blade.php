@@ -33,7 +33,7 @@
         @include('dialogs.tweet_details_dialog')
         @include('dialogs.users_dialog')
         @include('layouts.ajax_events')
-        @include('tweets.tweet_dom');
-        @include('tweets.tweet_dom_script');
+        @include('tweets.tweet_dom')
+        @include('tweets.tweet_dom_script')
     </body>
 </html>

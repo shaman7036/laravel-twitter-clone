@@ -55,6 +55,7 @@
 
 .tweet-details-dialog .modal-body .links > div {
     display: inline-block;
+    cursor: pointer;
     height: 50px;
     font-size: 15px;
     font-weight: bold;

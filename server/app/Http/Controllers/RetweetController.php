@@ -13,9 +13,19 @@ class RetweetController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $tweetId = $request->input('tweet_id');
+        $select = [
+            'u.id as user_id', 'u.avatar', 'u.fullname', 'u.username', 'u.description',
+        ];
+        $retweetedUsers = Retweet::select($select)
+            ->join('users as u', function ($join) use ($tweetId) {
+                $join->on('retweets.user_id', '=', 'u.id')->whereNull('u.deleted_at')->where('retweets.tweet_id', $tweetId);
+            })
+            ->orderBy('retweets.updated_at', 'desc')->get();
+
+        return response()->json(['users' => $retweetedUsers]);
     }
 
     /**

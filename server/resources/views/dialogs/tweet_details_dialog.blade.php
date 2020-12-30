@@ -48,10 +48,8 @@ const tweetDetailsDialog = {
         $('.tweet-details-dialog .target').empty();
         tweetDOM.appendTo('.tweet-details-dialog .target', tweet);
 
-        // set numbers
-        dialog.find('.links > .num-replies').html(tweet.num_replies ? tweet.num_replies : 0 + ' <span>Replies</span>');
-        dialog.find('.links > .num-retweets').html(tweet.num_retweets + ' <span>Retweets</span>');
-        dialog.find('.links > .num-likes').html(tweet.num_likes + ' <span>Likes</span>');
+        // set numbers and events
+        this.setNumbersAndEvents(tweet);
 
         // set dialog max height
         const wh = $(window).height();
@@ -108,10 +106,8 @@ const tweetDetailsDialog = {
                 // set target tweet
                 const tweet = res.tweet;
                 tweetDOM.appendTo('.tweet-details-dialog .target', tweet);
-                // set numbers
-                dialog.find('.links > .num-replies').html(tweet.num_replies + ' <span>Replies</span>');
-                dialog.find('.links > .num-retweets').html(tweet.num_retweets + ' <span>Retweets</span>');
-                dialog.find('.links > .num-likes').html(tweet.num_likes + ' <span>Likes</span>');
+                // set numbers and events
+                this.setNumbersAndEvents(tweet);
                 if (res.replies) {
                     // set replies
                     res.replies.forEach(item => {
@@ -142,6 +138,15 @@ const tweetDetailsDialog = {
         dialog.find('.target').empty();
         dialog.find('.links > *').empty();
         dialog.find('.replies').empty();
+    },
+
+    setNumbersAndEvents(tweet) {
+        const dialog = $('.tweet-details-dialog');
+        dialog.find('.links > .num-replies').html((tweet.num_replies ? tweet.num_replies : 0) + ' <span>Replies</span>');
+        dialog.find('.links > .num-retweets').html(tweet.num_retweets + ' <span>Retweets</span>');
+        dialog.find('.links > .num-likes').html(tweet.num_likes + ' <span>Likes</span>');
+        dialog.find('.links > .num-retweets').on('click', () => usersDialog.open('retweets', tweet.id));
+        dialog.find('.links > .num-likes').on('click', () => usersDialog.open('likes', tweet.id));
     },
 
     backToTop() {

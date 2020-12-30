@@ -13,13 +13,13 @@
 <div class="tweet tweet-{{$tweet->id}}" id="tweet-{{$tweet->id}}" onclick="tweetDetailsDialog.open(event, {{$tweet}})">
     <!-- retweeted username -->
     @if($tweet->retweeted_username)
-        <a class="retweeted" href={{'/profile/tweets/'.$tweet->retweeted_username}}>
+        <a class="retweeted a" href={{'/profile/tweets/'.$tweet->retweeted_username}}>
             <i class="fa fa-retweet"></i> {{'@'.$tweet->retweeted_username}} retweeted
         </a>
     @endif
     <!-- replying to -->
     @if(!empty($tweet->replying_to))
-        <div class="replying-to replying">
+        <div class="replying-to" onclick="tweetDetailsDialog.openForReplyingTo(event, {{$tweet->reply_to}})">
             <span class="replying">
                 Replying to {{'@'.$tweet->replying_to}}
             </span>

@@ -1,5 +1,9 @@
 <div class="tweet-dom tweet default" style="display: none">
     <input class="reply-to" name="reply_to" value="" type="hidden" />
+    <!-- replying to -->
+    <div class="replying-to replying">
+        <span class="replying"></span>
+    </div>
     <!-- avatar -->
     <a class="avatar a" href=""></a>
     <!-- header -->

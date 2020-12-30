@@ -5,10 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\TweetRequest;
 use App\Models\Tweet;
-use App\Models\Like;
-use App\Models\Retweet;
-
-// use Illuminate\Support\Facades\Auth;
+use App\Models\Reply;
 
 class TweetController extends Controller
 {
@@ -56,8 +53,14 @@ class TweetController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
+        $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
+        $tweet = Tweet::getQueryForTweets($authId)->where('tweets.id', $id)->first();
+        $replyIds = Reply::where('reply_to', $id)->pluck('reply_id')->toArray();
+        $replies = Tweet::getQueryForTweets($authId)->whereIn('tweets.id', $replyIds)->get();
+
+        return response()->json(['tweet' => $tweet, 'replies' => $replies]);
     }
 
     /**

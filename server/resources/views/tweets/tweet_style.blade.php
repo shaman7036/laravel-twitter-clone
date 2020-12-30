@@ -6,7 +6,7 @@
 .tweet {
     padding-left: 70px;
     padding-top: 7.5px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid rgb(235, 238, 240);
     font-size: 14px;
     overflow:;
     text-align: left;

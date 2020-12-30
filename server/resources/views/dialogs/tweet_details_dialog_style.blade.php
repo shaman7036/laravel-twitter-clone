@@ -50,7 +50,7 @@
 .tweet-details-dialog .modal-body .links {
     display: block;
     height: 50px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid rgb(235, 238, 240);
 }
 
 .tweet-details-dialog .modal-body .links > div {
@@ -70,6 +70,7 @@
 .tweet-details-dialog .modal-footer {
     text-align: center;
     opacity: 0.6;
+    border-top: none;
 }
 
 .tweet-details-dialog .modal-footer:hover {

@@ -46,7 +46,7 @@ Route::view('/messages', 'messages');
 /**
  * tweets
  */
-Route::resource('/tweets', $controllers . 'TweetController', ['only' => ['store', 'destroy']]);
+Route::resource('/tweets', $controllers . 'TweetController', ['only' => ['show', 'store', 'destroy']]);
 
 /**
  * likes

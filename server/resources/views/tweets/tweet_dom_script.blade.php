@@ -1,10 +1,28 @@
 <script>
+if (window.location.href.indexOf('/home') > -1) {
+    $('.tweet').css('padding-bottom', '5px');
+} else {
+    $('.tweet').css('padding-bottom', '0px');
+}
+
 const tweetDOM = {
-    appendTo(parent, data) {
+    appendTo: (parent, data) => {
+        // clone and append
         $('.tweet-dom.default:first').clone().appendTo(parent);
         const clone = $(parent+' > .tweet-dom.default:first');
         clone.removeClass('default');
         clone.addClass('tweet-dom-' + data.id + ' tweet-' + data.id);
+        // open for detail event
+        clone.on('click', (e) => {
+            tweetDetailsDialog.open(e, data);
+        });
+        // replying to
+        if (data.replying_to) {
+            clone.find('.replying-to span').html('Replying to @' + data.replying_to);
+            clone.find('.replying-to').on('click', (e) => {
+                tweetDetailsDialog.openForReplyingTo(e, data.reply_to);
+            });
+        }
         // avatar
         clone.find('.avatar').attr('href', '/profile/tweets/' + data.username);
         if (data.avatar) {

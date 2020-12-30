@@ -16,10 +16,6 @@
     top: 5px;
 }
 
-.timeline .tweet .icons {
-    padding-bottom: 5px;
-}
-
 .timeline .footer {
     height: 60px;
     text-align: center;

@@ -63,6 +63,10 @@
     padding-top: 12px;
 }
 
+.tweet-details-dialog .modal-body .links .num-replies {
+    cursor: auto;
+}
+
 .tweet-details-dialog .modal-body .links > div > span {
     font-weight: normal;
     opacity: 0.6;

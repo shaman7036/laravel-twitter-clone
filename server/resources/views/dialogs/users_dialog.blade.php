@@ -32,6 +32,8 @@
 
 <script>
 const usersDialog = {
+    maxHeight: 0.9, // 1.0 = window height
+
     open(from, tweetId) {
         $('.dialog').not('.tweet-details-dialog').hide();
         const dialog = $('.users-dialog');
@@ -42,9 +44,10 @@ const usersDialog = {
         else if (from === 'retweets') $('.users-dialog .modal-header h3').html('Retweeted By');
         else $('.users-dialog .modal-header h3').html('Liked By');
 
-        // set dialog max height
-        const wh = $(window).height();
-        dialog.find('.wrapper').css('max-height', wh * 0.9);
+        // set max height and top
+        const dh = dialog.height();
+        dialog.find('.wrapper').css('max-height', dh * this.maxHeight);
+        dialog.find('.wrapper').css('top', dh * (1 - this.maxHeight) / 2);
 
         // get users by url request
         dialog.find('.users').empty();
@@ -59,9 +62,6 @@ const usersDialog = {
                         this.appendUser(item);
                     });
                 }
-                // make dialog center
-                let h = dialog.find('.wrapper').height();
-                dialog.find('.wrapper').css('top', (wh - h) / 2);
             },
             error: (err) => {
                 console.log(err);

@@ -32,6 +32,8 @@
 
 <script>
 const tweetDetailsDialog = {
+    maxHeight: 0.9, // 1.0 = window height
+
     open(e, tweet) {
         cl = e.target.classList.toString();
         if (cl.indexOf('a') > -1 || cl.indexOf('fa') > -1 || cl.indexOf('menu-item') > -1) {
@@ -51,13 +53,10 @@ const tweetDetailsDialog = {
         // set numbers and events
         this.setNumbersAndEvents(tweet);
 
-        // set dialog max height
-        const wh = $(window).height();
-        dialog.find('.wrapper').css('max-height', wh * 0.9);
-
-        // make dialog center
-        let h = dialog.find('.wrapper').height();
-        dialog.find('.wrapper').css('top', (wh - h) / 2);
+        // set max height and top
+        const dh = dialog.height();
+        dialog.find('.wrapper').css('max-height', dh * this.maxHeight);
+        dialog.find('.wrapper').css('top', dh * (1 - this.maxHeight) / 2);
 
         // get replies
         dialog.find('.replies').empty();
@@ -71,9 +70,6 @@ const tweetDetailsDialog = {
                     res.replies.forEach(item => {
                         tweetDOM.appendTo('.tweet-details-dialog .replies', item);
                     });
-                    // make dialog center again
-                    h = dialog.find('.wrapper').height();
-                    dialog.find('.wrapper').css('top', (wh - h) / 2);
                 }
             },
         });
@@ -88,13 +84,10 @@ const tweetDetailsDialog = {
         // clear dialog's data
         this.clear();
 
-        // set dialog max height
-        const wh = $(window).height();
-        dialog.find('.wrapper').css('max-height', wh * 0.9);
-
-        // make dialog center
-        let h = dialog.find('.wrapper').height();
-        dialog.find('.wrapper').css('top', (wh - h) / 2);
+        // set max height and top
+        const dh = dialog.height();
+        dialog.find('.wrapper').css('max-height', dh * this.maxHeight);
+        dialog.find('.wrapper').css('top', dh * (1 - this.maxHeight) / 2);
 
         // get target tweet and replies
         dialog.find('.replies').empty();
@@ -113,9 +106,6 @@ const tweetDetailsDialog = {
                     res.replies.forEach(item => {
                         tweetDOM.appendTo('.tweet-details-dialog .replies', item);
                     });
-                    // make dialog center again
-                    h = dialog.find('.wrapper').height();
-                    dialog.find('.wrapper').css('top', (wh - h) / 2);
                 }
             },
             error: (err) => {

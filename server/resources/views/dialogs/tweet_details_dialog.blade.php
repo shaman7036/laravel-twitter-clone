@@ -20,12 +20,12 @@
                 <div class="num-likes"></div>
             </div>
             <!-- replies -->
-            <div class="replies">
-            </div>
+            <div class="replies"></div>
         </div>
         <!-- footer -->
         <div class="modal-footer" onclick="tweetDetailsDialog.backToTop()">
-            <span>Back to Top</span>
+            <div class="loader">...Loading</div>
+            <span class="back-to-top">Back to Top</span>
         </div>
     </form>
 </div>
@@ -42,6 +42,7 @@ const tweetDetailsDialog = {
         const dialog = $('.tweet-details-dialog');
         $('.dialog').hide();
         dialog.show();
+        this.setLoader(true);
 
         // clear dialog's data
         this.clear();
@@ -72,6 +73,7 @@ const tweetDetailsDialog = {
                     });
                 }
             },
+            complete: () => this.setLoader(false),
         });
     },
 
@@ -80,6 +82,7 @@ const tweetDetailsDialog = {
         const dialog = $('.tweet-details-dialog');
         $('.dialog').hide();
         dialog.show();
+        this.setLoader(true);
 
         // clear dialog's data
         this.clear();
@@ -108,9 +111,7 @@ const tweetDetailsDialog = {
                     });
                 }
             },
-            error: (err) => {
-                console.log(err);
-            },
+            complete: () => this.setLoader(false),
         });
     },
 
@@ -138,6 +139,22 @@ const tweetDetailsDialog = {
         dialog.find('.links > .num-likes').html(tweet.num_likes + ' <span>Likes</span>');
         dialog.find('.links > .num-retweets').on('click', () => usersDialog.open('retweets', tweet.id));
         dialog.find('.links > .num-likes').on('click', () => usersDialog.open('likes', tweet.id));
+    },
+
+    setLoader(loading) {
+        const footer = $('.tweet-details-dialog .modal-footer');
+        if (loading) {
+            footer.find('.loader').show();
+            footer.find('.back-to-top').hide();
+        } else {
+            footer.find('.loader').hide();
+            footer.find('.back-to-top').show();
+            if ($('.tweet-details-dialog .replies').html() === '') {
+                footer.find('.back-to-top').html('Nothing replied yet');
+            } else {
+                footer.find('.back-to-top').html('Back to Top');
+            }
+        }
     },
 
     backToTop() {

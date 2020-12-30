@@ -11,7 +11,8 @@
         </div>
         <!-- footer -->
         <div class="modal-footer" onclick="usersDialog.backToTop()">
-            <span>Back to Top</span>
+            <div class="loader">...Loading</div>
+            <span class="back-to-top">Back to Top</span>
         </div>
     </div>
     <div class="user-dom-wrapper">
@@ -38,6 +39,7 @@ const usersDialog = {
         $('.dialog').not('.tweet-details-dialog').hide();
         const dialog = $('.users-dialog');
         dialog.show();
+        this.setLoader(true);
 
         // set header title
         if (from === 'replies') $('.users-dialog .modal-header h3').html('Replied By');
@@ -63,9 +65,7 @@ const usersDialog = {
                     });
                 }
             },
-            error: (err) => {
-                console.log(err);
-            },
+            complete: () => this.setLoader(false),
         });
     },
 
@@ -97,6 +97,22 @@ const usersDialog = {
         // description
         clone.find('.description').html(data.description);
         clone.show();
+    },
+
+    setLoader(loading) {
+        const footer = $('.users-dialog .modal-footer');
+        if (loading) {
+            footer.find('.loader').show();
+            footer.find('.back-to-top').hide();
+        } else {
+            footer.find('.loader').hide();
+            footer.find('.back-to-top').show();
+            if ($('.users-dialog .users').html() === '') {
+                footer.find('.back-to-top').html('No one yet');
+            } else {
+                footer.find('.back-to-top').html('Back to Top');
+            }
+        }
     },
 
     backToTop() {

@@ -42,7 +42,7 @@ const tweetEvents = {
                     icon.find('i').addClass('fa-heart-o');
                 }
             },
-            complete: () => { icon.removeClass('requesting'); },
+            complete: () => icon.removeClass('requesting'),
         });
     },
 
@@ -80,7 +80,7 @@ const tweetEvents = {
                     icon.removeClass('active');
                 }
             },
-            complete: () => { icon.removeClass('requesting'); },
+            complete: () => icon.removeClass('requesting'),
         });
     }
 }
@@ -113,7 +113,7 @@ const followEvents = {
                 }
                 $('.profile-followers').html(numFollowers);
             },
-            complete: () => { button.removeClass('requesting'); },
+            complete: () => button.removeClass('requesting'),
         });
     },
 
@@ -139,7 +139,7 @@ const followEvents = {
                     button.removeClass('active');
                 }
             },
-            complete: () => { button.removeClass('requesting'); },
+            complete: () => button.removeClass('requesting'),
         });
     },
 
@@ -171,7 +171,33 @@ const followEvents = {
                 }
                 $('.home .num-following').html(numFollowing);
             },
-            complete: () => { button.removeClass('requesting'); },
+            complete: () => button.removeClass('requesting'),
+        });
+    },
+
+    followUserInUsersDialog: (userId) => {
+        if (!auth) {
+            window.location.href = '/login';
+            return;
+        }
+        const button = $('.users-dialog .user-dom-' + userId + ' .follow-button:first');
+        if (button.hasClass('requesting')) return;
+        button.addClass('requesting');
+        checkActivity(button);
+        $.ajax({
+            type: 'POST',
+            url: '/follows',
+            data: {"_token": "{{ csrf_token() }}", followed_id: userId},
+            success: (res) => {
+                if (res.isFollowed) {
+                    // followed
+                    button.addClass('active');
+                } else {
+                    // unfollowed
+                    button.removeClass('active');
+                }
+            },
+            complete: () => button.removeClass('requesting'),
         });
     },
 };

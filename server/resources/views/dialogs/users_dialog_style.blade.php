@@ -111,7 +111,46 @@
     width: 100%;
     overflow: hidden;
     min-height: 15px;
+}
 
+.users-dialog .users .user .follow-button {
+    display: inline-block;
+    position: absolute;
+    border: 1px solid #0ae;
+    border-radius: 15px;
+    right: 0px;
+    top: 3px;
+    min-width: 80px;
+    height: 30px;
+    padding: auto 25px;
+    line-height: 16px;
+    font-size: 14px;
+    font-weight: bold;
+    background: #fff;
+    color: #0ae;
+}
+
+.users-dialog .users .user .follow-button:after {
+    content: 'Follow';
+}
+
+.users-dialog .users .user .follow-button.active {
+    background: #0ae;
+    color: #fff;
+    border: 0px solid;
+}
+
+.users-dialog .users .user .follow-button.active:after {
+    content: 'Following';
+}
+
+.users-dialog .users .user .follow-button.active:hover {
+    background: #f00;
+    color: #fff;
+}
+
+.users-dialog .users .user .follow-button.active:hover:after {
+    content: 'Unfollow';
 }
 
 .users-dialog .user-dom-wrapper {

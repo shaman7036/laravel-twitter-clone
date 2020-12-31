@@ -25,8 +25,8 @@
                 <div class="row fullname">Full Name</div>
                 <div class="row username">@username</div>
                 <div class="row description">Description</div>
+                <a class="btn btn-default follow-button"></a>
             </div>
-            {{-- <a class="btn btn-default follow-button">Follow</a> --}}
         </li>
     </div>
 </div>
@@ -82,7 +82,7 @@ const usersDialog = {
         $('.users-dialog .user-dom-wrapper .user-dom.default:first').clone().appendTo('.users-dialog .users');
         const clone = $('.users-dialog .user-dom.default:first');
         clone.removeClass('default');
-        clone.addClass('.user-dom-'+data.id);
+        clone.addClass('user-dom-' + data.user_id);
         // avatar
         clone.find('.avatar').attr('href', '/profile/tweets/' + data.username + '?page=1');
         if (data.avatar) {
@@ -96,6 +96,13 @@ const usersDialog = {
         clone.find('.username').html('@' + data.username);
         // description
         clone.find('.description').html(data.description);
+        // follow button
+        if (auth.id !== data.user_id) {
+            clone.find('.follow-button').on('click', () => followEvents.followUserInUsersDialog(data.user_id));
+            if (data.is_followed) clone.find('.follow-button').addClass('active');
+        } else {
+            clone.find('.follow-button').remove();
+        }
         clone.show();
     },
 

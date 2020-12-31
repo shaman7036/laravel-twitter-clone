@@ -55,11 +55,16 @@
 
 .tweet-details-dialog .modal-body .links > div {
     display: inline-block;
+    cursor: pointer;
     height: 50px;
     font-size: 15px;
     font-weight: bold;
     padding-left: 20px;
     padding-top: 12px;
+}
+
+.tweet-details-dialog .modal-body .links .num-replies {
+    cursor: auto;
 }
 
 .tweet-details-dialog .modal-body .links > div > span {

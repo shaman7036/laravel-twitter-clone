@@ -20,18 +20,20 @@
                 <div class="num-likes"></div>
             </div>
             <!-- replies -->
-            <div class="replies">
-            </div>
+            <div class="replies"></div>
         </div>
         <!-- footer -->
         <div class="modal-footer" onclick="tweetDetailsDialog.backToTop()">
-            <span>Back to Top</span>
+            <div class="loader">...Loading</div>
+            <span class="back-to-top">Back to Top</span>
         </div>
     </form>
 </div>
 
 <script>
 const tweetDetailsDialog = {
+    maxHeight: 0.9, // 1.0 = window height
+
     open(e, tweet) {
         cl = e.target.classList.toString();
         if (cl.indexOf('a') > -1 || cl.indexOf('fa') > -1 || cl.indexOf('menu-item') > -1) {
@@ -40,6 +42,7 @@ const tweetDetailsDialog = {
         const dialog = $('.tweet-details-dialog');
         $('.dialog').hide();
         dialog.show();
+        this.setLoader(true);
 
         // clear dialog's data
         this.clear();
@@ -48,18 +51,13 @@ const tweetDetailsDialog = {
         $('.tweet-details-dialog .target').empty();
         tweetDOM.appendTo('.tweet-details-dialog .target', tweet);
 
-        // set numbers
-        dialog.find('.links > .num-replies').html(tweet.num_replies ? tweet.num_replies : 0 + ' <span>Replies</span>');
-        dialog.find('.links > .num-retweets').html(tweet.num_retweets + ' <span>Retweets</span>');
-        dialog.find('.links > .num-likes').html(tweet.num_likes + ' <span>Likes</span>');
+        // set numbers and events
+        this.setNumbersAndEvents(tweet);
 
-        // set dialog max height
-        const wh = $(window).height();
-        dialog.find('.wrapper').css('max-height', wh * 0.9);
-
-        // make dialog center
-        let h = dialog.find('.wrapper').height();
-        dialog.find('.wrapper').css('top', (wh - h) / 2);
+        // set max height and top
+        const dh = dialog.height();
+        dialog.find('.wrapper').css('max-height', dh * this.maxHeight);
+        dialog.find('.wrapper').css('top', dh * (1 - this.maxHeight) / 2);
 
         // get replies
         dialog.find('.replies').empty();
@@ -73,11 +71,9 @@ const tweetDetailsDialog = {
                     res.replies.forEach(item => {
                         tweetDOM.appendTo('.tweet-details-dialog .replies', item);
                     });
-                    // make dialog center again
-                    h = dialog.find('.wrapper').height();
-                    dialog.find('.wrapper').css('top', (wh - h) / 2);
                 }
             },
+            complete: () => this.setLoader(false),
         });
     },
 
@@ -86,17 +82,15 @@ const tweetDetailsDialog = {
         const dialog = $('.tweet-details-dialog');
         $('.dialog').hide();
         dialog.show();
+        this.setLoader(true);
 
         // clear dialog's data
         this.clear();
 
-        // set dialog max height
-        const wh = $(window).height();
-        dialog.find('.wrapper').css('max-height', wh * 0.9);
-
-        // make dialog center
-        let h = dialog.find('.wrapper').height();
-        dialog.find('.wrapper').css('top', (wh - h) / 2);
+        // set max height and top
+        const dh = dialog.height();
+        dialog.find('.wrapper').css('max-height', dh * this.maxHeight);
+        dialog.find('.wrapper').css('top', dh * (1 - this.maxHeight) / 2);
 
         // get target tweet and replies
         dialog.find('.replies').empty();
@@ -108,23 +102,16 @@ const tweetDetailsDialog = {
                 // set target tweet
                 const tweet = res.tweet;
                 tweetDOM.appendTo('.tweet-details-dialog .target', tweet);
-                // set numbers
-                dialog.find('.links > .num-replies').html(tweet.num_replies + ' <span>Replies</span>');
-                dialog.find('.links > .num-retweets').html(tweet.num_retweets + ' <span>Retweets</span>');
-                dialog.find('.links > .num-likes').html(tweet.num_likes + ' <span>Likes</span>');
+                // set numbers and events
+                this.setNumbersAndEvents(tweet);
                 if (res.replies) {
                     // set replies
                     res.replies.forEach(item => {
                         tweetDOM.appendTo('.tweet-details-dialog .replies', item);
                     });
-                    // make dialog center again
-                    h = dialog.find('.wrapper').height();
-                    dialog.find('.wrapper').css('top', (wh - h) / 2);
                 }
             },
-            error: (err) => {
-                console.log(err);
-            },
+            complete: () => this.setLoader(false),
         });
     },
 
@@ -141,7 +128,33 @@ const tweetDetailsDialog = {
         const dialog = $('.tweet-details-dialog');
         dialog.find('.target').empty();
         dialog.find('.links > *').empty();
+        dialog.find('.links > *').unbind();
         dialog.find('.replies').empty();
+    },
+
+    setNumbersAndEvents(tweet) {
+        const dialog = $('.tweet-details-dialog');
+        dialog.find('.links > .num-replies').html((tweet.num_replies ? tweet.num_replies : 0) + ' <span>Replies</span>');
+        dialog.find('.links > .num-retweets').html(tweet.num_retweets + ' <span>Retweets</span>');
+        dialog.find('.links > .num-likes').html(tweet.num_likes + ' <span>Likes</span>');
+        dialog.find('.links > .num-retweets').on('click', () => usersDialog.open('retweets', tweet.id));
+        dialog.find('.links > .num-likes').on('click', () => usersDialog.open('likes', tweet.id));
+    },
+
+    setLoader(loading) {
+        const footer = $('.tweet-details-dialog .modal-footer');
+        if (loading) {
+            footer.find('.loader').show();
+            footer.find('.back-to-top').hide();
+        } else {
+            footer.find('.loader').hide();
+            footer.find('.back-to-top').show();
+            if ($('.tweet-details-dialog .replies').html() === '') {
+                footer.find('.back-to-top').html('Nothing replied yet');
+            } else {
+                footer.find('.back-to-top').html('Back to Top');
+            }
+        }
     },
 
     backToTop() {

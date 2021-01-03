@@ -26,11 +26,11 @@
     $time = strtotime($profile->created_at);
     $date = 'Joined '.date('M', $time).' '.date('Y', $time);
 
-    if(isset($profile->url)) {
-        $url = $profile->url;
-        $url = str_replace('http://', '', $url);
-        $url = str_replace('https://', '', $url);
-        $url = str_replace('www.', '', $url);
+    if(isset($profile->website)) {
+        $website = $profile->website;
+        $website = str_replace('http://', '', $website);
+        $website = str_replace('https://', '', $website);
+        $website = str_replace('www.', '', $website);
     }
 
     // add links in bio
@@ -122,7 +122,7 @@
                     <?php if(!empty($profile->website)) : ?>
                         <div class="url">
                         <i class="fa fa-link"></i>
-                        <a href="{{'https://'.$url}}">{{$url}}</a>
+                        <a href="{{'https://'.$website}}" target="_blank">{{$website}}</a>
                         </div>
                     <?php endif; ?>
                     <!-- joined date -->

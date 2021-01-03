@@ -1,7 +1,7 @@
 <style>
 @media screen and (max-width: 960px) {
     .auth .left {
-        display: none;
+        display: none !important;
     }
 
     .auth {
@@ -23,7 +23,7 @@
         padding: 0px 15px;
     }
 
-    .auth .right .wrapper h1, .auth .right .wrapper button {
+    .auth .right .wrapper h1, .auth .right .wrapper .btn {
         position: relative;
         width: 100%;
     }

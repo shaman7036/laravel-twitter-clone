@@ -42,7 +42,7 @@
             <a class="a" href={{'/profile/tweets/'.$tweet->username}}>{{'@'.$tweet->username}}</a>
         </span>
         <!-- date -->
-        <span class="date">・</span>
+        <span class="date"></span>
         <!-- menu -->
         <div class="toggle a" onclick="openTweetMenu(this)">
         @if(!$tweet->retweetedBy)
@@ -81,8 +81,8 @@
     </div>
     <script>
         var tweet = <?php echo $tweet; ?>;
-        var date = moment(tweet.time).format('MMM Do YYYY, HH:mm:ss');
-        $('.tweet-'+tweet.id).find('.date').html('・'+date);
+        var date = moment(tweet.time).format('MMM Do, YYYY');
+        $('.tweet-'+tweet.id).find('.date').html(' · ' + date);
     </script>
 </div>
 

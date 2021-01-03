@@ -26,6 +26,7 @@ services:
       TZ: "Asia/Tokyo"
     volumes:
       - data:/var/lib/mysql:cached
+      - ./_/db/initdb.d:/docker-entrypoint-initdb.d
     tty: true
     command: --innodb-use-native-aio=0
     ports:

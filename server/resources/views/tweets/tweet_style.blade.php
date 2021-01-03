@@ -59,8 +59,12 @@
     font-size: 15px;
 }
 
-.tweet .info .name {
+.tweet .info .fullname {
     font-weight: bold;
+}
+
+.tweet .info .username > a {
+    color: rgba(0, 0, 0, 0.6);
 }
 
 .tweet .info .date {

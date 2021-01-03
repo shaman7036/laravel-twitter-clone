@@ -12,7 +12,7 @@
         <label>Username:</label>
         <input class="form-control" id="username" name="username" type="text"
             data-parsley-type="alphanum"
-            data-parsley-maxlength="16"
+            data-parsley-maxlength="32"
             required
         />
         @if ($errors->has('username'))

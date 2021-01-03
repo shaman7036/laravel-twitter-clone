@@ -37,8 +37,8 @@ const tweetDOM = {
         clone.find('.username a').attr('href', '/profile/tweets/' + data.username);
         clone.find('.username a').html('@' + data.username);
         // date
-        var date = moment(data.time).format('MMM Do YYYY, HH:mm:ss');
-        clone.find('.date').html('・'+date);
+        var date = moment(data.time).format('HH:mm A · MMM Do, YYYY');
+        clone.find('.date').html(' · ' + date);
         // text
         clone.find('.text p').html(data.text);
         // reply icon

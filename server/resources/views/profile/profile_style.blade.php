@@ -296,6 +296,10 @@
     overflow: hidden;
 }
 
+.profile .main .left .content .location i {
+    padding-left: 3px;
+}
+
 .profile .main .left .content .url {
     white-space: nowrap;
 }

@@ -13,7 +13,7 @@
 .tweets > .header {
     position: relative;
     height: 45px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid rgb(235, 238, 240);
 }
 
 .tweets > .header > ul {
@@ -55,5 +55,9 @@
     text-align: center;
     color: #888;
     line-height: 55px;
+}
+
+.tweets > .footer:hover {
+    background: #fdfdfd;
 }
 </style>

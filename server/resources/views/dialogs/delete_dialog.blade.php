@@ -5,17 +5,16 @@
         $authUsername = Session::get('auth')->username;
     }
 ?>
-<div class='delete-dialog animated fadeIn' id='deleteDialog' onclick='deleteDialog.close(event)'>
-    <div class='wrapper animated fadeInUp'>
-        <div class='header'>Delete tweet?</div>
-        <div class='body'>
-            <h6></h6>
-            <p></p>
-            <div class='msg'></div>
-        </div>
-        <div class='footer'>
-            <button class='button btn-danger delete-button' onclick='deleteDialog.deleteTweet()'>Delete</button>
-            <button class='button btn btn-default close-button' onclick='deleteDialog.close()'>Cancel</button>
+<div class="delete-dialog dialog animated fadeIn" id="deleteDialog" onclick="deleteDialog.close(event)">
+    <div class="wrapper animated fadeInUp">
+        <!-- header -->
+        <div class="header">Delete tweet?</div>
+        <!-- body -->
+        <div class="body"></div>
+        <!-- footer -->
+        <div class="footer">
+            <button class="button btn-danger delete-button" onclick="deleteDialog.deleteTweet()">Delete</button>
+            <button class="button btn btn-default close-button" onclick="deleteDialog.close()">Cancel</button>
         </div>
     </div>
 </div>
@@ -33,16 +32,17 @@ $(document).ready(function() {
 const deleteDialog = {
     tweetId: null,
 
-    open: (tweetId) => {
+    open: (tweet) => {
         if(!auth) {
             window.location.href = 'logIn';
             return;
         }
-        this.tweetId = tweetId;
-        var dialog = _('.delete-dialog');
-        dialog.style.display = 'block';
-        dialog.querySelector('body h6').innerHTML = $('.tweet-'+tweetId).find('.username').html();
-        dialog.querySelector('body p').innerHTML = $('.tweet-'+tweetId).find('.content').html();
+        this.tweetId = tweet.id;
+        const dialog = $('.delete-dialog');
+        $('.dialog').hide();
+        dialog.show();
+        $('.delete-dialog .body').empty();
+        tweetDOM.appendTo('.delete-dialog .body', tweet);
     },
 
     close: () => {

@@ -18,7 +18,8 @@ class CreateTweetsTable extends Migration
             $table->integer('user_id');
             $table->string('text', 280);
             $table->softDeletes();
-            $table->timestamps();
+            $table->dateTime('created_at')->nullable();
+            $table->dateTime('updated_at')->nullable();
         });
     }
 

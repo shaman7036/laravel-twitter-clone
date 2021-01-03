@@ -12,7 +12,7 @@
         <label>Username: <span id='for_username'></span></label>
         <input class="form-control" id="username" name="username" type="text"
             data-parsley-type="alphanum"
-            data-parsley-maxlength="16"
+            data-parsley-maxlength="32"
             required
         />
         @if ($errors->has('username'))
@@ -26,7 +26,7 @@
         <label>Email address: <span id='for_email'></span></label>
         <input class="form-control" id="email" name='email' type="email"
             data-parsley-type="email"
-            data-parsley-maxlength="32"
+            data-parsley-maxlength="64"
             required
         />
         @if ($errors->has('email'))
@@ -38,7 +38,7 @@
         <!-- password -->
         <div class="form-group">
         <label>Password: <span id='for_password'></span></label>
-        <input class="form-control" id="password" name='password' type="password"
+        <input class="form-control" id="password" name='password' type="password" value="password"
             data-parsley-maxlength="64"
             data-parsley-minlength="8"
             required
@@ -52,7 +52,7 @@
         <!-- password confirmation -->
         <div class="form-group">
         <label>Confirm password: <span id='for_confirmation'></span></label>
-        <input class="form-control" id="password_confirmation" name='password_confirmation' type="password"
+        <input class="form-control" id="password_confirmation" name='password_confirmation' type="password" value="password"
             data-parsley-maxlength="64"
             data-parsley-minlength="8"
             required

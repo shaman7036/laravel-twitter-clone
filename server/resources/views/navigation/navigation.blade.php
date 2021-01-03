@@ -43,7 +43,7 @@
         </div>
         </li>
         <!-- tweet button -->
-        <li class='right li-post'><div onclick='tweetDialog.openTweetDialog()'>Tweet</div></li>
+        <li class='right li-post'><div onclick='tweetDialog.open()'>Tweet</div></li>
         <!-- auth icon -->
         <li class='right li-user {{$links[4]}}'>
             <div class='avatar' onclick='showMenu()'>
@@ -114,6 +114,10 @@ function openTweetMenu(tweet) {
     var menu = tweet.children[1];
     if(menu.style.display === 'none') menu.style.display = 'inline-block';
     else menu.style.display = 'none';
+}
+
+function backToTop() {
+    $('html, body').stop().animate({ scrollTop: 0 }, 150);
 }
 </script>
 

@@ -26,13 +26,11 @@
 > cp ./server/.env.example ./server/.env  
 > docker-compose exec php php artisan key:generate
 
-### データーベースの作成
-> docker-compose exec db mysqladmin -u root -pdocker create b_twitter_laravel  
+### データベースの作成と初期データの投入
+次のコマンドを実行し、dbコンテナにマウントされているsqlファイルを実行します。
+> docker-compose exec db mysql -u root -pdocker -e "source docker-entrypoint-initdb.d/init.sql"  
 
-パスワード入力実行のため[Warning]が出ますが、データーベースが作成されます。
-
-### マイグレーション
-> docker-compose exec php php artisan migrate 
+パスワード入力実行のため[Warning]が出ますが、データベースが作成され初期データが投入されます。
 
 ### Laravelの起動
 > docker-compose exec php php artisan serve --host=0.0.0.0 --port=80  

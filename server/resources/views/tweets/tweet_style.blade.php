@@ -6,7 +6,7 @@
 .tweet {
     padding-left: 70px;
     padding-top: 7.5px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid rgb(235, 238, 240);
     font-size: 14px;
     overflow:;
     text-align: left;
@@ -59,8 +59,12 @@
     font-size: 15px;
 }
 
-.tweet .info .name {
+.tweet .info .fullname {
     font-weight: bold;
+}
+
+.tweet .info .username > a {
+    color: rgba(0, 0, 0, 0.6);
 }
 
 .tweet .info .date {
@@ -78,19 +82,19 @@
     color: #888;
 }
 
-.tweet .content {
+.tweet .text {
     padding-right: 16px;
     margin-top: 0px;
     margin-bottom: 10px;
 }
 
-.tweet .content a {
+.tweet .text a {
     color: #0ae;
 }
 
 .tweet .icons {
     display: inline-block;
-    padding-top: 10px;
+    padding-top: 7.5px;
     color: #888;
     border: 0px solid;
 }
@@ -130,7 +134,8 @@
     padding-right: 7.5px;
 }
 
-.tweet .replyingTo {
+.tweet .replying-to {
+    cursor: pointer;
     color: #0ae;
     margin-bottom: 4px;
 }

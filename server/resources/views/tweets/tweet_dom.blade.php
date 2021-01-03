@@ -15,7 +15,7 @@
             <a class="a" href=""></a>
         </span>
         <!-- date -->
-        <span class="date">・</span>
+        <span class="date"></span>
     </div>
     <!-- text -->
     <div class="text">

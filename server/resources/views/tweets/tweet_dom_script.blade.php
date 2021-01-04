@@ -12,7 +12,7 @@ const tweetDOM = {
         const clone = $(parent+' > .tweet-dom.default:first');
         clone.removeClass('default');
         clone.addClass('tweet-dom-' + data.id + ' tweet-' + data.id);
-        // open for detail event
+        // click event to open the tweet details dialog
         clone.on('click', (e) => {
             tweetDetailsDialog.open(e, data);
         });

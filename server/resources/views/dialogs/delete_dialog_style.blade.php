@@ -82,3 +82,4 @@
     white-space: nowrap;
 }
 </style>
+@include('dialogs._mobile')

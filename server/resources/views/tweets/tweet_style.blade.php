@@ -139,4 +139,15 @@
     color: #0ae;
     margin-bottom: 4px;
 }
+
+@media screen and (max-width: 960px) {
+    .tweet .icons > div {
+        font-size: 13px;
+        width: 50px;
+    }
+
+    .tweet .icons > div span {
+        font-size: 12px;
+    }
+}
 </style>

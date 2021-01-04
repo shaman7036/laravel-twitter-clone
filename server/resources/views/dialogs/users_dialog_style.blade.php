@@ -163,3 +163,4 @@
     border-top: none;
 }
 </style>
+@include('dialogs._mobile')

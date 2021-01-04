@@ -29,7 +29,7 @@
             <!-- tweet -->
             <div class="textarea">
                 <textarea
-                    class="form-control" type="text" name="text" placeholder="What's happening?"
+                    class="form-control" type="text" name="text"
                     onkeyup="tweetDialog.onKeyUp(event)">
                 </textarea>
             </div>
@@ -62,6 +62,7 @@ const tweetDialog = {
         dialog.find('h3').html('Compose new Tweet');
         dialog.find('form').attr('action', '/tweets');
         dialog.find('textarea').val('');
+        dialog.find('textarea').attr('placeholder', 'What\'s happening?');
         dialog.find('.tweet-button').removeClass('active');
         dialog.find('.tweet-button').val('Tweet');
 
@@ -78,6 +79,7 @@ const tweetDialog = {
         if(target) {
             dialog.find('h3').html('Replying to @' + target.username);
             dialog.find('form').attr('action', '/replies');
+            dialog.find('textarea').attr('placeholder', 'Tweet your reply');
             dialog.find('.tweet-button').val('Reply');
             $('.tweet-dialog .target').html('');
             tweetDOM.appendTo('.tweet-dialog .target', target);

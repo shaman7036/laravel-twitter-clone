@@ -53,7 +53,7 @@
                     <img src="{{$avatar}}" onerror="this.style.display='none'" />
                 @endif
             </div>
-            <a class='mobile' href="<?php echo (isset($auth)) ? '/profile/tweets/'.$auth->username : '/logIn'; ?>">
+            <a class='mobile' href="{{ isset($auth) ? '/profile/tweets/'.$auth->username : '/login' }}">
                 <i class='fa fa-user-o mobile'></i>
             </a>
         <!-- auth menu -->
@@ -62,7 +62,7 @@
         <!-- search -->
         <li class='right li-search'>@include('navigation/search')</li>
     </ul>
-    <div class='mobile createTweet' onclick='tweetDialog.openTweetDialog()'>
+    <div class='mobile createTweet' onclick='tweetDialog.open()'>
         <i class='fa fa-pencil'></i>
     </div>
 </nav>

@@ -142,8 +142,8 @@
 
 .tweet-dialog .modal-footer .tweet-button {
     font-weight: bold;
-    background: #0ae !important;
-    border-color: #0ae !important;
+    background: rgb(29, 161, 242) !important;
+    border-color: rgb(29, 161, 242) !important;
 }
 
 .tweet-dialog .modal-footer .add-button.active,
@@ -160,4 +160,43 @@
     border: 0px solid;
     text-align: right;
 }
+
+@media screen and (max-width: 960px) {
+    .tweet-dialog .wrapper .modal-header h3 {
+        font-size: 16px;
+    }
+
+    .tweet-dialog .wrapper .modal-body {
+        display: inline-block;
+        width: 100%;
+        height: 200px;
+        margin-bottom: 0px !important;
+        padding-bottom: 80px;
+    }
+    .tweet-dialog .wrapper .modal-body textarea {
+        height: 150px;
+        box-shadow: 0px 0px;
+        border: 0px solid;
+    }
+
+    .tweet-dialog .wrapper .modal-footer {
+        border-top: none;
+        padding-top: 7.5px;
+    }
+
+    .tweet-dialog .wrapper .modal-footer .icons,
+    .tweet-dialog .wrapper .modal-footer .add-button {
+        display: none;
+    }
+
+    .tweet-dialog .modal-footer .tweet-button {
+        position: fixed;
+        float: none;
+        top: auto;
+        right: 0px;
+        bottom: 15px;
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+}
 </style>
+@include('dialogs._mobile')

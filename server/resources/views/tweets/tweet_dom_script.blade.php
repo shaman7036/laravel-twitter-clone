@@ -12,7 +12,7 @@ const tweetDOM = {
         const clone = $(parent+' > .tweet-dom.default:first');
         clone.removeClass('default');
         clone.addClass('tweet-dom-' + data.id + ' tweet-' + data.id);
-        // open for detail event
+        // click event to open the tweet details dialog
         clone.on('click', (e) => {
             tweetDetailsDialog.open(e, data);
         });
@@ -38,7 +38,11 @@ const tweetDOM = {
         clone.find('.username a').html('@' + data.username);
         // date
         var date = moment(data.time).format('HH:mm A · MMM Do, YYYY');
-        clone.find('.date').html(' · ' + date);
+        if (window.innerWidth > 960) {
+            clone.find('.date').html(' · ' + date);
+        } else {
+            clone.find('.date').html('<br />' + date);
+        }
         // text
         clone.find('.text p').html(data.text);
         // reply icon

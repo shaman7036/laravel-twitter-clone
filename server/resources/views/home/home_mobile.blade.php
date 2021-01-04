@@ -83,10 +83,6 @@
         left: 0px;
     }
 
-    .home.container .center .timeline ul li:last-child > div {
-        border-bottom: 0px solid;
-    }
-
     .home.container .right {
         position: relative;
         float: none;

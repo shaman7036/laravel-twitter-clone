@@ -40,4 +40,17 @@
     white-space: nowrap;
     padding: 5px 0px;
 }
+
+@media screen and (max-width: 960px) {
+    .tweet-menu {
+        left: auto;
+        right: 4px;
+
+    }
+
+    .tweet-menu > div {
+        left: auto;
+        right: 7.5px;
+    }
+}
 </style>

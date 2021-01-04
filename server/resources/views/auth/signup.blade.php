@@ -38,7 +38,7 @@
         <!-- password -->
         <div class="form-group">
         <label>Password: <span id='for_password'></span></label>
-        <input class="form-control" id="password" name='password' type="password" value="password"
+        <input class="form-control" id="password" name='password' type="password"
             data-parsley-maxlength="64"
             data-parsley-minlength="8"
             required
@@ -52,7 +52,7 @@
         <!-- password confirmation -->
         <div class="form-group">
         <label>Confirm password: <span id='for_confirmation'></span></label>
-        <input class="form-control" id="password_confirmation" name='password_confirmation' type="password" value="password"
+        <input class="form-control" id="password_confirmation" name='password_confirmation' type="password"
             data-parsley-maxlength="64"
             data-parsley-minlength="8"
             required

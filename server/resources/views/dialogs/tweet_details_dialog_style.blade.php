@@ -82,3 +82,4 @@
     background: #fdfdfd;
 }
 </style>
+@include('dialogs._mobile')

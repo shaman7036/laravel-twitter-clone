@@ -44,7 +44,7 @@
     </form>
     <!-- to signup -->
     <div class='to-signup'>
-        <p>New to Twitter? <a href="signup">Sign up now »</a></p>
+        <p>New to Twitter? <a href="/signup">Sign up now »</a></p>
     </div>
 </div>
 

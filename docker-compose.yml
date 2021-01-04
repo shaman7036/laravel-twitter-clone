@@ -5,9 +5,13 @@ services:
     build: ./_/php
     volumes:
       - ./server:/var/www
+      - ./server/.env.example:/var/www/.env
     ports:
       - 80:80
-    # command: php artisan serv --host=0.0.0.0 --port=80
+    command: bash -c "
+      composer install
+      && php artisan key:generate
+      && php artisan serv --host=0.0.0.0 --port=80"
 
   nginx:
     image: nginx:1.18-alpine

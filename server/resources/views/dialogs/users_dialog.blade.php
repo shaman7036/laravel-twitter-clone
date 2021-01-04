@@ -17,11 +17,11 @@
     </div>
     <div class="user-dom-wrapper">
         <li class="user user-dom default row">
-            <div class="col col-md-2">
+            <div class="col col-md-2 col-sm-3 col-xs-4">
                 <!-- avatar -->
                 <a class="avatar"><i class="fa fa-user"></i></a>
             </div>
-            <div class="col col-md-10 left-col">
+            <div class="col col-md-10 col-sm-9 col-xs-8 left-col">
                 <div class="row fullname">Full Name</div>
                 <div class="row username">@username</div>
                 <div class="row description">Description</div>
@@ -128,4 +128,4 @@ const usersDialog = {
 };
 </script>
 
-@include('dialogs.users_dialog_style');
+@include('dialogs.users_dialog_style')

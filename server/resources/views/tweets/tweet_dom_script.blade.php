@@ -38,7 +38,11 @@ const tweetDOM = {
         clone.find('.username a').html('@' + data.username);
         // date
         var date = moment(data.time).format('HH:mm A · MMM Do, YYYY');
-        clone.find('.date').html(' · ' + date);
+        if (window.innerWidth > 960) {
+            clone.find('.date').html(' · ' + date);
+        } else {
+            clone.find('.date').html('<br />' + date);
+        }
         // text
         clone.find('.text p').html(data.text);
         // reply icon

@@ -82,7 +82,11 @@
     <script>
         var tweet = <?php echo $tweet; ?>;
         var date = moment(tweet.time).format('MMM Do, YYYY');
-        $('.tweet-'+tweet.id).find('.date').html(' · ' + date);
+        if (window.innerWidth > 960) {
+            $('.tweet-'+tweet.id).find('.date').html(' · ' + date);
+        } else {
+            $('.tweet-'+tweet.id).find('.date').html('<br />' + date);
+        }
     </script>
 </div>
 

@@ -13,7 +13,7 @@
         <!-- header -->
         <div class="modal-header">
             <h3>Compose new Tweet</h3>
-            <i class="fa fa-times close-dialog" onclick="tweetDialog.close(event)"></i>
+            <i class="fa fa-times close-dialog"></i>
         </div>
         <!-- target tweet -->
         <div class="target"></div>

@@ -6,8 +6,8 @@
     if($tweet->avatar) $avatar = '/storage/media/'.$tweet->user_id.'/avatar/thumbnail.'.$tweet->avatar;
 
     // add links in tweet
-    $str = preg_replace('/(?<!\S)#([0-9a-zA-Z]+)/', '<a class="link" href="/hashtag/$1">#$1</a>', $tweet->text);
-    $str = preg_replace('/(?<!\S)@([0-9a-zA-Z_-]+)/', '<a class="link" href="/profile/tweets/$1">@$1</a>', $str);
+    $str = preg_replace('/(?<!\S)#([0-9a-zA-Z]+)/', '<a class="link a" href="/home/hashtag/$1?page=1">#$1</a>', $tweet->text);
+    $str = preg_replace('/(?<!\S)@([0-9a-zA-Z_-]+)/', '<a class="link a" href="/profile/tweets/$1">@$1</a>', $str);
     $str = preg_replace('|([\w\d]*)\s?(https?://([\d\w\.-]+\.[\w\.]{2,6})[^\s\]\[\<\>]*/?)|i', '$1 <a href="$2">$3</a>', $str);
 ?>
 <div class="tweet tweet-{{$tweet->id}}" id="tweet-{{$tweet->id}}" onclick="tweetDetailsDialog.open(event, {{$tweet}})">

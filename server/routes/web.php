@@ -38,6 +38,7 @@ Route::post('/profile/edit/{username}', $controllers . 'ProfileController@update
 /**
  * navigation
  */
+Route::get('/home/hashtag/{hashtag}', $controllers . 'HomeController@getTimelineForHashtag');
 Route::get('/home', $controllers . 'HomeController@getTimeline');
 Route::view('/moments', 'moments');
 Route::view('/notifications', 'notifications');

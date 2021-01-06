@@ -68,3 +68,8 @@ Route::resource('/follows', $controllers . 'FollowController', ['only' => ['inde
  * replies
  */
 Route::resource('/replies', $controllers . 'ReplyController', ['only' => ['index', 'store']]);
+
+/**
+ * search
+ */
+Route::get('/search', $controllers . 'SearchController@search');

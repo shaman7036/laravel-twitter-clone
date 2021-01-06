@@ -105,7 +105,7 @@
     color: rgba(0, 0, 0, 0.6);
 }
 
-.users-dialog .users .user .description{
+.users-dialog .users .user .description {
     white-space: nowrap;
     text-overflow: ellipsis;
     width: 100%;
@@ -151,10 +151,6 @@
 
 .users-dialog .users .user .follow-button.active:hover:after {
     content: 'Unfollow';
-}
-
-.users-dialog .user-dom-wrapper {
-    display: none;
 }
 
 .users-dialog .modal-footer {

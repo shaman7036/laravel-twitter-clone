@@ -1,8 +1,10 @@
 <script>
 if (window.location.href.indexOf('/home') > -1) {
     $('.tweet').css('padding-bottom', '5px');
+    $('.tweet-dom').find('.chart-icon').css('padding-top', '5px');
 } else {
     $('.tweet').css('padding-bottom', '0px');
+    $('.tweet-dom').find('.chart-icon').css('padding-top', '0px');
 }
 
 const tweetDOM = {

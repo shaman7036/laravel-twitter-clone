@@ -15,7 +15,7 @@
             <span class="back-to-top">Back to Top</span>
         </div>
     </div>
-    <div class="user-dom-wrapper">
+    <ul class="user-dom-wrapper" style="display: none">
         <li class="user user-dom default row">
             <div class="col col-md-2 col-sm-3 col-xs-4">
                 <!-- avatar -->
@@ -28,7 +28,7 @@
                 <a class="btn btn-default follow-button"></a>
             </div>
         </li>
-    </div>
+    </ul>
 </div>
 
 <script>

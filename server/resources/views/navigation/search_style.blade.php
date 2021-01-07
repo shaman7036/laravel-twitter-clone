@@ -37,12 +37,23 @@
     background: #fdfdfd;
 }
 
+.search .hashtag {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
 .search .hashtag a {
     display: block;
+    line-height: 44px;
+    height: 44px;
 }
 
 .search .hashtag .badge {
-    float: right;
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
 }
 
 .search .user  {

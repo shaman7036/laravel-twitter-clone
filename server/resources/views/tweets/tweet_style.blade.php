@@ -141,9 +141,13 @@
 }
 
 @media screen and (max-width: 960px) {
+    .tweet .icons {
+        width: 100%;
+    }
+
     .tweet .icons > div {
-        font-size: 13px;
-        width: 50px;
+        font-size: 14px;
+        width: 25%;
     }
 
     .tweet .icons > div span {

@@ -11,11 +11,11 @@
         $links = array('', '', '', '', '');
         $url = url()->current();
         if(strrpos($url, '/home')) $links[0] = 'active';
-        else if(strrpos($url, '/moments')) $links[1] = 'active';
-        else if(strrpos($url, '/notifications')) $links[2] = 'active';
-        else if(strrpos($url, '/messages')) $links[3] = 'active';
-        else if(strrpos($url, '/profile')) {
-        if(isset($auth) && strrpos($url, '/'.$auth->username)) $links[4] = 'active';
+            else if(strrpos($url, '/moments')) $links[1] = 'active';
+            else if(strrpos($url, '/notifications')) $links[2] = 'active';
+            else if(strrpos($url, '/messages')) $links[3] = 'active';
+            else if(strrpos($url, '/profile')) {
+            if(isset($auth) && strrpos($url, '/'.$auth->username)) $links[4] = 'active';
         }
     ?>
     <ul>
@@ -62,7 +62,7 @@
         <!-- search -->
         <li class='right li-search'>@include('navigation/search')</li>
     </ul>
-    <div class='mobile createTweet' onclick='tweetDialog.open()'>
+    <div class='mobile create-tweet' onclick='tweetDialog.open()'>
         <i class='fa fa-pencil'></i>
     </div>
 </nav>
@@ -78,9 +78,9 @@ $(document).ready(function() {
         if($(window).width() <= 960) { // mobile
             var t = $(window).scrollTop();
             if(t >= scrollTop) {
-                $('.createTweet').fadeOut(200);
+                $('.create-tweet').fadeOut(200);
             } else {
-                $('.createTweet').fadeIn(0);
+                $('.create-tweet').fadeIn(0);
             }
             scrollTop = t;
         }

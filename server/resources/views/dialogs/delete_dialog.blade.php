@@ -64,7 +64,6 @@ const deleteDialog = {
 
 $(document).ajaxError(function(e){
     console.log(e);
-    alert("An error occurred!");
 });
 </script>
 

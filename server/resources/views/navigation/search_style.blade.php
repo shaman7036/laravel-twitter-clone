@@ -20,22 +20,35 @@
     color: #888;
 }
 
-.search .users {
+.search .results {
     position: fixed;
-    margin-top: 12px;
     box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
     max-height: 480px;
     overflow-y: scroll;
+    margin: 0px;
+    margin-top: 12px;
+}
+
+.search .results > li {
+    min-width: 200px;
+}
+
+.search .results > li:hover {
+    background: #fdfdfd;
+}
+
+.search .hashtag a {
+    display: block;
+}
+
+.search .hashtag .badge {
+    float: right;
 }
 
 .search .user  {
     cursor: pointer;
     height: 60px;
     padding: 0px auto;
-}
-
-.search .user:hover {
-    background: #fdfdfd;
 }
 
 .search .user .avatar {

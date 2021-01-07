@@ -46,7 +46,13 @@ const tweetDOM = {
             clone.find('.date').html('<br />' + date);
         }
         // text
-        clone.find('.text p').html(data.text);
+        var str = data.text.replace(/(?<!\S)#([0-9a-zA-Z]+)/, '<a class="link a" href="/home/hashtag/$1?page=1">#$1</a>');
+        str = str.replace(/(?<!\S)@([0-9a-zA-Z_-]+)/, '<a class="link a" href="/profile/tweets/$1">@$1</a>');
+        var urlRegex =/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+        str = str.replace(urlRegex, function(url) {
+            return '<a target="_blank" href="' + url + '">' + url + '</a>';
+        });
+        clone.find('.text p').html(str);
         // reply icon
         clone.find('.reply-icon span').html(data.num_replies ? data.num_replies : 0);
         clone.find('.reply-icon').on('click', function() {

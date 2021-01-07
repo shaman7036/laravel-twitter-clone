@@ -26,8 +26,10 @@ class SearchController extends Controller
         $texts = Tweet::where('text', 'like', '%#' . $q . '%')
             ->orderBy('updated_at', 'desc')->limit(100)->pluck('text')->toArray();
         foreach ($texts as $text) {
-            preg_match('/(' . $q . '\b)|(\b' . $q . '\w+)/', $text, $matches);
+            error_log($text);
+            preg_match('/(#' . $q . '\b)|(#' . $q . '\w+)/', $text, $matches);
             if (!$matches) continue;
+            error_log(json_encode($matches));
             if (array_key_exists($matches[0], $hashtags)) {
                 $hashtags[$matches[0]] += 1;
             } else {

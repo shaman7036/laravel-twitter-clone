@@ -70,9 +70,9 @@ const search = {
         const clone = $('.search .results .hashtag-dom.default:first');
         clone.removeClass('default');
         // link
-        clone.find('.link').attr('href', '/home/hashtag/' + key + '?page=1');
+        clone.find('.link').attr('href', '/home/hashtag/' + key.replace('#', '') + '?page=1');
         // hashtag
-        clone.find('.tag').html('#' + key);
+        clone.find('.tag').html(key);
         // number
         clone.find('.badge').html(value);
         clone.show();

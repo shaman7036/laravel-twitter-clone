@@ -130,12 +130,18 @@ class ProfileController extends Controller
      */
     public function getTweets(Request $request, $username)
     {
+        if (strrpos($request->fullUrl(), '/profile/with_replies/')) {
+            $link = '/profile/with_replies/' . $username;
+        } else {
+            $link = '/profile/tweets/' . $username;
+        }
+
         // create pagination object
         $pagination = (object)[
             'total' => 0,
             'per_page' => env('TWEETS_PER_PAGE', 10),
             'current_page' => $request->input('page') ? $request->input('page') : 1,
-            'page_link' => '/profile/tweets/' . $username,
+            'page_link' => $link,
         ];
 
         // get auth id if user is logged in

@@ -101,10 +101,6 @@
         margin-bottom: -15px;
     }
 
-    .profile .main > div > .center .header {
-        display: none;
-    }
-
     .profile .main > div > .center .tweets {
         width: 100%;
         top: -7.5px;

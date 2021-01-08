@@ -60,4 +60,11 @@
 .tweets > .footer:hover {
     background: #fdfdfd;
 }
+
+@media screen and (max-width: 960px) {
+    .tweets .header > ul > li {
+        font-size: 15px;
+        letter-spacing: 0px;
+    }
+}
 </style>

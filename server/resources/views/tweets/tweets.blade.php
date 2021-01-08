@@ -1,21 +1,30 @@
 <?php
+    $links = array('', '', '', '');
+    $url = url()->current();
+    if (strrpos($url, '/profile/tweets/')) $links[0] = 'active';
+    else if (strrpos($url, '/profile/with_replies/')) $links[1] = 'active';
+    else if (strrpos($url, '/profile/media/')) $links[2] = 'active';
+    else if (strrpos($url, '/profile/likes/')) $links[3] = 'active';
+
     $auth = '';
     if (Session::get('auth')) $auth = Session::get('auth');
 ?>
 <div class="tweets">
-    <div class="header">
-        <ul class="tweets_ul">
-            <li class="li_tweets active" onclick="get_tweets()">
-                <a href="{{ '/profile/tweets/' . $profile->username }}">Tweets</a>
-            </li>
-            <li class="li_replies" onclick="get_replies()">
-                <a href="{{ '/profile/replies/' . $profile->username }}">Tweets & replies</a>
-            </li>
-            <li class="li_media" onclick="get_media()">
-                <a href="{{ '/profile/media/' . $profile->username }}">Media</a>
-            </li>
-        </ul>
-    </div>
+    @if ($links[3] != 'active')
+        <div class="header">
+            <ul class="tweets_ul">
+                <li class="li_tweets {{$links[0]}}" onclick="get_tweets()">
+                    <a href="{{ '/profile/tweets/' . $profile->username }}">Tweets</a>
+                </li>
+                <li class="li_replies {{$links[1]}}" onclick="get_replies()">
+                    <a href="{{ '/profile/with_replies/' . $profile->username }}">Tweets & replies</a>
+                </li>
+                <li class="li_media {{$links[2]}}" onclick="get_media()">
+                    <a href="{{ '/profile/media/' . $profile->username }}">Media</a>
+                </li>
+            </ul>
+        </div>
+    @endif
     <div class="body">
         <ul>
         @foreach($tweets as $t)

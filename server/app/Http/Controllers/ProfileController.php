@@ -61,7 +61,6 @@ class ProfileController extends Controller
         if (isset($bg)) {
             $dir = 'storage/media/' . $auth->id . '/bg';
             $files = glob($dir . '/*');
-            //error_log('$files='.json_encode($files));
             if (isset($files)) {
                 foreach ($files as $f) {
                     unlink($f);
@@ -95,7 +94,6 @@ class ProfileController extends Controller
             $dir = 'storage/media/' . $auth->id . '/avatar';
             $ext = $avatar->extension();
             $path = $avatar->move($dir, 'avatar.' . $ext);
-            error_log($path);
             $img = Image::make($path);
             if ($img->width() > $img->height()) {
                 $w = null;
@@ -132,12 +130,18 @@ class ProfileController extends Controller
      */
     public function getTweets(Request $request, $username)
     {
+        if (strrpos($request->fullUrl(), '/profile/with_replies/')) {
+            $link = '/profile/with_replies/' . $username;
+        } else {
+            $link = '/profile/tweets/' . $username;
+        }
+
         // create pagination object
         $pagination = (object)[
             'total' => 0,
             'per_page' => env('TWEETS_PER_PAGE', 10),
             'current_page' => $request->input('page') ? $request->input('page') : 1,
-            'page_link' => '/profile/tweets/' . $username,
+            'page_link' => $link,
         ];
 
         // get auth id if user is logged in
@@ -152,6 +156,10 @@ class ProfileController extends Controller
         // get tweets and retweets by profile id
         $query_t = Tweet::getQueryForTweets($authId)->where('tweets.user_id', $profile->id);
         $query_r = Tweet::getQueryForRetweets($authId)->where('retweets.user_id', $profile->id);
+        // make tweets without replies if the url is not with_replies
+        if (!strrpos($request->fullUrl(), '/profile/with_replies/')) {
+            $query_t->whereNull('rp_b.id');
+        }
         $tweets = $query_t->union($query_r)
             ->orderBy('time', 'desc')
             ->offset($pagination->per_page * ($pagination->current_page - 1))

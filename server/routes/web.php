@@ -29,6 +29,7 @@ Route::get('/logout', $controllers . 'AuthController@logout');
  * profile
  */
 Route::get('/profile/tweets/{username}', $controllers . 'ProfileController@getTweets');
+Route::get('/profile/with_replies/{username}', $controllers . 'ProfileController@getTweets');
 Route::get('/profile/following/{username}', $controllers . 'ProfileController@getFollowing');
 Route::get('/profile/followers/{username}', $controllers . 'ProfileController@getFollowers');
 Route::get('/profile/likes/{username}', $controllers . 'ProfileController@getLikes');

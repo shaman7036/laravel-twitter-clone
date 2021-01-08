@@ -35,11 +35,11 @@
 }
 
 .tweets > .header > ul > li > a {
-    color: #0ae;
+    color: rgb(102, 117, 127);
 }
 
-.tweets > .header > ul > li > a.router-link-exact-active {
-    color: #333;
+.tweets > .header > ul > li.active > a {
+    color: #0ae;
 }
 
 .tweets > .header > ul > li > a:hover {

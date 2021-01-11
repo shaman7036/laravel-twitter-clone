@@ -42,6 +42,14 @@
     padding: 5px 0px;
 }
 
+.tweet-menu li.pin-tweet:after {
+    content: 'Pin to your profile page';
+}
+
+.pinned-tweets .tweet-menu li.pin-tweet:after {
+    content: 'Unpin from profile';
+}
+
 @media screen and (max-width: 960px) {
     .tweet-menu {
         left: auto;

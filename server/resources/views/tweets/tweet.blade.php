@@ -11,6 +11,10 @@
     $str = preg_replace('|([\w\d]*)\s?(https?://([\d\w\.-]+\.[\w\.]{2,6})[^\s\]\[\<\>]*/?)|i', '$1 <a target="_blank" href="$2">$3</a>', $str);
 ?>
 <div class="tweet tweet-{{$tweet->id}}" id="tweet-{{$tweet->id}}" onclick="tweetDetailsDialog.open(event, {{$tweet}})">
+    <!-- pinned -->
+    <div class="pinned" style="display: none">
+        <i class="fa fa-thumbtack"></i> Pinned tweet
+    </div>
     <!-- retweeted username -->
     @if($tweet->retweeted_username)
         <a class="retweeted a" href={{'/profile/tweets/'.$tweet->retweeted_username}}>

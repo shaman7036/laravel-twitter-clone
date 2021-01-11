@@ -26,10 +26,17 @@
         </div>
     @endif
     <div class="body">
+        @if ($pinnedTweets && $pinnedTweets->count() > 0)
+            <ul class="pinned-tweets">
+                @foreach ($pinnedTweets as $pt)
+                    <li>@include('tweets/tweet', ['tweet' => $pt])</li>
+                @endforeach
+            </ul>
+        @endif
         <ul>
-        @foreach($tweets as $t)
-            <li>@include('tweets/tweet', ['tweet' => $t])</li>
-        @endforeach
+            @foreach ($tweets as $t)
+                <li>@include('tweets/tweet', ['tweet' => $t])</li>
+            @endforeach
         </ul>
     </div>
     <div class="footer" onclick="backToTop()">

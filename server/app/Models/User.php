@@ -43,6 +43,14 @@ class User extends Authenticatable
     ];
 
     /**
+     * get a query to retrieve the pins for the user
+     */
+    public function pins()
+    {
+        return $this->hasMany(Pin::class, 'user_id', 'id');
+    }
+
+    /**
      * get a user's profile
      *
      * @param array $where

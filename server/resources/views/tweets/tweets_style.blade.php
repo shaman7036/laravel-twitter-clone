@@ -50,6 +50,11 @@
     height: auto;
 }
 
+.tweets > .body .pinned-tweets {
+    background: rgb(230, 236, 240);
+    padding-bottom: 10px;
+}
+
 .tweets > .footer {
     height: 60px;
     text-align: center;

@@ -61,6 +61,11 @@ Route::resource('/likes', $controllers . 'LikeController', ['only' => ['index', 
 Route::resource('/retweets', $controllers . 'RetweetController', ['only' => ['index', 'store']]);
 
 /**
+ * pins
+ */
+Route::resource('/pins', $controllers . 'PinController', ['only' => ['store']]);
+
+/**
  * follows
  */
 Route::resource('/follows', $controllers . 'FollowController', ['only' => ['index', 'store']]);

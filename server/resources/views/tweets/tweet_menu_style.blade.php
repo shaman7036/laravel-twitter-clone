@@ -37,6 +37,7 @@
 }
 
 .tweet-menu li {
+    cursor: pointer;
     white-space: nowrap;
     padding: 5px 0px;
 }

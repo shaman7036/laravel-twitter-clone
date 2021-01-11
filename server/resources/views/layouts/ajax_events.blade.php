@@ -82,7 +82,26 @@ const tweetEvents = {
             },
             complete: () => icon.removeClass('requesting'),
         });
-    }
+    },
+
+    pinTweet: (tweetId) => {
+        if(!auth) {
+            window.location.href = '/login';
+            return;
+        }
+        $.ajax({
+            type: 'POST',
+            url: '/pins',
+            data: {"_token": "{{ csrf_token() }}", tweet_id: tweetId},
+            success: (res) => {
+                if (res.isPinned) {
+                    // pinned
+                } else {
+                    // unpinned
+                }
+            },
+        });
+    },
 }
 
 // follow events

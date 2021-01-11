@@ -175,15 +175,30 @@ class ProfileController extends Controller
      */
     public function getFollowing(Request $request, $username)
     {
+        // create pagination object
+        $pagination = (object)[
+            'total' => 0,
+            'per_page' => env('USERS_PER_PAGE', 12),
+            'current_page' => $request->input('page') ? $request->input('page') : 1,
+            'page_link' => '/profile/following/' . $username,
+        ];
+
         $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
 
         // get a profile by username
         $profile = User::getProfile(['users.username' => $username], $authId);
 
-        // get following users by profile id
-        $users = Follow::getFollowingByUserId($profile->id, $authId);
+        // count total follownig in profile
+        $pagination->total = Follow::getQueryForProfileFollowing($profile->id, $authId)->count();
 
-        return view('profile.profile', ['profile' => $profile, 'users' => $users]);
+        // get following in profile
+        $users = Follow::getQueryForProfileFollowing($profile->id, $authId)
+            ->orderBy('follows.updated_at', 'desc')
+            ->offset($pagination->per_page * ($pagination->current_page - 1))
+            ->limit($pagination->per_page)
+            ->get();
+
+        return view('profile.profile', ['profile' => $profile, 'users' => $users, 'pagination' => $pagination]);
     }
 
     /**
@@ -192,15 +207,30 @@ class ProfileController extends Controller
      */
     public function getFollowers(Request $request, $username)
     {
+        // create pagination object
+        $pagination = (object)[
+            'total' => 0,
+            'per_page' => env('USERS_PER_PAGE', 12),
+            'current_page' => $request->input('page') ? $request->input('page') : 1,
+            'page_link' => '/profile/followers/' . $username,
+        ];
+
         $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
 
         // get a profile by username
         $profile = User::getProfile(['users.username' => $username], $authId);
 
-        // get following by profile id
-        $users = Follow::getFollowersByUserId($profile->id, $authId);
+        // count total followers in profile
+        $pagination->total = Follow::getQueryForProfileFollowers($profile->id, $authId)->count();
 
-        return view('profile.profile', ['profile' => $profile, 'users' => $users]);
+        // get followers in profile
+        $users = Follow::getQueryForProfileFollowers($profile->id, $authId)
+            ->orderBy('follows.updated_at', 'desc')
+            ->offset($pagination->per_page * ($pagination->current_page - 1))
+            ->limit($pagination->per_page)
+            ->get();
+
+        return view('profile.profile', ['profile' => $profile, 'users' => $users, 'pagination' => $pagination]);
     }
 
     /**

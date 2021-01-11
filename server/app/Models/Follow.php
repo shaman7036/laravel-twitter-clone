@@ -17,44 +17,42 @@ class Follow extends Model
     ];
 
     /**
-     * get users who are followed by $userId
+     * get a query for retrieving users who are followed by profile id
      *
      * @param int $userId
      * @param int $authId
      * @return Follow $following
      */
-    public static function getFollowingByUserId($userId, $authId)
+    public static function getQueryForProfileFollowing($profileId, $authId = 0)
     {
         $select = ['u.id', 'u.bg', 'u.avatar', 'u.fullname', 'u.username', 'u.description'];
-        $following = self::select($select)
+        $query = self::select($select)
             ->selectRaw('case when follows.follower_id = ' . $authId . ' then 1 else 0 end as is_followed')
-            ->join('users as u', function ($join) use ($userId) {
+            ->join('users as u', function ($join) use ($profileId) {
                 $join->on('follows.followed_id', '=', 'u.id')->whereNull('u.deleted_at')
-                    ->where('follows.follower_id', $userId);
-            })
-            ->OrderBy('follows.updated_at', 'desc')->get();
+                    ->where('follows.follower_id', $profileId);
+            });
 
-        return $following;
+        return $query;
     }
 
     /**
-     * get users who are following $userId
+     * get a query for retrieving users who are following profile id
      *
      * @param int $userId
      * @param int $authId
      * @return Follow $followers
      */
-    public static function getFollowersByUserId($userId, $authId)
+    public static function getQueryForProfileFollowers($profileId, $authId = 0)
     {
         $select = ['u.id', 'u.bg', 'u.avatar', 'u.fullname', 'u.username', 'u.description'];
-        $followers = self::select($select)
-            ->selectRaw('case when follows.follower_id = ' . $authId . ' then 1 else 0 end as is_followed')
-            ->join('users as u', function ($join) use ($userId) {
+        $query = self::select($select)
+            ->selectRaw('case when follows.follower_id = ' . $profileId . ' then 1 else 0 end as is_followed')
+            ->join('users as u', function ($join) use ($profileId) {
                 $join->on('follows.follower_id', '=', 'u.id')->whereNull('u.deleted_at')
-                    ->where('follows.followed_id', $userId);
-            })
-            ->OrderBy('follows.updated_at', 'desc')->get();
+                    ->where('follows.followed_id', $profileId);
+            });
 
-        return $followers;
+        return $query;
     }
 }

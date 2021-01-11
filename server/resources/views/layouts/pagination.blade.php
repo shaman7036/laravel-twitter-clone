@@ -29,13 +29,27 @@
 </div>
 @endif
 
+<script>
+if (window.location.href.indexOf('/profile/follow') > -1) {
+    $('.profile .pagination-wrapper').addClass('for-users');
+}
+</script>
+
 <style>
 .pagination-wrapper {
+    position: relative;
     text-align: right;
 }
 
+.pagination-wrapper.for-users {
+    text-align: left;
+    left: 5px;
+    top: -15px;
+}
+
 @media screen and (max-width: 960px) {
-    .pagination-wrapper {
+    .pagination-wrapper,
+    .pagination-wrapper.for-users {
         text-align: center;
     }
 }

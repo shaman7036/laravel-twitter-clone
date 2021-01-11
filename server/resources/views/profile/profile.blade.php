@@ -149,8 +149,6 @@
                     <div>
                         <!-- tweets -->
                         @include('tweets/tweets', ['tweets' => $tweets])
-                        <!-- pagination -->
-                        @include('layouts.pagination', ['pagination' => $pagination])
                     </div>
                 @else
                     <!-- users -->
@@ -164,6 +162,8 @@
                         @endisset
                     </ul>
                 @endif
+                <!-- pagination -->
+                @include('layouts.pagination', ['pagination' => $pagination])
             </div>
             <!-- right -->
             <div class="right"></div>

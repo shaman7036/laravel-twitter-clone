@@ -132,8 +132,10 @@ class ProfileController extends Controller
     {
         if (strrpos($request->fullUrl(), '/profile/with_replies/')) {
             $link = '/profile/with_replies/' . $username;
+            $withReplies = true;
         } else {
             $link = '/profile/tweets/' . $username;
+            $withReplies = false;
         }
 
         // create pagination object
@@ -161,7 +163,8 @@ class ProfileController extends Controller
         }
 
         // count tweets and retweets by profile id, and set number in pagination
-        $pagination->total = Tweet::countTweetsAndRetweets([$profile->id]);
+        $pagination->total = Tweet::countTweetsAndRetweets([$profile->id], $pinnedTweetIds, $withReplies);
+        error_log('total=' . $pagination->total);
 
         // get tweets and retweets by profile id
         $query_t = Tweet::getQueryForTweets($authId)
@@ -169,7 +172,7 @@ class ProfileController extends Controller
         $query_r = Tweet::getQueryForRetweets($authId)
             ->where('retweets.user_id', $profile->id)->whereNotIn('tweets.id', $pinnedTweetIds);
         // make tweets without replies if the url is not with_replies
-        if (!strrpos($request->fullUrl(), '/profile/with_replies/')) {
+        if (!$withReplies) {
             $query_t->whereNull('rp_b.id');
         }
         $tweets = $query_t->union($query_r)

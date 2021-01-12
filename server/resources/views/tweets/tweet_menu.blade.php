@@ -1,13 +1,30 @@
-<?php
-    $delete = true;
-?>
 <div class="tweet-menu" id="tweet-menu-{{$tweet->id}}" style="display: none">
     <div><div></div></div>
     <ul>
-        <li class="menu-item">Pin to your profile page</li>
-        <li class="menu-item">Report Tweet</li>
-        @if($delete)
-            <li class="menu-item" onclick="deleteDialog.open({{$tweet}})">Delete Tweet</li>
+        <!-- login -->
+        @if (!$auth)
+            <li class="menu-item menu-item-login">
+                <a class="a" href="/login"><i class="fa fa-sign-in"></i> Log In</a>
+            </li>
+        @endif
+        <!-- report tweet -->
+        @if ($auth && $auth->id != $tweet->user_id)
+            <li class="menu-item menu-item-report">
+                <i class="fa fa-flag-o"></i> Report Tweet
+            </li>
+        @endif
+        <!-- pin tweet -->
+        @if ($auth && $auth->id == $tweet->user_id && strrpos(url()->current(), '/profile/') != false)
+            <li class="menu-item menu-item-pin" onclick="tweetEvents.pinTweet({{$tweet->id}})">
+                <i class="fa fa-thumbtack"></i>
+                <span class="a"></span>
+            </li>
+        @endif
+        <!-- delete tweet -->
+        @if ($auth && $auth->id == $tweet->user_id)
+            <li class="menu-item menu-item-delete" onclick="deleteDialog.open({{$tweet}})">
+                <i class="fa fa-trash-o"></i> Delete Tweet
+            </li>
         @endif
     </ul>
 </div>

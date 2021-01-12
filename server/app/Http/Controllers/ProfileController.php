@@ -132,8 +132,10 @@ class ProfileController extends Controller
     {
         if (strrpos($request->fullUrl(), '/profile/with_replies/')) {
             $link = '/profile/with_replies/' . $username;
+            $withReplies = true;
         } else {
             $link = '/profile/tweets/' . $username;
+            $withReplies = false;
         }
 
         // create pagination object
@@ -150,14 +152,26 @@ class ProfileController extends Controller
         // get a profile by username
         $profile = User::getProfile(['users.username' => $username], $authId);
 
+        // get pinned tweets
+        $pinnedTweetIds = $profile->pins()->orderBy('updated_at', 'desc')->pluck('tweet_id')->toArray();
+        $pinnedTweets = collect();
+        if ($pagination->current_page == 1 && count($pinnedTweetIds) > 0) {
+            $pinnedTweets = Tweet::getQueryForTweets($authId)
+                ->whereIn('tweets.id', $pinnedTweetIds)
+                ->orderByRaw('FIELD(tweets.id, ' . implode(',', $pinnedTweetIds) . ')')
+                ->get();
+        }
+
         // count tweets and retweets by profile id, and set number in pagination
-        $pagination->total = Tweet::countTweetsAndRetweets([$profile->id]);
+        $pagination->total = Tweet::countTweetsAndRetweets([$profile->id], $pinnedTweetIds, $withReplies);
 
         // get tweets and retweets by profile id
-        $query_t = Tweet::getQueryForTweets($authId)->where('tweets.user_id', $profile->id);
-        $query_r = Tweet::getQueryForRetweets($authId)->where('retweets.user_id', $profile->id);
+        $query_t = Tweet::getQueryForTweets($authId)
+            ->where('tweets.user_id', $profile->id)->whereNotIn('tweets.id', $pinnedTweetIds);
+        $query_r = Tweet::getQueryForRetweets($authId)
+            ->where('retweets.user_id', $profile->id)->whereNotIn('tweets.id', $pinnedTweetIds);
         // make tweets without replies if the url is not with_replies
-        if (!strrpos($request->fullUrl(), '/profile/with_replies/')) {
+        if (!$withReplies) {
             $query_t->whereNull('rp_b.id');
         }
         $tweets = $query_t->union($query_r)
@@ -166,7 +180,9 @@ class ProfileController extends Controller
             ->limit($pagination->per_page)
             ->get();
 
-        return view('profile.profile', ['profile' => $profile, 'tweets' => $tweets, 'pagination' => $pagination]);
+        return view('profile.profile', [
+            'profile' => $profile, 'pinnedTweets' => $pinnedTweets, 'tweets' => $tweets, 'pagination' => $pagination
+        ]);
     }
 
     /**

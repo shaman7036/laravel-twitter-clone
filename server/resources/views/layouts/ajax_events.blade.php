@@ -94,10 +94,29 @@ const tweetEvents = {
             url: '/pins',
             data: {"_token": "{{ csrf_token() }}", tweet_id: tweetId},
             success: (res) => {
-                if (res.isPinned) {
-                    // pinned
-                } else {
-                    // unpinned
+                if (window.location.href.indexOf('/profile/tweets') > -1
+                    || window.location.href.indexOf('/profile/with_replies') > -1) {
+                    const pinnedTweets = $('.profile .pinned-tweets');
+                    const tweet = $('.profile .tweet-' + tweetId);
+                    if (res.isPinned) {
+                        // pinned
+                        tweet.animate({ height: '0px', opacity: '0' }, 'fast', () => {
+                            tweet.prependTo('.profile .pinned-tweets');
+                            tweet.animate({ height: '100%', opacity: '1' }, 'fast', () => {
+                                pinnedTweets.addClass('active');
+                            });
+                        });
+                    } else {
+                        // unpinned
+                        tweet.animate({ height: '0px', opacity: '0' }, 'fast', () => {
+                            tweet.appendTo('.profile .unpinned-tweets');
+                            tweet.animate({ height: '100%', opacity: '1' }, 'fast', () => {
+                                if (pinnedTweets.find('.tweet').length === 0) {
+                                    pinnedTweets.removeClass('active');
+                                }
+                            });
+                        });
+                    }
                 }
             },
         });

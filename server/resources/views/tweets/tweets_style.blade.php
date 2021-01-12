@@ -50,7 +50,7 @@
     height: auto;
 }
 
-.tweets > .body .pinned-tweets {
+.tweets > .body .pinned-tweets.active {
     background: rgb(230, 236, 240);
     padding-bottom: 10px;
 }

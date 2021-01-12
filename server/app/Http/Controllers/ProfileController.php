@@ -164,7 +164,6 @@ class ProfileController extends Controller
 
         // count tweets and retweets by profile id, and set number in pagination
         $pagination->total = Tweet::countTweetsAndRetweets([$profile->id], $pinnedTweetIds, $withReplies);
-        error_log('total=' . $pagination->total);
 
         // get tweets and retweets by profile id
         $query_t = Tweet::getQueryForTweets($authId)

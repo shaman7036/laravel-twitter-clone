@@ -42,11 +42,20 @@
     padding: 5px 0px;
 }
 
-.tweet-menu li.pin-tweet:after {
+.tweet-menu li i {
+    min-width: 12px;
+}
+
+.tweet-menu li.menu-item-report i,
+.tweet-menu li.menu-item-login i {
+    min-width: 16px;
+}
+
+.tweet-menu li.menu-item-pin span:after {
     content: 'Pin to your profile page';
 }
 
-.pinned-tweets .tweet-menu li.pin-tweet:after {
+.pinned-tweets .tweet-menu li.menu-item-pin span:after {
     content: 'Unpin from profile';
 }
 

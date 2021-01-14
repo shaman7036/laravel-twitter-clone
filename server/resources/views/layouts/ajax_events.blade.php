@@ -94,28 +94,45 @@ const tweetEvents = {
             url: '/pins',
             data: {"_token": "{{ csrf_token() }}", tweet_id: tweetId},
             success: (res) => {
-                if (window.location.href.indexOf('/profile/tweets') > -1
-                    || window.location.href.indexOf('/profile/with_replies') > -1) {
+                if ((auth && window.location.href.indexOf('/profile/tweets/' + auth.username) > -1) ||
+                    (auth && window.location.href.indexOf('/profile/with_replies/' + auth.username) > -1)) {
+                    // response for auth profile
                     const pinnedTweets = $('.profile .pinned-tweets');
-                    const tweet = $('.profile .tweet-' + tweetId);
+                    const target = $('.profile .tweet-' + tweetId);
                     if (res.isPinned) {
                         // pinned
-                        tweet.animate({ height: '0px', opacity: '0' }, 'fast', () => {
-                            tweet.prependTo('.profile .pinned-tweets');
-                            tweet.animate({ height: '100%', opacity: '1' }, 'fast', () => {
+                        target.animate({ height: '0px', opacity: '0' }, 'fast', () => {
+                            target.prependTo('.profile .pinned-tweets');
+                            target.animate({ height: '100%', opacity: '1' }, 'fast', () => {
+                                target.find('.pinned').addClass('is-pinned');
+                                target.find('.menu-item-pin').addClass('is-pinned');
                                 pinnedTweets.addClass('active');
                             });
                         });
                     } else {
                         // unpinned
-                        tweet.animate({ height: '0px', opacity: '0' }, 'fast', () => {
-                            tweet.appendTo('.profile .unpinned-tweets');
-                            tweet.animate({ height: '100%', opacity: '1' }, 'fast', () => {
+                        target.animate({ height: '0px', opacity: '0' }, 'fast', () => {
+                            target.appendTo('.profile .unpinned-tweets');
+                            target.animate({ height: '100%', opacity: '1' }, 'fast', () => {
+                                target.find('.pinned').removeClass('is-pinned');
+                                target.find('.menu-item-pin').removeClass('is-pinned');
                                 if (pinnedTweets.find('.tweet').length === 0) {
                                     pinnedTweets.removeClass('active');
                                 }
                             });
                         });
+                    }
+                } else {
+                    // response for home or non auth profiles
+                    const target = $('.tweet-' + tweetId);
+                    if (res.isPinned) {
+                        // pinned
+                        target.find('.pinned').addClass('is-pinned');
+                        target.find('.menu-item-pin').addClass('is-pinned');
+                    } else {
+                        // unpinned
+                        target.find('.pinned').removeClass('is-pinned');
+                        target.find('.menu-item-pin').removeClass('is-pinned');
                     }
                 }
             },

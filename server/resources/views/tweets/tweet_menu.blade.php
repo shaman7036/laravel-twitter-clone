@@ -14,8 +14,8 @@
             </li>
         @endif
         <!-- pin tweet -->
-        @if ($auth && $auth->id == $tweet->user_id && strrpos(url()->current(), '/profile/') != false)
-            <li class="menu-item menu-item-pin" onclick="tweetEvents.pinTweet({{$tweet->id}})">
+        @if ($auth && $auth->id == $tweet->user_id)
+            <li class="menu-item menu-item-pin {{$tweet->is_pinned ? 'is-pinned' : ''}}" onclick="tweetEvents.pinTweet({{$tweet->id}})">
                 <i class="fa fa-thumbtack"></i>
                 <span class="a"></span>
             </li>

@@ -13,12 +13,15 @@
     @if ($links[3] != 'active')
         <div class="header">
             <ul class="tweets_ul">
+                <!-- Tweets -->
                 <li class="li_tweets {{$links[0]}}" onclick="get_tweets()">
                     <a href="{{ '/profile/tweets/' . $profile->username }}">Tweets</a>
                 </li>
+                <!-- Tweets & replies -->
                 <li class="li_replies {{$links[1]}}" onclick="get_replies()">
                     <a href="{{ '/profile/with_replies/' . $profile->username }}">Tweets & replies</a>
                 </li>
+                <!-- Media -->
                 <li class="li_media {{$links[2]}}" onclick="get_media()">
                     <a href="{{ '/profile/media/' . $profile->username }}">Media</a>
                 </li>

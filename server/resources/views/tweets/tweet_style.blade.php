@@ -17,8 +17,12 @@
     background: #fdfdfd;
 }
 
-.tweets > .body .pinned-tweets .pinned {
-    display: block !important;
+.tweet .pinned {
+    display: none;
+}
+
+.tweet .pinned.is-pinned {
+    display: block;
     color: rgb(102, 117, 127);
 }
 

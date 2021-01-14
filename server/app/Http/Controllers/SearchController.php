@@ -26,10 +26,8 @@ class SearchController extends Controller
         $texts = Tweet::where('text', 'like', '%#' . $q . '%')
             ->orderBy('updated_at', 'desc')->limit(100)->pluck('text')->toArray();
         foreach ($texts as $text) {
-            error_log($text);
             preg_match('/(#' . $q . '\b)|(#' . $q . '\w+)/', $text, $matches);
             if (!$matches) continue;
-            error_log(json_encode($matches));
             if (array_key_exists($matches[0], $hashtags)) {
                 $hashtags[$matches[0]] += 1;
             } else {
@@ -44,8 +42,6 @@ class SearchController extends Controller
         $users = User::select($select)
             ->where('fullname', 'like', '%' . $q . '%')
             ->orWhere('username', 'like', '%' . $q . '%')
-            ->orWhere('description', 'like', '%' . $q . '%')
-            ->orWhere('location', 'like', $q . '%')
             ->orderBy('updated_at', 'desc')->limit(100)->get();
 
         return response()->json(['hashtags' => $hashtags, 'users' => $users]);

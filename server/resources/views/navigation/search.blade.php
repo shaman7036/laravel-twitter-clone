@@ -30,35 +30,51 @@
 <script>
 const search = {
     isFocused: false,
+    typingTimer: null,
+    typingInterval: 1,
 
     onkeyup(e) {
         this.isFocused = true;
+        // reset the typing interval
+        clearInterval(this.typingTimer);
+        this.typingInterval = 0;
+        // start to count the typing interval
+        this.typingTimer = setInterval(() => {
+            this.typingInterval += 0.05;
+        }, 50);
         if (e.target.value.length < 2) {
             $('.search .results').empty();
             return;
         }
-        $.ajax({
-            type: 'GET',
-            url: '/search?q=' + e.target.value,
-            data: {"_token": "{{ csrf_token() }}"},
-            success: res => {
-                $('.search .results').empty();
-                if (res.hashtags && this.isFocused) {
-                    Object.keys(res.hashtags).forEach(key => {
-                        search.appendHashtag(key, res.hashtags[key]);
-                    });
-                }
-                if (res.users.length > 0 && this.isFocused) {
-                    res.users.forEach(item => {
-                        search.appendUser(item);
-                    });
-                }
-            },
-        });
+        // check the typing interval after 0.5 second
+        setTimeout(() => {
+            // if the typing interval has enough time, send a request
+            if (this.typingInterval > 0.4) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/search?q=' + e.target.value,
+                    data: {"_token": "{{ csrf_token() }}"},
+                    success: res => {
+                        $('.search .results').empty();
+                        if (res.hashtags && this.isFocused) {
+                            Object.keys(res.hashtags).forEach(key => {
+                                search.appendHashtag(key, res.hashtags[key]);
+                            });
+                        }
+                        if (res.users.length > 0 && this.isFocused) {
+                            res.users.forEach(item => {
+                                search.appendUser(item);
+                            });
+                        }
+                    },
+                });
+            }
+        }, 500);
     },
 
     onblur() {
         this.isFocused = false;
+        clearInterval(this.typingTimer);
         setTimeout(() => {
             $('.search .results').empty();
         }, 10);

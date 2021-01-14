@@ -52,7 +52,7 @@ const deleteDialog = {
     deleteTweet: () => {
         this.close();
         const target = $('.tweet-' + this.tweetId);
-        target.animate({ 'height': '0px', 'opacity': '0' }, 'fast', () => {
+        target.animate({ 'padding-top': '0px', 'height': '0px', 'opacity': '0' }, 'fast', 'linear', () => {
             target.hide();
         });
         $.ajax({
@@ -64,7 +64,7 @@ const deleteDialog = {
             },
             error: () => {
                 target.show();
-                target.css({ 'height': '100%', 'opacity': '1' });
+                target.css({ 'padding-top': '7.5px', 'height': '100%', 'opacity': '1' });
             },
         });
     }

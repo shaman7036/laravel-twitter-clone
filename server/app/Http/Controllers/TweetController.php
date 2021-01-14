@@ -57,8 +57,10 @@ class TweetController extends Controller
     {
         $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
         $tweet = Tweet::getQueryForTweets($authId)->where('tweets.id', $id)->first();
-        $replyIds = Reply::where('reply_to', $id)->pluck('reply_id')->toArray();
-        $replies = Tweet::getQueryForTweets($authId)->whereIn('tweets.id', $replyIds)->get();
+        $replies = Tweet::getQueryForTweets($authId)->whereIn('tweets.id', function ($query) use ($id) {
+            $query->select('replies.reply_id')->from('replies')
+                ->where('replies.reply_to', $id)->whereNull('replies.deleted_at');
+        })->orderBy('tweets.updated_at', 'desc')->get();
 
         return response()->json(['tweet' => $tweet, 'replies' => $replies]);
     }

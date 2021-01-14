@@ -17,8 +17,11 @@ class ReplyController extends Controller
     {
         if ($request->input('reply_to')) {
             $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
-            $replyIds = Reply::where('reply_to', $request->input('reply_to'))->pluck('reply_id')->toArray();
-            $replies = Tweet::getQueryForTweets($authId)->whereIn('tweets.id', $replyIds)->get();
+            $reply_to = $request->input('reply_to');
+            $replies = Tweet::getQueryForTweets($authId)->whereIn('tweets.id', function ($query) use ($reply_to) {
+                $query->select('replies.reply_id')->from('replies')
+                    ->where('replies.reply_to', $reply_to)->whereNull('replies.deleted_at');
+            })->orderBy('tweets.updated_at', 'desc')->get();
         }
 
         return response()->json(['replies' => $replies]);

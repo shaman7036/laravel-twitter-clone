@@ -21,12 +21,13 @@
     display: none;
 }
 
-.tweet .pinned.is-pinned {
+.tweet .pinned.is-pinned,
+.pinned-tweets .tweet .pinned {
     display: block;
     color: rgb(102, 117, 127);
 }
 
-.tweets > .body .pinned-tweets .pinned i {
+.tweet .pinned i {
     margin-right: 5px;
 }
 

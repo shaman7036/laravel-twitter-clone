@@ -94,6 +94,13 @@ const tweetEvents = {
             window.location.href = '/login';
             return;
         }
+        const target = $('.tweet-' + tweetId);
+        if ((auth && window.location.href.indexOf('/profile/tweets/' + auth.username) > -1) ||
+            (auth && window.location.href.indexOf('/profile/with_replies/' + auth.username) > -1)) {
+            target.animate({ height: '0px', opacity: '0' }, 'fast', () => {
+                target.hide();
+            });
+        }
         $.ajax({
             type: 'POST',
             url: '/pins',
@@ -103,33 +110,29 @@ const tweetEvents = {
                     (auth && window.location.href.indexOf('/profile/with_replies/' + auth.username) > -1)) {
                     // response for auth profile
                     const pinnedTweets = $('.profile .pinned-tweets');
-                    const target = $('.profile .tweet-' + tweetId);
                     if (res.isPinned) {
                         // pinned
-                        target.animate({ height: '0px', opacity: '0' }, 'fast', () => {
-                            target.prependTo('.profile .pinned-tweets');
-                            target.animate({ height: '100%', opacity: '1' }, 'fast', () => {
-                                target.find('.pinned').addClass('is-pinned');
-                                target.find('.menu-item-pin').addClass('is-pinned');
-                                pinnedTweets.addClass('active');
-                            });
+                        target.show();
+                        target.find('.pinned').addClass('is-pinned');
+                        target.find('.menu-item-pin').addClass('is-pinned');
+                        target.prependTo('.profile .pinned-tweets');
+                        target.animate({ height: '100%', opacity: '1' }, 'fast', () => {
+                            pinnedTweets.addClass('active');
                         });
                     } else {
                         // unpinned
-                        target.animate({ height: '0px', opacity: '0' }, 'fast', () => {
-                            target.appendTo('.profile .unpinned-tweets');
-                            target.animate({ height: '100%', opacity: '1' }, 'fast', () => {
-                                target.find('.pinned').removeClass('is-pinned');
-                                target.find('.menu-item-pin').removeClass('is-pinned');
-                                if (pinnedTweets.find('.tweet').length === 0) {
-                                    pinnedTweets.removeClass('active');
-                                }
-                            });
+                        target.show();
+                        target.find('.pinned').removeClass('is-pinned');
+                        target.find('.menu-item-pin').removeClass('is-pinned');
+                        target.appendTo('.profile .unpinned-tweets');
+                        target.animate({ height: '100%', opacity: '1' }, 'fast', () => {
+                            if (pinnedTweets.find('.tweet').length === 0) {
+                                pinnedTweets.removeClass('active');
+                            }
                         });
                     }
                 } else {
                     // response for home or non auth profiles
-                    const target = $('.tweet-' + tweetId);
                     if (res.isPinned) {
                         // pinned
                         target.find('.pinned').addClass('is-pinned');
@@ -140,6 +143,10 @@ const tweetEvents = {
                         target.find('.menu-item-pin').removeClass('is-pinned');
                     }
                 }
+            },
+            error: () => {
+                target.show();
+                target.css({ 'height': '100%', 'opacity': '1' });
             },
         });
     },

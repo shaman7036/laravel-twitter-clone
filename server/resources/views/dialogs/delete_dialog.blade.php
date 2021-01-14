@@ -51,13 +51,21 @@ const deleteDialog = {
 
     deleteTweet: () => {
         this.close();
+        const target = $('.tweet-' + this.tweetId);
+        target.animate({ 'height': '0px', 'opacity': '0' }, 'fast', () => {
+            target.hide();
+        });
         $.ajax({
             url: '/tweets/'+this.tweetId,
             type: 'DELETE',
             data: {"_token": "{{ csrf_token() }}"},
-            success: function(res) {
-                window.location.href = '/profile/tweets/'+authUsername;
-            }
+            success: () => {
+                target.remove();
+            },
+            error: () => {
+                target.show();
+                target.css({ 'height': '100%', 'opacity': '1' });
+            },
         });
     }
 };

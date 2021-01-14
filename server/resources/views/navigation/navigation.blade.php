@@ -110,12 +110,6 @@ function add_active(index) {
     li.addClass('active');
 }
 
-function openTweetMenu(tweet) {
-    var menu = tweet.children[1];
-    if(menu.style.display === 'none') menu.style.display = 'inline-block';
-    else menu.style.display = 'none';
-}
-
 function backToTop() {
     $('html, body').stop().animate({ scrollTop: 0 }, 150);
 }

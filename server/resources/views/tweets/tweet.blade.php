@@ -48,7 +48,7 @@
         <!-- date -->
         <span class="date"></span>
         <!-- menu -->
-        <div class="toggle a" onclick="openTweetMenu(this)">
+        <div class="toggle a" onclick="tweetEvents.openTweetMenu(this)">
         @if(!$tweet->retweetedBy)
             <i class="fa fa-angle-down"></i>
             @include('tweets.tweet_menu', ['tweet' => $tweet])

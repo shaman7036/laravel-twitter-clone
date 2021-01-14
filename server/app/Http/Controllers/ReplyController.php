@@ -57,7 +57,7 @@ class ReplyController extends Controller
         $reply->reply_to = $request->reply_to;
         $reply->save();
 
-        return redirect('/profile/tweets/' . $auth->username);
+        return redirect('/profile/with_replies/' . $auth->username);
     }
 
     /**

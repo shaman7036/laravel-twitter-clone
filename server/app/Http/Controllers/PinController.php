@@ -43,12 +43,19 @@ class PinController extends Controller
             return response()->json([], 400);
         }
 
+        // check the current number of pins in the profile
+        $num_pins = Pin::where('user_id', $authId)->count();
+        $is_exceeded = $num_pins >= env('PINS_PER_PROFILE', 1) ? true : false;
+
         $pin = Pin::withTrashed()
             ->where(['user_id' => $authId, 'tweet_id' => $request->tweet_id])->first();
         $isPinned = false;
 
         if (!isset($pin)) {
             // new pin
+            if ($is_exceeded) {
+                return response()->json([], 400);
+            }
             $pin = new Pin;
             $pin->user_id = $authId;
             $pin->tweet_id = $request->tweet_id;
@@ -57,6 +64,9 @@ class PinController extends Controller
         } else {
             if ($pin->deleted_at) {
                 // pin again
+                if ($is_exceeded) {
+                    return response()->json([], 400);
+                }
                 $pin->deleted_at = null;
                 $pin->save();
                 $isPinned = true;

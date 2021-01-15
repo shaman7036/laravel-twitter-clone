@@ -47,6 +47,21 @@ const tweetEvents = {
                     icon.find('i').addClass('fa-heart-o');
                 }
             },
+            error: () => {
+                if (!icon.hasClass('active')) {
+                    // back to be liked
+                    numLikes++;
+                    icon.find('i').addClass('fa-heart');
+                    icon.find('i').removeClass('fa-heart-o');
+                } else {
+                    // backt not to be liked
+                    if (numLikes > 0) numLikes--;
+                    icon.find('i').removeClass('fa-heart');
+                    icon.find('i').addClass('fa-heart-o');
+                }
+                tweet.find('.like-icon span').html(numLikes);
+                checkActivity(icon);
+            },
             complete: () => icon.removeClass('requesting'),
         });
     },
@@ -84,6 +99,17 @@ const tweetEvents = {
                     // unretweeted
                     icon.removeClass('active');
                 }
+            },
+            error: () => {
+                if (!icon.hasClass('active')) {
+                    // back to be retweeted
+                    numRetweets++;
+                } else if (numRetweets > 0) {
+                    // back not to be retweeted
+                    numRetweets--;
+                }
+                tweet.find('.retweet-icon span').html(numRetweets);
+                checkActivity(icon);
             },
             complete: () => icon.removeClass('requesting'),
         });

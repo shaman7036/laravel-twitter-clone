@@ -37,14 +37,14 @@ class TweetController extends Controller
      */
     public function store(TweetRequest $request)
     {
-        if (!$request->session()->get('auth')) return view('auth.auth', ['form' => 'login']);
-        $auth = $request->session()->get('auth');
+        $authId = $request->get('auth_id');
+
         $tweet = new Tweet;
-        $tweet->user_id = $auth->id;
+        $tweet->user_id = $authId;
         $tweet->text = $request->text;
         $tweet->save();
 
-        return redirect('/profile/tweets/' . $auth->username);
+        return redirect('/profile/tweets/' . $request->get('auth_username'));
     }
 
     /**
@@ -55,7 +55,7 @@ class TweetController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
+        $authId = $request->get('auth_id');
         $tweet = Tweet::getQueryForTweets($authId)->where('tweets.id', $id)->first();
         $replies = Tweet::getQueryForTweets($authId)->whereIn('tweets.id', function ($query) use ($id) {
             $query->select('replies.reply_id')->from('replies')
@@ -96,17 +96,15 @@ class TweetController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        if (!$request->session()->get('auth')) return view('auth.auth', ['form' => 'login']);
-        $auth = $request->session()->get('auth');
-
+        $authId = $request->get('auth_id');
         $tweet = Tweet::findOrFail($id);
 
-        if ($auth->id != $tweet->user_id) {
-            return response()->json(['success' => false], 402);
+        if ($authId != $tweet->user_id) {
+            return response()->json([], 402);
         } else {
             // delete tweet
             $tweet->delete();
-            return response()->json(['success' => true], 200);
+            return response()->json([], 200);
         }
     }
 }

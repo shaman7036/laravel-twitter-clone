@@ -36,22 +36,21 @@ class PinController extends Controller
      */
     public function store(Request $request)
     {
-        if (!$request->session()->get('auth')) return view('auth.auth', ['form' => 'login']);
-        $auth = $request->session()->get('auth');
+        $authId = $request->get('auth_id');
 
         // check the auth owns the target tweet
-        if (!Tweet::where(['user_id' => $auth->id, 'id' => $request->tweet_id])->exists()) {
+        if (!Tweet::where(['user_id' => $authId, 'id' => $request->tweet_id])->exists()) {
             return response()->json([], 400);
         }
 
         $pin = Pin::withTrashed()
-            ->where(['user_id' => $auth->id, 'tweet_id' => $request->tweet_id])->first();
+            ->where(['user_id' => $authId, 'tweet_id' => $request->tweet_id])->first();
         $isPinned = false;
 
         if (!isset($pin)) {
             // new pin
             $pin = new Pin;
-            $pin->user_id = $auth->id;
+            $pin->user_id = $authId;
             $pin->tweet_id = $request->tweet_id;
             $pin->save();
             $isPinned = true;

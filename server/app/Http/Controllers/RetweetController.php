@@ -15,7 +15,7 @@ class RetweetController extends Controller
      */
     public function index(Request $request)
     {
-        $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
+        $authId = $request->get('auth_id');
         $tweetId = $request->input('tweet_id');
 
         $select = [
@@ -52,16 +52,15 @@ class RetweetController extends Controller
      */
     public function store(RetweetRequest $request)
     {
-        if (!$request->session()->get('auth')) return view('auth.auth', ['form' => 'login']);
-        $auth = $request->session()->get('auth');
+        $authId = $request->get('auth_id');
         $retweet = Retweet::withTrashed()
-            ->where(['user_id' => $auth->id, 'tweet_id' => $request->tweet_id])->first();
+            ->where(['user_id' => $authId, 'tweet_id' => $request->tweet_id])->first();
         $isRetweeted = false;
 
         if (!isset($retweet)) {
             // new retweet
             $retweet = new Retweet;
-            $retweet->user_id = $auth->id;
+            $retweet->user_id = $authId;
             $retweet->tweet_id = $request->tweet_id;
             $retweet->save();
             $isRetweeted = true;
@@ -78,7 +77,7 @@ class RetweetController extends Controller
             }
         }
 
-        return response()->json(['success' => true, 'isRetweeted' => $isRetweeted]);
+        return response()->json(['isRetweeted' => $isRetweeted]);
     }
 
     /**

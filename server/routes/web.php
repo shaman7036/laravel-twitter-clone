@@ -26,6 +26,20 @@ Route::post('/login', $controllers . 'AuthController@logIn');
 Route::get('/logout', $controllers . 'AuthController@logout');
 
 /**
+ * navigation
+ */
+Route::get('/home/hashtag/{hashtag}', $controllers . 'HomeController@getTimelineForHashtag');
+Route::get('/home', $controllers . 'HomeController@getTimeline');
+Route::view('/moments', 'moments');
+Route::view('/notifications', 'notifications');
+Route::view('/messages', 'messages');
+
+/**
+ * search
+ */
+Route::get('/search', $controllers . 'SearchController@search');
+
+/**
  * profile
  */
 Route::get('/profile/tweets/{username}', $controllers . 'ProfileController@getTweets');
@@ -37,45 +51,32 @@ Route::get('/profile/edit/{username}', $controllers . 'ProfileController@edit');
 Route::post('/profile/edit/{username}', $controllers . 'ProfileController@update');
 
 /**
- * navigation
- */
-Route::get('/home/hashtag/{hashtag}', $controllers . 'HomeController@getTimelineForHashtag');
-Route::get('/home', $controllers . 'HomeController@getTimeline');
-Route::view('/moments', 'moments');
-Route::view('/notifications', 'notifications');
-Route::view('/messages', 'messages');
-
-/**
- * tweets
- */
-Route::resource('/tweets', $controllers . 'TweetController', ['only' => ['show', 'store', 'destroy']]);
-
-/**
- * likes
- */
-Route::resource('/likes', $controllers . 'LikeController', ['only' => ['index', 'store']]);
-
-/**
- * retweets
- */
-Route::resource('/retweets', $controllers . 'RetweetController', ['only' => ['index', 'store']]);
-
-/**
- * pins
- */
-Route::resource('/pins', $controllers . 'PinController', ['only' => ['store']]);
-
-/**
  * follows
  */
 Route::resource('/follows', $controllers . 'FollowController', ['only' => ['index', 'store']]);
 
 /**
- * replies
+ * requests for tweets
  */
-Route::resource('/replies', $controllers . 'ReplyController', ['only' => ['index', 'store']]);
-
-/**
- * search
- */
-Route::get('/search', $controllers . 'SearchController@search');
+Route::group(['middleware' => 'auth_id'], function () use ($controllers) {
+    /**
+     * tweets
+     */
+    Route::resource('/tweets', $controllers . 'TweetController', ['only' => ['show', 'store', 'destroy']]);
+    /**
+     * likes
+     */
+    Route::resource('/likes', $controllers . 'LikeController', ['only' => ['index', 'store']]);
+    /**
+     * retweets
+     */
+    Route::resource('/retweets', $controllers . 'RetweetController', ['only' => ['index', 'store']]);
+    /**
+     * replies
+     */
+    Route::resource('/replies', $controllers . 'ReplyController', ['only' => ['index', 'store']]);
+    /**
+     * pins
+     */
+    Route::resource('/pins', $controllers . 'PinController', ['only' => ['store']]);
+});

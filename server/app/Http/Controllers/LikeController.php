@@ -18,7 +18,7 @@ class LikeController extends Controller
      */
     public function index(Request $request)
     {
-        $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
+        $authId = $request->get('auth_id');
         $tweetId = $request->input('tweet_id');
 
         $select = [
@@ -55,16 +55,15 @@ class LikeController extends Controller
      */
     public function store(LikeRequest $request)
     {
-        if (!$request->session()->get('auth')) return view('auth.auth', ['form' => 'login']);
-        $auth = $request->session()->get('auth');
+        $authId = $request->get('auth_id');
         $like = Like::withTrashed()
-            ->where(['user_id' => $auth->id, 'tweet_id' => $request->tweet_id])->first();
+            ->where(['user_id' => $authId, 'tweet_id' => $request->tweet_id])->first();
         $isLiked = false;
 
         if (!isset($like)) {
             // new like
             $like = new Like;
-            $like->user_id = $auth->id;
+            $like->user_id = $authId;
             $like->tweet_id = $request->tweet_id;
             $like->save();
             $isLiked = true;
@@ -81,7 +80,7 @@ class LikeController extends Controller
             }
         }
 
-        return response()->json(['success' => true, 'isLiked' => $isLiked]);
+        return response()->json(['isLiked' => $isLiked]);
     }
 
     /**

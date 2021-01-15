@@ -71,7 +71,7 @@ const tweetDialog = {
             $('.dialog').hide();
             $('.tweet-dialog').show();
         } else {
-            window.location.href = '/';
+            window.location.href = '/login';
         }
         $('.tweet-dialog textarea').focus();
 

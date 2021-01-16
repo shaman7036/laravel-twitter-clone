@@ -120,6 +120,8 @@ const tweetEvents = {
             window.location.href = '/login';
             return;
         }
+        const visibleStyle = { 'padding-top': '7.5px', 'height': '100%', 'opacity': '1' };
+        const invisibleStyle = { 'padding-top': '0px', 'height': '0px', 'opacity': '0' }
         const target = $('.tweet-' + tweetId);
         if ((auth && window.location.href.indexOf('/profile/tweets/' + auth.username) > -1) ||
             (auth && window.location.href.indexOf('/profile/with_replies/' + auth.username) > -1)) {
@@ -142,8 +144,18 @@ const tweetEvents = {
                         target.find('.pinned').addClass('is-pinned');
                         target.find('.menu-item-pin').addClass('is-pinned');
                         target.prependTo('.profile .pinned-tweets');
-                        target.animate({ 'padding-top': '7.5px', 'height': '100%', 'opacity': '1' }, 'fast', 'linear', () => {
+                        target.animate(visibleStyle, 'normal', 'linear', () => {
                             pinnedTweets.addClass('active');
+                            // unpin the oldest pinnded tweet if the number of pins has been exceeded
+                            if (res.unpinnedTweetId) {
+                                const unpinnedTweet = pinnedTweets.find('.tweet-' + res.unpinnedTweetId);
+                                unpinnedTweet.animate(invisibleStyle, 'fast', 'linear', () => {
+                                    unpinnedTweet.appendTo('.profile .unpinned-tweets');
+                                    unpinnedTweet.animate(visibleStyle, 'fast', 'linear');
+                                    unpinnedTweet.find('.pinned').removeClass('is-pinned');
+                                    unpinnedTweet.find('.menu-item-pin').removeClass('is-pinned');
+                                });
+                            }
                         });
                     } else {
                         // unpinned
@@ -151,7 +163,7 @@ const tweetEvents = {
                         target.find('.pinned').removeClass('is-pinned');
                         target.find('.menu-item-pin').removeClass('is-pinned');
                         target.appendTo('.profile .unpinned-tweets');
-                        target.animate({ 'padding-top': '7.5px', 'height': '100%', 'opacity': '1' }, 'fast', 'linear', () => {
+                        target.animate(visibleStyle, 'fast', 'linear', () => {
                             if (pinnedTweets.find('.tweet').length === 0) {
                                 pinnedTweets.removeClass('active');
                             }
@@ -163,6 +175,14 @@ const tweetEvents = {
                         // pinned
                         target.find('.pinned').addClass('is-pinned');
                         target.find('.menu-item-pin').addClass('is-pinned');
+                        // unpin the oldest pinnded tweet if the number of pins has been exceeded
+                        if (res.unpinnedTweetId) {
+                            const unpinnedTweet = $('.tweet-' + res.unpinnedTweetId);
+                            if (unpinnedTweet) {
+                                unpinnedTweet.find('.pinned').removeClass('is-pinned');
+                                unpinnedTweet.find('.menu-item-pin').removeClass('is-pinned');
+                            }
+                        }
                     } else {
                         // unpinned
                         target.find('.pinned').removeClass('is-pinned');
@@ -172,7 +192,7 @@ const tweetEvents = {
             },
             error: () => {
                 target.show();
-                target.css({ 'padding-top': '7.5px', 'height': '100%', 'opacity': '1' });
+                target.css(visibleStyle);
             },
         });
     },

@@ -45,17 +45,19 @@ class PinController extends Controller
 
         // check the current number of pins in the profile
         $num_pins = Pin::where('user_id', $authId)->count();
-        $is_exceeded = $num_pins >= env('PINS_PER_PROFILE', 1) ? true : false;
+        $isExceeded = $num_pins >= env('PINS_PER_PROFILE', 1) ? true : false;
 
         $pin = Pin::withTrashed()
             ->where(['user_id' => $authId, 'tweet_id' => $request->tweet_id])->first();
         $isPinned = false;
 
         if (!isset($pin)) {
-            // new pin
-            if ($is_exceeded) {
-                return response()->json([], 400);
+            if ($isExceeded) {
+                // remove the oldest pin to replace
+                $oldestPin = Pin::where('user_id', $authId)->orderBy('updated_at', 'asc')->first();
+                $oldestPin->delete();
             }
+            // new pin
             $pin = new Pin;
             $pin->user_id = $authId;
             $pin->tweet_id = $request->tweet_id;
@@ -63,10 +65,12 @@ class PinController extends Controller
             $isPinned = true;
         } else {
             if ($pin->deleted_at) {
-                // pin again
-                if ($is_exceeded) {
-                    return response()->json([], 400);
+                if ($isExceeded) {
+                    // remove the oldest pin to replace
+                    $oldestPin = Pin::where('user_id', $authId)->orderBy('updated_at', 'asc')->first();
+                    $oldestPin->delete();
                 }
+                // pin again
                 $pin->deleted_at = null;
                 $pin->save();
                 $isPinned = true;
@@ -76,8 +80,9 @@ class PinController extends Controller
                 $isPinned = false;
             }
         }
+        $unpinnedTweetId = isset($oldestPin) ? $oldestPin->tweet_id : 0;
 
-        return response()->json(['isPinned' => $isPinned]);
+        return response()->json(['isPinned' => $isPinned, 'unpinnedTweetId' => $unpinnedTweetId]);
     }
 
     /**

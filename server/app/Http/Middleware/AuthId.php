@@ -20,7 +20,9 @@ class AuthId
         if ($request->method() != 'GET' && $auth == null) {
             return abort(401, 'Unauthorized');
         }
-        $request->attributes->add(['auth_id' => $auth->id, 'auth_username' => $auth->username]);
+        $authId = $auth ? $auth->id : 0;
+        $authUsername = $auth ? $auth->username : '';
+        $request->attributes->add(['auth_id' => $authId, 'auth_username' => $authUsername]);
 
         return $next($request);
     }

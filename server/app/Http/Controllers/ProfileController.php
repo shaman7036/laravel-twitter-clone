@@ -19,13 +19,17 @@ class ProfileController extends Controller
      */
     public function edit(Request $request, $username)
     {
-        $auth = $request->session()->get('auth');
-        if (!isset($auth) || $username != $auth->username) {
+        // get auth username
+        $authUsername = $request->get('auth_username');
+
+        // back to the profile page, if auth is not logged in or auth username and request username are not the same
+        if (empty($request->get('auth_username')) || $authUsername != $username) {
             return redirect('/profile/tweets/' . $username);
-        } else {
-            $profile = User::where('username', $username)->first();
-            return view('profile.edit_profile', ['profile' => $profile]);
         }
+
+        // show the edit profile page for auth
+        $profile = User::where('username', $authUsername)->first();
+        return view('profile.edit_profile', ['profile' => $profile]);
     }
 
     /**
@@ -34,9 +38,11 @@ class ProfileController extends Controller
      */
     public function update(UpdateProfileRequest $request, $username)
     {
-        // get auth user
-        $auth = $request->session()->get('auth');
-        if (!isset($auth) || $username != $auth->username) {
+        // get auth id
+        $authId = $request->get('auth_id');
+
+        // return error if auth is not logged in
+        if (empty($authId)) {
             return view('profile.edit_profile', [], 402);
         }
 
@@ -46,7 +52,8 @@ class ProfileController extends Controller
             return view('profile.edit_profile', [], 402);
         }
 
-        if ($auth->id !== $user->id) {
+        // return error if auth id and user id are not the same
+        if ($authId !== $user->id) {
             return view('profile.edit_profile', [], 402);
         }
 
@@ -59,7 +66,7 @@ class ProfileController extends Controller
         // upload bg
         $bg = $request->file('bg');
         if (isset($bg)) {
-            $dir = 'storage/media/' . $auth->id . '/bg';
+            $dir = 'storage/media/' . $authId . '/bg';
             $files = glob($dir . '/*');
             if (isset($files)) {
                 foreach ($files as $f) {
@@ -91,7 +98,7 @@ class ProfileController extends Controller
         // upload avatar
         $avatar = $request->file('avatar');
         if (isset($avatar)) {
-            $dir = 'storage/media/' . $auth->id . '/avatar';
+            $dir = 'storage/media/' . $authId . '/avatar';
             $ext = $avatar->extension();
             $path = $avatar->move($dir, 'avatar.' . $ext);
             $img = Image::make($path);
@@ -146,8 +153,8 @@ class ProfileController extends Controller
             'page_link' => $link,
         ];
 
-        // get auth id if user is logged in
-        $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
+        // get auth id
+        $authId = $request->get('auth_id');
 
         // get a profile by username
         $profile = User::getProfile(['users.username' => $username], $authId);
@@ -199,7 +206,8 @@ class ProfileController extends Controller
             'page_link' => '/profile/following/' . $username,
         ];
 
-        $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
+        // get auth id
+        $authId = $request->get('auth_id');
 
         // get a profile by username
         $profile = User::getProfile(['users.username' => $username], $authId);
@@ -231,7 +239,8 @@ class ProfileController extends Controller
             'page_link' => '/profile/followers/' . $username,
         ];
 
-        $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
+        // get auth id
+        $authId = $request->get('auth_id');
 
         // get a profile by username
         $profile = User::getProfile(['users.username' => $username], $authId);
@@ -263,8 +272,8 @@ class ProfileController extends Controller
             'page_link' => '/profile/likes/' . $username,
         ];
 
-        // get auth id if user is logged in
-        $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
+        // get auth id
+        $authId = $request->get('auth_id');
 
         // get a profile by username
         $profile = User::getProfile(['users.username' => $username], $authId);

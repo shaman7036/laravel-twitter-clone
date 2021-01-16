@@ -40,25 +40,23 @@ Route::view('/messages', 'messages');
 Route::get('/search', $controllers . 'SearchController@search');
 
 /**
- * profile
- */
-Route::get('/profile/tweets/{username}', $controllers . 'ProfileController@getTweets');
-Route::get('/profile/with_replies/{username}', $controllers . 'ProfileController@getTweets');
-Route::get('/profile/following/{username}', $controllers . 'ProfileController@getFollowing');
-Route::get('/profile/followers/{username}', $controllers . 'ProfileController@getFollowers');
-Route::get('/profile/likes/{username}', $controllers . 'ProfileController@getLikes');
-Route::get('/profile/edit/{username}', $controllers . 'ProfileController@edit');
-Route::post('/profile/edit/{username}', $controllers . 'ProfileController@update');
-
-/**
- * follows
- */
-Route::resource('/follows', $controllers . 'FollowController', ['only' => ['index', 'store']]);
-
-/**
- * requests for tweets
+ * requests with auth id
  */
 Route::group(['middleware' => 'auth_id'], function () use ($controllers) {
+    /**
+     * profile
+     */
+    Route::get('/profile/edit/{username}', $controllers . 'ProfileController@edit');
+    Route::post('/profile/edit/{username}', $controllers . 'ProfileController@update');
+    Route::get('/profile/tweets/{username}', $controllers . 'ProfileController@getTweets');
+    Route::get('/profile/with_replies/{username}', $controllers . 'ProfileController@getTweets');
+    Route::get('/profile/following/{username}', $controllers . 'ProfileController@getFollowing');
+    Route::get('/profile/followers/{username}', $controllers . 'ProfileController@getFollowers');
+    Route::get('/profile/likes/{username}', $controllers . 'ProfileController@getLikes');
+    /**
+     * follows
+     */
+    Route::resource('/follows', $controllers . 'FollowController', ['only' => ['index', 'store']]);
     /**
      * tweets
      */

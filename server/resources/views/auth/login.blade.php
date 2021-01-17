@@ -10,7 +10,7 @@
         <!-- username -->
         <div class="form-group">
         <label>Username:</label>
-        <input class="form-control" id="username" name="username" type="text"
+        <input class="form-control" id="username" name="username" type="text" value="guest"
             data-parsley-type="alphanum"
             data-parsley-maxlength="32"
             required
@@ -24,7 +24,7 @@
         <!-- password -->
         <div class="form-group">
         <label>Password:</label>
-        <input class="form-control" id="password" name="password" type="password"
+        <input class="form-control" id="password" name="password" type="password" value="password"
             data-parsley-maxlength="64"
             data-parsley-minlength="8"
             required

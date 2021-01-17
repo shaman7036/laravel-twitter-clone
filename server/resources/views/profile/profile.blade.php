@@ -3,17 +3,17 @@
 <?php
     $links = array('', '', '', '');
     $url = url()->current();
-    if(strrpos($url, '/profile/tweets/')) $links[0] = 'active';
-    else if(strrpos($url, '/profile/following/')) $links[1] = 'active';
-    else if(strrpos($url, '/profile/followers/')) $links[2] = 'active';
-    else if(strrpos($url, '/profile/likes/')) $links[3] = 'active';
+    if (strrpos($url, '/profile/tweets/') || strrpos($url, '/profile/with_replies/')) $links[0] = 'active';
+    else if (strrpos($url, '/profile/following/')) $links[1] = 'active';
+    else if (strrpos($url, '/profile/followers/')) $links[2] = 'active';
+    else if (strrpos($url, '/profile/likes/')) $links[3] = 'active';
 
-    if(isset($profile->bg)) {
+    if (isset($profile->bg)) {
         $profile->bg = '/storage/media/'.$profile->id.'/bg/bg.'.$profile->bg;
     }
 
     $avatarThumb = '';
-    if(isset($profile->avatar)) {
+    if (isset($profile->avatar)) {
         $avatarThumb = '/storage/media/'.$profile->id.'/avatar/thumbnail.'.$profile->avatar;
         $profile->avatar = '/storage/media/'.$profile->id.'/avatar/avatar.'.$profile->avatar;
     }
@@ -26,7 +26,7 @@
     $time = strtotime($profile->created_at);
     $date = 'Joined '.date('M', $time).' '.date('Y', $time);
 
-    if(isset($profile->website)) {
+    if (isset($profile->website)) {
         $website = $profile->website;
         $website = str_replace('http://', '', $website);
         $website = str_replace('https://', '', $website);
@@ -149,8 +149,6 @@
                     <div>
                         <!-- tweets -->
                         @include('tweets/tweets', ['tweets' => $tweets])
-                        <!-- pagination -->
-                        @include('layouts.pagination', ['pagination' => $pagination])
                     </div>
                 @else
                     <!-- users -->
@@ -164,6 +162,8 @@
                         @endisset
                     </ul>
                 @endif
+                <!-- pagination -->
+                @include('layouts.pagination', ['pagination' => $pagination])
             </div>
             <!-- right -->
             <div class="right"></div>

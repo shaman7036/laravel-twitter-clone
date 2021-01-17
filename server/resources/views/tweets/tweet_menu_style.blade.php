@@ -37,8 +37,26 @@
 }
 
 .tweet-menu li {
+    cursor: pointer;
     white-space: nowrap;
     padding: 5px 0px;
+}
+
+.tweet-menu li i {
+    min-width: 12px;
+}
+
+.tweet-menu li.menu-item-report i,
+.tweet-menu li.menu-item-login i {
+    min-width: 16px;
+}
+
+li.menu-item-pin span:after {
+    content: 'Pin to your profile page';
+}
+
+li.menu-item-pin.is-pinned span:after {
+    content: 'Unpin from profile';
 }
 
 @media screen and (max-width: 960px) {

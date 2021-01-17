@@ -19,13 +19,17 @@ class ProfileController extends Controller
      */
     public function edit(Request $request, $username)
     {
-        $auth = $request->session()->get('auth');
-        if (!isset($auth) || $username != $auth->username) {
+        // get auth username
+        $authUsername = $request->get('auth_username');
+
+        // back to the profile page, if auth is not logged in or auth username and request username are not the same
+        if (empty($request->get('auth_username')) || $authUsername != $username) {
             return redirect('/profile/tweets/' . $username);
-        } else {
-            $profile = User::where('username', $username)->first();
-            return view('profile.edit_profile', ['profile' => $profile]);
         }
+
+        // show the edit profile page for auth
+        $profile = User::where('username', $authUsername)->first();
+        return view('profile.edit_profile', ['profile' => $profile]);
     }
 
     /**
@@ -34,9 +38,11 @@ class ProfileController extends Controller
      */
     public function update(UpdateProfileRequest $request, $username)
     {
-        // get auth user
-        $auth = $request->session()->get('auth');
-        if (!isset($auth) || $username != $auth->username) {
+        // get auth id
+        $authId = $request->get('auth_id');
+
+        // return error if auth is not logged in
+        if (empty($authId)) {
             return view('profile.edit_profile', [], 402);
         }
 
@@ -46,7 +52,8 @@ class ProfileController extends Controller
             return view('profile.edit_profile', [], 402);
         }
 
-        if ($auth->id !== $user->id) {
+        // return error if auth id and user id are not the same
+        if ($authId !== $user->id) {
             return view('profile.edit_profile', [], 402);
         }
 
@@ -59,9 +66,8 @@ class ProfileController extends Controller
         // upload bg
         $bg = $request->file('bg');
         if (isset($bg)) {
-            $dir = 'storage/media/' . $auth->id . '/bg';
+            $dir = 'storage/media/' . $authId . '/bg';
             $files = glob($dir . '/*');
-            //error_log('$files='.json_encode($files));
             if (isset($files)) {
                 foreach ($files as $f) {
                     unlink($f);
@@ -92,10 +98,9 @@ class ProfileController extends Controller
         // upload avatar
         $avatar = $request->file('avatar');
         if (isset($avatar)) {
-            $dir = 'storage/media/' . $auth->id . '/avatar';
+            $dir = 'storage/media/' . $authId . '/avatar';
             $ext = $avatar->extension();
             $path = $avatar->move($dir, 'avatar.' . $ext);
-            error_log($path);
             $img = Image::make($path);
             if ($img->width() > $img->height()) {
                 $w = null;
@@ -132,33 +137,59 @@ class ProfileController extends Controller
      */
     public function getTweets(Request $request, $username)
     {
+        if (strrpos($request->fullUrl(), '/profile/with_replies/')) {
+            $link = '/profile/with_replies/' . $username;
+            $withReplies = true;
+        } else {
+            $link = '/profile/tweets/' . $username;
+            $withReplies = false;
+        }
+
         // create pagination object
         $pagination = (object)[
             'total' => 0,
             'per_page' => env('TWEETS_PER_PAGE', 10),
             'current_page' => $request->input('page') ? $request->input('page') : 1,
-            'page_link' => '/profile/tweets/' . $username,
+            'page_link' => $link,
         ];
 
-        // get auth id if user is logged in
-        $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
+        // get auth id
+        $authId = $request->get('auth_id');
 
         // get a profile by username
         $profile = User::getProfile(['users.username' => $username], $authId);
 
+        // get pinned tweets
+        $pinnedTweetIds = $profile->pins()->orderBy('updated_at', 'desc')->pluck('tweet_id')->toArray();
+        $pinnedTweets = collect();
+        if ($pagination->current_page == 1 && count($pinnedTweetIds) > 0) {
+            $pinnedTweets = Tweet::getQueryForTweets($authId)
+                ->whereIn('tweets.id', $pinnedTweetIds)
+                ->orderByRaw('FIELD(tweets.id, ' . implode(',', $pinnedTweetIds) . ')')
+                ->get();
+        }
+
         // count tweets and retweets by profile id, and set number in pagination
-        $pagination->total = Tweet::countTweetsAndRetweets([$profile->id]);
+        $pagination->total = Tweet::countTweetsAndRetweets([$profile->id], $pinnedTweetIds, $withReplies);
 
         // get tweets and retweets by profile id
-        $query_t = Tweet::getQueryForTweets($authId)->where('tweets.user_id', $profile->id);
-        $query_r = Tweet::getQueryForRetweets($authId)->where('retweets.user_id', $profile->id);
+        $query_t = Tweet::getQueryForTweets($authId)
+            ->where('tweets.user_id', $profile->id)->whereNotIn('tweets.id', $pinnedTweetIds);
+        $query_r = Tweet::getQueryForRetweets($authId)
+            ->where('retweets.user_id', $profile->id)->whereNotIn('tweets.id', $pinnedTweetIds);
+        // make tweets without replies if the url is not with_replies
+        if (!$withReplies) {
+            $query_t->whereNull('rp_b.id');
+        }
         $tweets = $query_t->union($query_r)
             ->orderBy('time', 'desc')
             ->offset($pagination->per_page * ($pagination->current_page - 1))
             ->limit($pagination->per_page)
             ->get();
 
-        return view('profile.profile', ['profile' => $profile, 'tweets' => $tweets, 'pagination' => $pagination]);
+        return view('profile.profile', [
+            'profile' => $profile, 'pinnedTweets' => $pinnedTweets, 'tweets' => $tweets, 'pagination' => $pagination
+        ]);
     }
 
     /**
@@ -167,15 +198,31 @@ class ProfileController extends Controller
      */
     public function getFollowing(Request $request, $username)
     {
-        $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
+        // create pagination object
+        $pagination = (object)[
+            'total' => 0,
+            'per_page' => env('USERS_PER_PAGE', 12),
+            'current_page' => $request->input('page') ? $request->input('page') : 1,
+            'page_link' => '/profile/following/' . $username,
+        ];
+
+        // get auth id
+        $authId = $request->get('auth_id');
 
         // get a profile by username
         $profile = User::getProfile(['users.username' => $username], $authId);
 
-        // get following users by profile id
-        $users = Follow::getFollowingByUserId($profile->id, $authId);
+        // count total follownig in profile
+        $pagination->total = Follow::getQueryForProfileFollowing($profile->id, $authId)->count();
 
-        return view('profile.profile', ['profile' => $profile, 'users' => $users]);
+        // get following in profile
+        $users = Follow::getQueryForProfileFollowing($profile->id, $authId)
+            ->orderBy('follows.updated_at', 'desc')
+            ->offset($pagination->per_page * ($pagination->current_page - 1))
+            ->limit($pagination->per_page)
+            ->get();
+
+        return view('profile.profile', ['profile' => $profile, 'users' => $users, 'pagination' => $pagination]);
     }
 
     /**
@@ -184,15 +231,31 @@ class ProfileController extends Controller
      */
     public function getFollowers(Request $request, $username)
     {
-        $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
+        // create pagination object
+        $pagination = (object)[
+            'total' => 0,
+            'per_page' => env('USERS_PER_PAGE', 12),
+            'current_page' => $request->input('page') ? $request->input('page') : 1,
+            'page_link' => '/profile/followers/' . $username,
+        ];
+
+        // get auth id
+        $authId = $request->get('auth_id');
 
         // get a profile by username
         $profile = User::getProfile(['users.username' => $username], $authId);
 
-        // get following by profile id
-        $users = Follow::getFollowersByUserId($profile->id, $authId);
+        // count total followers in profile
+        $pagination->total = Follow::getQueryForProfileFollowers($profile->id, $authId)->count();
 
-        return view('profile.profile', ['profile' => $profile, 'users' => $users]);
+        // get followers in profile
+        $users = Follow::getQueryForProfileFollowers($profile->id, $authId)
+            ->orderBy('follows.updated_at', 'desc')
+            ->offset($pagination->per_page * ($pagination->current_page - 1))
+            ->limit($pagination->per_page)
+            ->get();
+
+        return view('profile.profile', ['profile' => $profile, 'users' => $users, 'pagination' => $pagination]);
     }
 
     /**
@@ -209,8 +272,8 @@ class ProfileController extends Controller
             'page_link' => '/profile/likes/' . $username,
         ];
 
-        // get auth id if user is logged in
-        $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
+        // get auth id
+        $authId = $request->get('auth_id');
 
         // get a profile by username
         $profile = User::getProfile(['users.username' => $username], $authId);

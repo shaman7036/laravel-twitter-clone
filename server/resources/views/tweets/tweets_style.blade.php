@@ -35,11 +35,11 @@
 }
 
 .tweets > .header > ul > li > a {
-    color: #0ae;
+    color: rgb(102, 117, 127);
 }
 
-.tweets > .header > ul > li > a.router-link-exact-active {
-    color: #333;
+.tweets > .header > ul > li.active > a {
+    color: #0ae;
 }
 
 .tweets > .header > ul > li > a:hover {
@@ -48,6 +48,11 @@
 
 .tweets > .body {
     height: auto;
+}
+
+.tweets > .body .pinned-tweets.active {
+    background: rgb(230, 236, 240);
+    padding-bottom: 10px;
 }
 
 .tweets > .footer {
@@ -59,5 +64,12 @@
 
 .tweets > .footer:hover {
     background: #fdfdfd;
+}
+
+@media screen and (max-width: 960px) {
+    .tweets .header > ul > li {
+        font-size: 15px;
+        letter-spacing: 0px;
+    }
 }
 </style>

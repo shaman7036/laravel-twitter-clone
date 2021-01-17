@@ -36,7 +36,10 @@ class AuthController extends Controller
     {
         $user = User::where('username', $request->username)->first();
         if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->view('auth.auth', ['form' => 'login', 'success' => false], 402);
+            return response()->view('auth.auth', [
+                'form' => 'login',
+                'not_match' => 'The username and password you entered did not match our records. Please double-check and try again.'
+            ], 402);
         }
 
         $auth = User::getProfile(['users.id' => $user->id]);

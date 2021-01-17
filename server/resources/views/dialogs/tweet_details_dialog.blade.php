@@ -40,6 +40,7 @@ const tweetDetailsDialog = {
             return;
         }
         const dialog = $('.tweet-details-dialog');
+        $('.tweet-menu').hide();
         $('.dialog').hide();
         dialog.show();
         this.setLoader(true);

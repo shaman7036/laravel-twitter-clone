@@ -17,6 +17,33 @@
     background: #fdfdfd;
 }
 
+.tweet .pinned {
+    display: none;
+}
+
+.tweet .pinned.is-pinned,
+.pinned-tweets .tweet .pinned {
+    display: block;
+    color: rgb(102, 117, 127);
+}
+
+.tweet .pinned i {
+    margin-right: 5px;
+}
+
+.tweet .retweeted {
+    display: block;
+    color: rgb(102, 117, 127);
+    font-size: 14px;
+    padding-right: 7.5px;
+}
+
+.tweet .replying-to {
+    cursor: pointer;
+    color: #0ae;
+    margin-bottom: 4px;
+}
+
 .tweet > div:not('avatar') {
     position: relative;
     display: block;
@@ -127,23 +154,14 @@
     margin-right: 7.5px;
 }
 
-.tweet .retweeted {
-    color: #888;
-    font-size: 14px;
-    display: block;
-    padding-right: 7.5px;
-}
-
-.tweet .replying-to {
-    cursor: pointer;
-    color: #0ae;
-    margin-bottom: 4px;
-}
-
 @media screen and (max-width: 960px) {
+    .tweet .icons {
+        width: 100%;
+    }
+
     .tweet .icons > div {
-        font-size: 13px;
-        width: 50px;
+        font-size: 14px;
+        width: 25%;
     }
 
     .tweet .icons > div span {

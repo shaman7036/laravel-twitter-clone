@@ -6,19 +6,23 @@
     if($tweet->avatar) $avatar = '/storage/media/'.$tweet->user_id.'/avatar/thumbnail.'.$tweet->avatar;
 
     // add links in tweet
-    $str = preg_replace('/(?<!\S)#([0-9a-zA-Z]+)/', '<a class="link" href="/hashtag/$1">#$1</a>', $tweet->text);
-    $str = preg_replace('/(?<!\S)@([0-9a-zA-Z_-]+)/', '<a class="link" href="/profile/tweets/$1">@$1</a>', $str);
-    $str = preg_replace('|([\w\d]*)\s?(https?://([\d\w\.-]+\.[\w\.]{2,6})[^\s\]\[\<\>]*/?)|i', '$1 <a href="$2">$3</a>', $str);
+    $str = preg_replace('/(?<!\S)#([0-9a-zA-Z]+)/', '<a class="link a" href="/home/hashtag/$1?page=1">#$1</a>', $tweet->text);
+    $str = preg_replace('/(?<!\S)@([0-9a-zA-Z_-]+)/', '<a class="link a" href="/profile/tweets/$1">@$1</a>', $str);
+    $str = preg_replace('|([\w\d]*)\s?(https?://([\d\w\.-]+\.[\w\.]{2,6})[^\s\]\[\<\>]*/?)|i', '$1 <a target="_blank" href="$2">$3</a>', $str);
 ?>
 <div class="tweet tweet-{{$tweet->id}}" id="tweet-{{$tweet->id}}" onclick="tweetDetailsDialog.open(event, {{$tweet}})">
+    <!-- pinned -->
+    <div class="pinned {{$tweet->is_pinned ? 'is-pinned' : ''}}">
+        <i class="fa fa-thumbtack"></i> Pinned tweet
+    </div>
     <!-- retweeted username -->
-    @if($tweet->retweeted_username)
+    @if ($tweet->retweeted_username)
         <a class="retweeted a" href={{'/profile/tweets/'.$tweet->retweeted_username}}>
             <i class="fa fa-retweet"></i> {{'@'.$tweet->retweeted_username}} retweeted
         </a>
     @endif
     <!-- replying to -->
-    @if(!empty($tweet->replying_to))
+    @if (!empty($tweet->replying_to))
         <div class="replying-to" onclick="tweetDetailsDialog.openForReplyingTo(event, {{$tweet->reply_to}})">
             <span class="replying">
                 Replying to {{'@'.$tweet->replying_to}}
@@ -44,7 +48,7 @@
         <!-- date -->
         <span class="date"></span>
         <!-- menu -->
-        <div class="toggle a" onclick="openTweetMenu(this)">
+        <div class="toggle a" onclick="tweetEvents.openTweetMenu(this)">
         @if(!$tweet->retweetedBy)
             <i class="fa fa-angle-down"></i>
             @include('tweets.tweet_menu', ['tweet' => $tweet])

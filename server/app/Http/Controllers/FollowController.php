@@ -36,9 +36,9 @@ class FollowController extends Controller
      */
     public function store(FollowRequest $request)
     {
-        if (!$request->session()->get('auth')) return view('auth.auth', ['form' => 'login']);
-        $authId = $request->session()->get('auth')->id;
+        $authId = $request->get('auth_id');
 
+        // return error, if auth id and request id are the same
         if ($authId == $request->followed_id) {
             return response()->json([], 400);
         }

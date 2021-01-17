@@ -51,20 +51,27 @@ const deleteDialog = {
 
     deleteTweet: () => {
         this.close();
+        const target = $('.tweet-' + this.tweetId);
+        target.animate({ 'padding-top': '0px', 'height': '0px', 'opacity': '0' }, 'fast', 'linear', () => {
+            target.hide();
+        });
         $.ajax({
             url: '/tweets/'+this.tweetId,
             type: 'DELETE',
             data: {"_token": "{{ csrf_token() }}"},
-            success: function(res) {
-                window.location.href = '/profile/tweets/'+authUsername;
-            }
+            success: () => {
+                target.remove();
+            },
+            error: () => {
+                target.show();
+                target.css({ 'padding-top': '7.5px', 'height': '100%', 'opacity': '1' });
+            },
         });
     }
 };
 
 $(document).ajaxError(function(e){
     console.log(e);
-    alert("An error occurred!");
 });
 </script>
 

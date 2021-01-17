@@ -4,12 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Tweet;
-use App\Models\Retweet;
 use App\Models\Follow;
 use App\Models\User;
 
 class HomeController extends Controller
 {
+    /**
+     * get the timeline for public or auth user
+     *
+     * @param Request $request
+     * @return JSON ['tweets', 'pagination', 'hashtag', 'auth', 'users']
+     */
     public function getTimeline(Request $request)
     {
         // create pagination object
@@ -73,7 +78,58 @@ class HomeController extends Controller
         $profile = $authId ? User::getProfile(['users.id' => $authId]) : null;
 
         return view('home.home', [
-            'tweets' => $tweets, 'users' => $users, 'auth' => $profile, 'pagination' => $pagination,
+            'tweets' => $tweets, 'pagination' => $pagination, 'hashtag' => '',
+            'auth' => $profile, 'users' => $users,
+        ]);
+    }
+
+    /**
+     * get the timeline for the hashtag
+     *
+     * @param Request $request
+     * @param String $hashtag
+     * @return JSON ['tweets', 'pagination', 'hashtag', 'auth', 'users']
+     */
+    public function getTimelineForHashtag(Request $request, $hashtag)
+    {
+        // create pagination object
+        $pagination = (object)[
+            'total' => 0,
+            'per_page' => env('TWEETS_PER_PAGE', 10),
+            'current_page' => $request->input('page') ? $request->input('page') : 1,
+            'page_link' => '/home/hashtag/' . $hashtag,
+        ];
+
+        // get auth id if user is logged in
+        $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
+
+        // set number of tweets that have the hashtag in text
+        $pagination->total = Tweet::where('tweets.text', 'like', '%#' . $hashtag . ' %')
+            ->orWhere('tweets.text', 'like', '%#' . $hashtag)
+            ->count();
+
+        // get tweets
+        $tweets = Tweet::getQueryForTweets()->where('tweets.text', 'like', '%#' . $hashtag . ' %')
+            ->orWhere('tweets.text', 'like', '%#' . $hashtag)
+            ->orderBy('time', 'desc')
+            ->offset($pagination->per_page * ($pagination->current_page - 1))
+            ->limit($pagination->per_page)
+            ->get();
+
+        // get users in random order
+        $users = User::select(['users.id', 'users.username', 'users.fullname', 'users.avatar'])
+            ->selectRaw('case when f.follower_id = ' . $authId . ' then 1 else 0 end as is_followed')
+            ->leftJoin('follows as f', function ($join) use ($authId) {
+                $join->on('users.id', '=', 'f.followed_id')->whereNull('f.deleted_at')->where('f.follower_id', $authId);
+            })->groupBy('f.id')->groupBy('users.id')
+            ->inRandomOrder()->limit(10)->get();
+
+        // get auth profile
+        $profile = $authId ? User::getProfile(['users.id' => $authId]) : null;
+
+        return view('home.home', [
+            'tweets' => $tweets, 'pagination' => $pagination, 'hashtag' => $hashtag,
+            'auth' => $profile, 'users' => $users,
         ]);
     }
 }

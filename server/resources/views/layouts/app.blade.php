@@ -17,6 +17,7 @@
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <link href="{{ asset('css/style.css') }}" rel="stylesheet">
         <link href="{{ asset('css/animate.css') }}" rel="stylesheet">
+        <link href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
     </head>
     <body>
@@ -32,7 +33,8 @@
         @include('dialogs.delete_dialog')
         @include('dialogs.tweet_details_dialog')
         @include('dialogs.users_dialog')
-        @include('layouts.ajax_events')
+        @include('layouts.tweet_events')
+        @include('layouts.follow_events')
         @include('tweets.tweet_dom')
         @include('tweets.tweet_dom_script')
     </body>

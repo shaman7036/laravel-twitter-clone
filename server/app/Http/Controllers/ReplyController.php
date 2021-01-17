@@ -15,11 +15,15 @@ class ReplyController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->input('reply_to')) {
-            $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
-            $replyIds = Reply::where('reply_to', $request->input('reply_to'))->pluck('reply_id')->toArray();
-            $replies = Tweet::getQueryForTweets($authId)->whereIn('tweets.id', $replyIds)->get();
+        $authId = $request->get('auth_id');
+        if (!$request->input('reply_to')) {
+            return response()->json([], 400);
         }
+        $reply_to = $request->input('reply_to');
+        $replies = Tweet::getQueryForTweets($authId)->whereIn('tweets.id', function ($query) use ($reply_to) {
+            $query->select('replies.reply_id')->from('replies')
+                ->where('replies.reply_to', $reply_to)->whereNull('replies.deleted_at');
+        })->orderBy('tweets.updated_at', 'desc')->get();
 
         return response()->json(['replies' => $replies]);
     }
@@ -42,12 +46,11 @@ class ReplyController extends Controller
      */
     public function store(Request $request)
     {
-        if (!$request->session()->get('auth')) return view('auth.auth', ['form' => 'login']);
-        $auth = $request->session()->get('auth');
+        $authId = $request->get('auth_id');
 
         // save as tweet
         $tweet = new Tweet;
-        $tweet->user_id = $auth->id;
+        $tweet->user_id = $authId;
         $tweet->text = $request->text;
         $tweet->save();
 
@@ -57,7 +60,7 @@ class ReplyController extends Controller
         $reply->reply_to = $request->reply_to;
         $reply->save();
 
-        return redirect('/profile/tweets/' . $auth->username);
+        return redirect('/profile/with_replies/' . $request->get('auth_username'));
     }
 
     /**

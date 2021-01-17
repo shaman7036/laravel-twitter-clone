@@ -53,7 +53,7 @@
         display: none;
     }
 
-    .navigation .createTweet {
+    .navigation .create-tweet {
         position: fixed;
         right: 22px;
         bottom: 15px;
@@ -66,7 +66,7 @@
         box-shadow: 1px 2px 1px #ccc;
     }
 
-    .navigation .createTweet i {
+    .navigation .create-tweet i {
         position: relative;
         background: #0ae;
         color: #fff;

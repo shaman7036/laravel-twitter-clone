@@ -2,6 +2,14 @@
     $p = $pagination;
 ?>
 <div class='timeline'>
+    @if ($hashtag)
+        <div class="header">
+            <h2>
+                #{{ $hashtag }}
+                <a href="/home?page=1"><i class="fa fa-times"></i></a>
+            </h2>
+        </div>
+    @endif
     <?php if(isset($tweets)) : ?>
         <ul>
         <?php foreach($tweets as $t) : ?>

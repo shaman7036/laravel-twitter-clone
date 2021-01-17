@@ -135,6 +135,33 @@ LOCK TABLES `password_resets` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `pins`
+--
+
+DROP TABLE IF EXISTS `pins`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `pins` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `tweet_id` int(11) NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pins`
+--
+
+LOCK TABLES `pins` WRITE;
+/*!40000 ALTER TABLE `pins` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pins` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `replies`
 --
 

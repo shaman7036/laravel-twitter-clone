@@ -12,17 +12,17 @@
 ?>
 <div class="tweet tweet-{{$tweet->id}}" id="tweet-{{$tweet->id}}" onclick="tweetDetailsDialog.open(event, {{$tweet}})">
     <!-- pinned -->
-    <div class="pinned" style="display: none">
+    <div class="pinned {{$tweet->is_pinned ? 'is-pinned' : ''}}">
         <i class="fa fa-thumbtack"></i> Pinned tweet
     </div>
     <!-- retweeted username -->
-    @if($tweet->retweeted_username)
+    @if ($tweet->retweeted_username)
         <a class="retweeted a" href={{'/profile/tweets/'.$tweet->retweeted_username}}>
             <i class="fa fa-retweet"></i> {{'@'.$tweet->retweeted_username}} retweeted
         </a>
     @endif
     <!-- replying to -->
-    @if(!empty($tweet->replying_to))
+    @if (!empty($tweet->replying_to))
         <div class="replying-to" onclick="tweetDetailsDialog.openForReplyingTo(event, {{$tweet->reply_to}})">
             <span class="replying">
                 Replying to {{'@'.$tweet->replying_to}}
@@ -48,7 +48,7 @@
         <!-- date -->
         <span class="date"></span>
         <!-- menu -->
-        <div class="toggle a" onclick="openTweetMenu(this)">
+        <div class="toggle a" onclick="tweetEvents.openTweetMenu(this)">
         @if(!$tweet->retweetedBy)
             <i class="fa fa-angle-down"></i>
             @include('tweets.tweet_menu', ['tweet' => $tweet])

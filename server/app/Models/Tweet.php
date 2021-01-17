@@ -6,14 +6,24 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use App\Models\Retweet;
 use App\Models\Like;
+use App\Models\Retweet;
+use App\Models\Reply;
+use App\Models\Pin;
 
 class Tweet extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $table = 'tweets';
+
+    /**
+     * get a query to retrieve the likes for the tweet
+     */
+    public function likes()
+    {
+        return $this->hasMany(Like::class, 'tweet_id', 'id');
+    }
 
     /**
      * get a query to retrieve the retweets for the tweet
@@ -24,11 +34,19 @@ class Tweet extends Model
     }
 
     /**
-     * get a query to retrieve the likes for the tweet
+     * get a query to retrieve the replies for the tweet
      */
-    public function likes()
+    public function replies()
     {
-        return $this->hasMany(Like::class, 'tweet_id', 'id');
+        return $this->hasMany(Reply::class, 'reply_id', 'id');
+    }
+
+    /**
+     * get a query to retrieve the pins for the tweet
+     */
+    public function pins()
+    {
+        return $this->hasMany(Pin::class, 'tweet_id', 'id');
     }
 
     /**
@@ -40,8 +58,10 @@ class Tweet extends Model
 
         static::deleting(function ($tweet) {
             DB::transaction(function () use ($tweet) {
-                $tweet->retweets()->delete();
                 $tweet->likes()->delete();
+                $tweet->retweets()->delete();
+                $tweet->replies()->delete();
+                $tweet->pins()->delete();
             });
         });
     }
@@ -70,6 +90,8 @@ class Tweet extends Model
             ->selectRaw('case when l_b.user_id = ' . $authId . ' then 1 else 0 end as is_liked')
             // is_retweeted: bool whether the tweet is retweeted by auth or not
             ->selectRaw('case when rt_b.user_id = ' . $authId . ' then 1 else 0 end as is_retweeted')
+            // is_pinned: bool whether the tweet is pinned by auth or not
+            ->selectRaw('case when pins.user_id = ' . $authId . ' then 1 else 0 end as is_pinned')
             // replying_to: username of the target tweet when the tweet is the reply
             ->selectRaw('case when rp_b.reply_id = tweets.id then u_a.username else "" end as replying_to')
             // reply_to: user id of the target tweet when the tweet is the reply
@@ -98,6 +120,10 @@ class Tweet extends Model
             ->leftJoin('retweets as rt_b', function ($join) use ($authId) {
                 $join->on('tweets.id', '=', 'rt_b.tweet_id')->whereNull('rt_b.deleted_at')->where('rt_b.user_id', $authId);
             })->groupBy('rt_b.id')
+            // left join pins for is_pinned
+            ->leftJoin('pins', function ($join) use ($authId) {
+                $join->on('tweets.id', '=', 'pins.tweet_id')->whereNull('pins.deleted_at')->where('pins.user_id', $authId);
+            })->groupBy('pins.id')
             // left join replies for the target tweet's id when the tweet is the reply
             ->leftJoin('replies as rp_b', function ($join) {
                 $join->on('tweets.id', '=', 'rp_b.reply_id')->whereNull('rp_b.deleted_at');
@@ -139,6 +165,8 @@ class Tweet extends Model
             ->selectRaw('case when l_b.user_id = ' . $authId . ' then 1 else 0 end as is_liked')
             // is_retweeted: bool whether the tweet is retweeted by auth or not
             ->selectRaw('case when rt_b.user_id = ' . $authId . ' then 1 else 0 end as is_retweeted')
+            // is_pinned: bool whether the tweet is pinned by auth or not
+            ->selectRaw('case when pins.user_id = ' . $authId . ' then 1 else 0 end as is_pinned')
             // replying_to: username of the target tweet when the tweet is the reply
             ->selectRaw('case when rp_b.reply_id = tweets.id then u_a.username else "" end as replying_to')
             // reply_to: user id of the target tweet when the tweet is the reply
@@ -175,6 +203,10 @@ class Tweet extends Model
             ->leftJoin('retweets as rt_b', function ($join) use ($authId) {
                 $join->on('tweets.id', '=', 'rt_b.tweet_id')->whereNull('rt_b.deleted_at')->where('rt_b.user_id', $authId);
             })->groupBy('rt_b.id')
+            // left join pins for is_pinned
+            ->leftJoin('pins', function ($join) use ($authId) {
+                $join->on('tweets.id', '=', 'pins.tweet_id')->whereNull('pins.deleted_at')->where('pins.user_id', $authId);
+            })->groupBy('pins.id')
             // left join replies for the target tweet's id when the tweet is the reply
             ->leftJoin('replies as rp_b', function ($join) {
                 $join->on('tweets.id', '=', 'rp_b.reply_id')->whereNull('rp_b.deleted_at');

@@ -7,6 +7,7 @@
 .users {
     position: relative;
     display: block;
+    z-index: 1;
 }
 
 .user {

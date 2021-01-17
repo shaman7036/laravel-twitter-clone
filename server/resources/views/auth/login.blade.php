@@ -10,7 +10,7 @@
         <!-- username -->
         <div class="form-group">
         <label>Username:</label>
-        <input class="form-control" id="username" name="username" type="text"
+        <input class="form-control" id="username" name="username" type="text" value="guest"
             data-parsley-type="alphanum"
             data-parsley-maxlength="32"
             required
@@ -24,8 +24,7 @@
         <!-- password -->
         <div class="form-group">
         <label>Password:</label>
-        <input class="form-control" id="password" name="password" type="password"
-            data-parsley-type="password"
+        <input class="form-control" id="password" name="password" type="password" value="password"
             data-parsley-maxlength="64"
             data-parsley-minlength="8"
             required
@@ -38,7 +37,13 @@
         </div>
         <!-- subit button -->
         <div class="form-group">
-            <label class='msg'></label>
+            @if (isset($not_match))
+                <span class="help-block">
+                    <strong>{{ $not_match }}</strong>
+                </span>
+            @else
+                <label class='msg'></label>
+            @endif
             <input class="form-control button" id="login" value="Log In" type="submit" />
         </div>
     </form>

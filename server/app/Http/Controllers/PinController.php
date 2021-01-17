@@ -36,27 +36,40 @@ class PinController extends Controller
      */
     public function store(Request $request)
     {
-        if (!$request->session()->get('auth')) return view('auth.auth', ['form' => 'login']);
-        $auth = $request->session()->get('auth');
+        $authId = $request->get('auth_id');
 
         // check the auth owns the target tweet
-        if (!Tweet::where(['user_id' => $auth->id, 'id' => $request->tweet_id])->exists()) {
+        if (!Tweet::where(['user_id' => $authId, 'id' => $request->tweet_id])->exists()) {
             return response()->json([], 400);
         }
 
+        // check the current number of pins in the profile
+        $num_pins = Pin::where('user_id', $authId)->count();
+        $isExceeded = $num_pins >= env('PINS_PER_PROFILE', 1) ? true : false;
+
         $pin = Pin::withTrashed()
-            ->where(['user_id' => $auth->id, 'tweet_id' => $request->tweet_id])->first();
+            ->where(['user_id' => $authId, 'tweet_id' => $request->tweet_id])->first();
         $isPinned = false;
 
         if (!isset($pin)) {
+            if ($isExceeded) {
+                // remove the oldest pin to replace
+                $oldestPin = Pin::where('user_id', $authId)->orderBy('updated_at', 'asc')->first();
+                $oldestPin->delete();
+            }
             // new pin
             $pin = new Pin;
-            $pin->user_id = $auth->id;
+            $pin->user_id = $authId;
             $pin->tweet_id = $request->tweet_id;
             $pin->save();
             $isPinned = true;
         } else {
             if ($pin->deleted_at) {
+                if ($isExceeded) {
+                    // remove the oldest pin to replace
+                    $oldestPin = Pin::where('user_id', $authId)->orderBy('updated_at', 'asc')->first();
+                    $oldestPin->delete();
+                }
                 // pin again
                 $pin->deleted_at = null;
                 $pin->save();
@@ -67,8 +80,9 @@ class PinController extends Controller
                 $isPinned = false;
             }
         }
+        $unpinnedTweetId = isset($oldestPin) ? $oldestPin->tweet_id : 0;
 
-        return response()->json(['isPinned' => $isPinned]);
+        return response()->json(['isPinned' => $isPinned, 'unpinnedTweetId' => $unpinnedTweetId]);
     }
 
     /**

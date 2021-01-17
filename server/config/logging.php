@@ -37,7 +37,7 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['daily'],
             'ignore_exceptions' => false,
         ],
 
@@ -101,4 +101,11 @@ return [
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Custom Log
+    |--------------------------------------------------------------------------
+    */
+
+    'enable_sql_log' => env('LOG_SQL', false),
 ];

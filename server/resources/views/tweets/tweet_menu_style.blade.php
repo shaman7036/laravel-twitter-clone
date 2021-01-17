@@ -51,11 +51,11 @@
     min-width: 16px;
 }
 
-.tweet-menu li.menu-item-pin span:after {
+li.menu-item-pin span:after {
     content: 'Pin to your profile page';
 }
 
-.pinned-tweets .tweet-menu li.menu-item-pin span:after {
+li.menu-item-pin.is-pinned span:after {
     content: 'Unpin from profile';
 }
 

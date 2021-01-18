@@ -84,12 +84,13 @@
         </div>
     </div>
     <script>
-        var tweet = <?php echo $tweet; ?>;
-        var date = moment(tweet.time).format('MMM Do, YYYY');
+        var tweetId = <?php echo $tweet->id ?>;
+        var tweetTime = <?php echo '"' . $tweet->time . '"' ?>;
+        var date = moment.utc(tweetTime).utcOffset(timezoneOffset).format('MMM Do, YYYY');
         if (window.innerWidth > 960) {
-            $('.tweet-'+tweet.id).find('.date').html(' · ' + date);
+            $('.tweet-' + tweetId).find('.date').html(' · ' + date);
         } else {
-            $('.tweet-'+tweet.id).find('.date').html('<br />' + date);
+            $('.tweet-' + tweetId).find('.date').html('<br />' + date);
         }
     </script>
 </div>

@@ -6,7 +6,7 @@
 
 .users {
     position: relative;
-    display: block;
+    display: inline-block;
     z-index: 1;
 }
 

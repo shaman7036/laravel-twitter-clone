@@ -40,11 +40,21 @@ const tweetEvents = {
                     icon.addClass('active');
                     icon.find('i').addClass('fa-heart');
                     icon.find('i').removeClass('fa-heart-o');
+                    if (profileId && profileId === auth.id) {
+                        const likes = parseInt($('.profile-likes').html(), 10);
+                        $('.profile-likes').html(likes + 1);
+                    }
                 } else {
                     // unliked
                     icon.removeClass('active');
                     icon.find('i').removeClass('fa-heart');
                     icon.find('i').addClass('fa-heart-o');
+                    if (profileId && profileId === auth.id) {
+                        const likes = parseInt($('.profile-likes').html(), 10);
+                        if (likes > 0) {
+                            $('.profile-likes').html(likes - 1);
+                        }
+                    }
                 }
             },
             error: () => {
@@ -54,7 +64,7 @@ const tweetEvents = {
                     icon.find('i').addClass('fa-heart');
                     icon.find('i').removeClass('fa-heart-o');
                 } else {
-                    // backt not to be liked
+                    // back not to be liked
                     if (numLikes > 0) numLikes--;
                     icon.find('i').removeClass('fa-heart');
                     icon.find('i').addClass('fa-heart-o');

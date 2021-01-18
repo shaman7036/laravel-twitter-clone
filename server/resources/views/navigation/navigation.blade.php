@@ -68,8 +68,6 @@
 </nav>
 
 <script>
-var auth = '';
-<?php if(Session::get('auth')) echo 'auth = '.$auth; ?>;
 spin_center(false);
 
 var scrollTop = 0;

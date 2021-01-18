@@ -27,6 +27,7 @@
         <script src="{{ asset('js/jquery.min.js') }}"></script>
         <script src="{{ asset('js/moment.js') }}"></script>
         <script src="{{ asset('js/parsley.min.js') }}"></script>
+        @include('layouts.variables')
         @include('navigation.navigation')
         @yield('content')
         @include('dialogs.tweet_dialog')

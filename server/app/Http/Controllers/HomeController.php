@@ -17,16 +17,12 @@ class HomeController extends Controller
      */
     public function getTimeline(Request $request)
     {
-        // create pagination object
-        $pagination = (object)[
-            'total' => 0,
-            'per_page' => env('TWEETS_PER_PAGE', 10),
-            'current_page' => $request->input('page') ? $request->input('page') : 1,
-            'page_link' => '/home',
-        ];
+        // get pagination object
+        $pagination = $request->get('pagination');
+        $pagination->link = '/home';
 
-        // get auth id if user is logged in
-        $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
+        // get auth id
+        $authId = $request->get('auth_id');
 
         if (empty($authId)) {
             /**
@@ -92,16 +88,12 @@ class HomeController extends Controller
      */
     public function getTimelineForHashtag(Request $request, $hashtag)
     {
-        // create pagination object
-        $pagination = (object)[
-            'total' => 0,
-            'per_page' => env('TWEETS_PER_PAGE', 10),
-            'current_page' => $request->input('page') ? $request->input('page') : 1,
-            'page_link' => '/home/hashtag/' . $hashtag,
-        ];
+        // get pagination object
+        $pagination = $request->get('pagination');
+        $pagination->link = '/home/hashtag/' . $hashtag;
 
-        // get auth id if user is logged in
-        $authId = $request->session()->get('auth') ? $request->session()->get('auth')->id : 0;
+        // get auth id
+        $authId = $request->get('auth_id');
 
         // set number of tweets that have the hashtag in text
         $pagination->total = Tweet::where('tweets.text', 'like', '%#' . $hashtag . ' %')

@@ -172,7 +172,8 @@
 </div>
 
 <script>
-var profileUsername = "<?php echo $profile->username; ?>";
+const profileId = <?php echo $profile->id; ?>;
+const profileUsername = <?php echo '"' . $profile->username . '"'; ?>;
 
 // add page parameter if url doesn't have
 if (window.location.href.indexOf('?page=') === -1) {

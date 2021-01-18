@@ -61,6 +61,12 @@ const deleteDialog = {
             data: {"_token": "{{ csrf_token() }}"},
             success: () => {
                 target.remove();
+                if (profileId && profileId === auth.id) {
+                    const tweets = parseInt($('.profile-tweets').html(), 10);
+                    if (tweets > 0) {
+                        $('.profile-tweets').html(tweets - 1);
+                    }
+                }
             },
             error: () => {
                 target.show();

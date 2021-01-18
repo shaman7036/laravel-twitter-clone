@@ -47,9 +47,19 @@ const followEvents = {
                 if (res.isFollowed) {
                     // followed
                     button.addClass('active');
+                    if (profileId && profileId === auth.id) {
+                        const following = parseInt($('.profile-following').html(), 10);
+                        $('.profile-following').html(following + 1);
+                    }
                 } else {
                     // unfollowed
                     button.removeClass('active');
+                    if (profileId && profileId === auth.id) {
+                        const following = parseInt($('.profile-following').html(), 10);
+                        if (following > 0) {
+                            $('.profile-following').html(following - 1);
+                        }
+                    }
                 }
             },
             complete: () => button.removeClass('requesting'),

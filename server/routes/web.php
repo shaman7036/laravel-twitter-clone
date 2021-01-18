@@ -25,33 +25,33 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::get('/logout', 'AuthController@logout');
 
     /**
-     * navigation
-     */
-    Route::get('/home/hashtag/{hashtag}', 'HomeController@getTimelineForHashtag');
-    Route::get('/home', 'HomeController@getTimeline');
-    Route::view('/moments', 'moments');
-    Route::view('/notifications', 'notifications');
-    Route::view('/messages', 'messages');
-
-    /**
-     * search
-     */
-    Route::get('/search', 'SearchController@search');
-
-    /**
-     * requests with auth id
+     * routes with auth id
      */
     Route::group(['middleware' => 'auth_id'], function () {
         /**
-         * profile
+         * routes with pagination object
          */
-        Route::get('/profile/edit/{username}', 'ProfileController@edit');
-        Route::post('/profile/edit/{username}', 'ProfileController@update');
-        Route::get('/profile/tweets/{username}', 'ProfileController@getTweets');
-        Route::get('/profile/with_replies/{username}', 'ProfileController@getTweets');
-        Route::get('/profile/following/{username}', 'ProfileController@getFollowing');
-        Route::get('/profile/followers/{username}', 'ProfileController@getFollowers');
-        Route::get('/profile/likes/{username}', 'ProfileController@getLikes');
+        Route::group(['middleware' => 'pagination'], function () {
+            /**
+             * navigation
+             */
+            Route::get('/home/hashtag/{hashtag}', 'HomeController@getTimelineForHashtag');
+            Route::get('/home', 'HomeController@getTimeline');
+            Route::view('/moments', 'moments');
+            Route::view('/notifications', 'notifications');
+            Route::view('/messages', 'messages');
+            Route::get('/search', 'SearchController@search');
+            /**
+             * profile
+             */
+            Route::get('/profile/edit/{username}', 'ProfileController@edit');
+            Route::post('/profile/edit/{username}', 'ProfileController@update');
+            Route::get('/profile/tweets/{username}', 'ProfileController@getTweets');
+            Route::get('/profile/with_replies/{username}', 'ProfileController@getTweets');
+            Route::get('/profile/following/{username}', 'ProfileController@getFollowing');
+            Route::get('/profile/followers/{username}', 'ProfileController@getFollowers');
+            Route::get('/profile/likes/{username}', 'ProfileController@getLikes');
+        });
         /**
          * follows
          */

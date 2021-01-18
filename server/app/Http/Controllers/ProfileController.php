@@ -145,13 +145,9 @@ class ProfileController extends Controller
             $withReplies = false;
         }
 
-        // create pagination object
-        $pagination = (object)[
-            'total' => 0,
-            'per_page' => env('TWEETS_PER_PAGE', 10),
-            'current_page' => $request->input('page') ? $request->input('page') : 1,
-            'page_link' => $link,
-        ];
+        // get pagination object
+        $pagination = $request->get('pagination');
+        $pagination->link = $link;
 
         // get auth id
         $authId = $request->get('auth_id');
@@ -198,13 +194,9 @@ class ProfileController extends Controller
      */
     public function getFollowing(Request $request, $username)
     {
-        // create pagination object
-        $pagination = (object)[
-            'total' => 0,
-            'per_page' => env('USERS_PER_PAGE', 12),
-            'current_page' => $request->input('page') ? $request->input('page') : 1,
-            'page_link' => '/profile/following/' . $username,
-        ];
+        // get pagination object
+        $pagination = $request->get('pagination');
+        $pagination->link = '/profile/following/' . $username;
 
         // get auth id
         $authId = $request->get('auth_id');
@@ -231,13 +223,9 @@ class ProfileController extends Controller
      */
     public function getFollowers(Request $request, $username)
     {
-        // create pagination object
-        $pagination = (object)[
-            'total' => 0,
-            'per_page' => env('USERS_PER_PAGE', 12),
-            'current_page' => $request->input('page') ? $request->input('page') : 1,
-            'page_link' => '/profile/followers/' . $username,
-        ];
+        // get pagination object
+        $pagination = $request->get('pagination');
+        $pagination->link = '/profile/followers/' . $username;
 
         // get auth id
         $authId = $request->get('auth_id');
@@ -264,13 +252,9 @@ class ProfileController extends Controller
      */
     public function getLikes(Request $request, $username)
     {
-        // create pagination object
-        $pagination = (object)[
-            'total' => 0,
-            'per_page' => env('TWEETS_PER_PAGE', 10),
-            'current_page' => $request->input('page') ? $request->input('page') : 1,
-            'page_link' => '/profile/likes/' . $username,
-        ];
+        // get pagination object
+        $pagination = $request->get('pagination');
+        $pagination->link = '/profile/likes/' . $username;
 
         // get auth id
         $authId = $request->get('auth_id');

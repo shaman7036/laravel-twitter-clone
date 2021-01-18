@@ -13,68 +13,68 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-$controllers = 'App\Http\Controllers\\';
+Route::group(['namespace' => 'App\Http\Controllers'], function () {
+    /**
+     * auth
+     */
+    Route::view('/', 'auth.auth', ['form' => '']);
+    Route::view('/signup', 'auth.auth', ['form' => 'signup']);
+    Route::view('/login', 'auth.auth', ['form' => 'login']);
+    Route::post('/signup', 'AuthController@signUp');
+    Route::post('/login', 'AuthController@logIn');
+    Route::get('/logout', 'AuthController@logout');
 
-/**
- * auth
- */
-Route::view('/', 'auth.auth', ['form' => '']);
-Route::view('/signup', 'auth.auth', ['form' => 'signup']);
-Route::view('/login', 'auth.auth', ['form' => 'login']);
-Route::post('/signup', $controllers . 'AuthController@signUp');
-Route::post('/login', $controllers . 'AuthController@logIn');
-Route::get('/logout', $controllers . 'AuthController@logout');
+    /**
+     * navigation
+     */
+    Route::get('/home/hashtag/{hashtag}', 'HomeController@getTimelineForHashtag');
+    Route::get('/home', 'HomeController@getTimeline');
+    Route::view('/moments', 'moments');
+    Route::view('/notifications', 'notifications');
+    Route::view('/messages', 'messages');
 
-/**
- * navigation
- */
-Route::get('/home/hashtag/{hashtag}', $controllers . 'HomeController@getTimelineForHashtag');
-Route::get('/home', $controllers . 'HomeController@getTimeline');
-Route::view('/moments', 'moments');
-Route::view('/notifications', 'notifications');
-Route::view('/messages', 'messages');
+    /**
+     * search
+     */
+    Route::get('/search', 'SearchController@search');
 
-/**
- * search
- */
-Route::get('/search', $controllers . 'SearchController@search');
-
-/**
- * requests with auth id
- */
-Route::group(['middleware' => 'auth_id'], function () use ($controllers) {
     /**
-     * profile
+     * requests with auth id
      */
-    Route::get('/profile/edit/{username}', $controllers . 'ProfileController@edit');
-    Route::post('/profile/edit/{username}', $controllers . 'ProfileController@update');
-    Route::get('/profile/tweets/{username}', $controllers . 'ProfileController@getTweets');
-    Route::get('/profile/with_replies/{username}', $controllers . 'ProfileController@getTweets');
-    Route::get('/profile/following/{username}', $controllers . 'ProfileController@getFollowing');
-    Route::get('/profile/followers/{username}', $controllers . 'ProfileController@getFollowers');
-    Route::get('/profile/likes/{username}', $controllers . 'ProfileController@getLikes');
-    /**
-     * follows
-     */
-    Route::resource('/follows', $controllers . 'FollowController', ['only' => ['index', 'store']]);
-    /**
-     * tweets
-     */
-    Route::resource('/tweets', $controllers . 'TweetController', ['only' => ['show', 'store', 'destroy']]);
-    /**
-     * likes
-     */
-    Route::resource('/likes', $controllers . 'LikeController', ['only' => ['index', 'store']]);
-    /**
-     * retweets
-     */
-    Route::resource('/retweets', $controllers . 'RetweetController', ['only' => ['index', 'store']]);
-    /**
-     * replies
-     */
-    Route::resource('/replies', $controllers . 'ReplyController', ['only' => ['index', 'store']]);
-    /**
-     * pins
-     */
-    Route::resource('/pins', $controllers . 'PinController', ['only' => ['store']]);
+    Route::group(['middleware' => 'auth_id'], function () {
+        /**
+         * profile
+         */
+        Route::get('/profile/edit/{username}', 'ProfileController@edit');
+        Route::post('/profile/edit/{username}', 'ProfileController@update');
+        Route::get('/profile/tweets/{username}', 'ProfileController@getTweets');
+        Route::get('/profile/with_replies/{username}', 'ProfileController@getTweets');
+        Route::get('/profile/following/{username}', 'ProfileController@getFollowing');
+        Route::get('/profile/followers/{username}', 'ProfileController@getFollowers');
+        Route::get('/profile/likes/{username}', 'ProfileController@getLikes');
+        /**
+         * follows
+         */
+        Route::resource('/follows', 'FollowController', ['only' => ['index', 'store']]);
+        /**
+         * tweets
+         */
+        Route::resource('/tweets', 'TweetController', ['only' => ['show', 'store', 'destroy']]);
+        /**
+         * likes
+         */
+        Route::resource('/likes', 'LikeController', ['only' => ['index', 'store']]);
+        /**
+         * retweets
+         */
+        Route::resource('/retweets', 'RetweetController', ['only' => ['index', 'store']]);
+        /**
+         * replies
+         */
+        Route::resource('/replies', 'ReplyController', ['only' => ['index', 'store']]);
+        /**
+         * pins
+         */
+        Route::resource('/pins', 'PinController', ['only' => ['store']]);
+    });
 });

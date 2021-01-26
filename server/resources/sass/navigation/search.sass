@@ -1,0 +1,83 @@
+.search
+    position: relative
+
+    & > input
+        position: relative
+        top: 7.5px
+        width: 200px
+        height: 30px
+        border-radius: 30px
+        padding-top: 5px
+        box-shadow: 0px 0px 0px rgba(0,0,0,.075)
+
+    & > i
+        position: absolute
+        right: 10px
+        top: 15px
+        color: #888
+
+    & .results
+        position: fixed
+        box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1)
+        max-height: 480px
+        overflow-y: scroll
+        margin: 0px
+        margin-top: 12px
+
+    & .results > li
+        min-width: 200px
+
+    & .results > li:hover
+        background: #fdfdfd
+
+    & .hashtag
+        padding-top: 0px
+        padding-bottom: 0px
+
+    & .hashtag a
+        display: block
+        line-height: 44px
+        height: 44px
+
+    & .hashtag .badge
+        position: absolute
+        right: 15px
+        top: 50%
+        -ms-transform: translateY(-50%)
+        transform: translateY(-50%)
+
+    & .user
+        cursor: pointer
+        height: 60px
+        padding: 0px auto
+
+    & .user .avatar
+        position: absolute
+        display: inline-block
+        width: 40px
+        height: 40px
+        border-radius: 100%
+        overflow: hidden
+
+    & .user .avatar img
+        width: 40px
+        height: 40px
+
+    & .user .fullname,
+    & .user .username
+        position: relative
+        padding-left: 52px
+        font-weight: bold
+
+    & .user .fullname
+        position: relative
+        top: 0px
+
+    & .user .username
+        position: relative
+        bottom: 4px
+        opacity: 0.6
+
+@media screen and (max-width: 960px)
+    .search
+        display: none

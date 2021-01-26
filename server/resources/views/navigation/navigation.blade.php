@@ -112,6 +112,3 @@ function backToTop() {
     $('html, body').stop().animate({ scrollTop: 0 }, 150);
 }
 </script>
-
-@include('navigation/navigation_style')
-@include('navigation/navigation_mobile')

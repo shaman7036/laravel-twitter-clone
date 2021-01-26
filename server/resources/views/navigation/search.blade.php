@@ -117,5 +117,3 @@ const search = {
     },
 };
 </script>
-
-@include('navigation.search_style')

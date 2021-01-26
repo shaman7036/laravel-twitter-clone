@@ -32,5 +32,3 @@
     </ul>
 </div>
 @endif
-
-@include('navigation/menu_style')

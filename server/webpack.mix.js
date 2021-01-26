@@ -35,6 +35,16 @@ mix // auth
     .sass('resources/sass/navigation/navigation_mobile.sass', '../resources/build')
     .sass('resources/sass/navigation/search.sass', '../resources/build')
     .sass('resources/sass/navigation/menu.sass', '../resources/build')
+    // profile
+    .sass('resources/sass/profile/profile.sass', '../resources/build')
+    .sass('resources/sass/profile/profile_mobile.sass', '../resources/build')
+    .sass('resources/sass/profile/edit_profile.sass', '../resources/build')
+    .sass('resources/sass/profile/edit_profile_mobile.sass', '../resources/build')
+    .sass('resources/sass/profile/user.sass', '../resources/build')
+    // tweets
+    .sass('resources/sass/tweets/tweets.sass', '../resources/build')
+    .sass('resources/sass/tweets/tweet.sass', '../resources/build')
+    .sass('resources/sass/tweets/tweet_menu.sass', '../resources/build')
     .styles(
         [
             // auth
@@ -56,6 +66,16 @@ mix // auth
             'resources/build/navigation_mobile.css',
             'resources/build/search.css',
             'resources/build/menu.css',
+            // profile
+            'resources/build/profile.css',
+            'resources/build/profile_mobile.css',
+            'resources/build/edit_profile.css',
+            'resources/build/edit_profile_mobile.css',
+            'resources/build/user.css',
+            // tweets
+            'resources/build/tweets.css',
+            'resources/build/tweet.css',
+            'resources/build/tweet_menu.css',
         ],
         'public/css/app.css'
     )

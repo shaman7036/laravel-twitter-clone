@@ -1,0 +1,60 @@
+.tweet-menu
+    position: absolute
+    left: 0px
+    top: 45px
+    display: none
+    border: 1px solid #ccc
+    font-size: 14px
+    padding: 15px
+    background: #fff
+    z-index: 1000
+    border-radius: 4px
+    box-shadow: 0px 3px 4px #ccc
+    color: #262626
+
+    & > div
+        position: absolute
+        left: 12px
+        top: -8px
+        width: 0
+        height: 0
+        border-left: 8px solid transparent
+        border-right: 8px solid transparent
+        border-bottom: 8px solid #ccc
+
+    & > div > div
+        position: relative
+        left: -8px
+        top: 1px
+        width: 0
+        height: 0
+        border-left: 8px solid transparent
+        border-right: 8px solid transparent
+        border-bottom: 8px solid #fff
+
+    & li
+        cursor: pointer
+        white-space: nowrap
+        padding: 5px 0px
+
+    & li i
+        min-width: 12px
+
+    & li.menu-item-report i,
+    & li.menu-item-login i
+        min-width: 16px
+
+    & li.menu-item-pin span:after
+        content: 'Pin to your profile page'
+
+    & li.menu-item-pin.is-pinned span:after
+        content: 'Unpin from profile'
+
+@media screen and (max-width: 960px)
+    .tweet-menu
+        left: auto
+        right: 4px
+
+        & > div
+            left: auto
+            right: 7.5px

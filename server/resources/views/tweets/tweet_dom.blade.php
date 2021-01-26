@@ -44,5 +44,3 @@
         </div>
     </div>
 </div>
-
-@include('tweets/tweet_style')

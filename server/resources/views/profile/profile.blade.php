@@ -204,7 +204,4 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-
-@include('profile/profile_style')
-@include('profile/profile_mobile')
 @endsection

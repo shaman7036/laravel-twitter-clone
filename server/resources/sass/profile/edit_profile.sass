@@ -1,0 +1,146 @@
+.edit-profile
+    position: relative
+
+    & .mobile
+        dislay: none
+
+    & .bg
+        position: relative
+        width: 100%
+        height: auto
+        background: #888
+        margin-top: 46px
+        padding-top: 25%
+        overflow: hidden
+
+        & img,
+        & input
+            position: absolute
+            left: 0px
+            top: 0px
+            width: 100%
+            height: 100%
+
+        & img
+            height: auto
+            opacity: 0.5
+
+        & input
+            opacity: 0
+
+        & .message
+            position: absolute
+            left: 50%
+            transform: translateX(-50%)
+            display: inline-block
+            text-align: center
+            top: 200px
+            color: #fff
+
+        & .message i
+            font-size: 38px
+            margin-bottom: 7.5px
+
+        & .message span
+            font-size: 20px
+            font-weight: bold
+
+    & .nav
+        position: relative
+        width: 100%
+        height: 60px
+        top: 0px
+        background: #fff
+        box-shadow: 1px 2px 1px #ddd
+        z-index: 100
+
+        & > div
+            position: relative
+
+        & .avatar
+            position: absolute
+            width: 210px
+            height: 210px
+            left: 0px
+            top: -105px
+            border: 5px solid #fff
+            border-radius: 100%
+            z-index: 101
+            background: #888
+            text-align: center
+            overflow: hidden
+
+        & .avatar img,
+        & .avatar input
+            position: absolute
+            left: 0px
+            top: 0px
+            width: 100%
+            height: 100%
+
+        & .avatar img
+            opacity: 0.5
+
+        & .avatar input
+            opacity: 0
+
+        & .avatar .message
+            position: relative
+            top: 50%
+            transform: translateY(-50%)
+            color: white
+
+        & .avatar .message i
+            font-size: 38px
+            margin-bottom: 5px
+
+        & .avatar .message span
+            font-size: 20px
+            font-weight: bold
+
+        & .button
+            float: right
+            min-width: 105px
+            height: 36px
+            line-height: 20px
+            border-radius: 100px
+            font-weight: bold
+            background: #fff
+            color: #0af
+            border: 1px solid #0af
+            margin-top: 12px
+            margin-left: 15px
+            font-size: 15px
+
+        & .button:first-child
+            color: #888
+
+    & .main
+        margin-top: 15px
+        border: 0px solid
+
+        & .left
+            height: auto
+            background: #fff
+            border: 1px solid #ccc
+            margin-top: 45px
+            margin-bottom: 30px
+            padding-top: 10px
+
+        & .left .info label
+            margin: 0px
+            margin-top: 4px
+            margin-bottom: 4px
+            color: #888
+
+        & .left .info input
+            width: 100%
+            height: 32px
+            padding-top: 5px
+
+        & .left .info textarea
+            resize: none
+            height: 200px
+            margin-top: 3.5px
+            margin-bottom: 15px
+            font-size: 14px

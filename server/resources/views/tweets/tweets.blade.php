@@ -48,5 +48,3 @@
         <span>Back to Top</span>
     </div>
 </div>
-
-@include('tweets/tweets_style')

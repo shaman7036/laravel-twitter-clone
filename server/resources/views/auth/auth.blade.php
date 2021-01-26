@@ -38,7 +38,4 @@
         @endif
     </div>
 </div>
-
-@include('auth.auth_style')
-@include('auth.auth_mobile')
 @endsection

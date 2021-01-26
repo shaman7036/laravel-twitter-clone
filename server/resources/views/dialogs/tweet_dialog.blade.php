@@ -103,5 +103,3 @@ const tweetDialog = {
     },
 };
 </script>
-
-@include('dialogs/tweet_dialog_style')

@@ -37,10 +37,7 @@
         </li>
         <!-- center -->
         <li class='center'>
-        <div class='twitter'><i class='fa fa-twitter'></i></div>
-        <div class='center_loader spinner_wrapper'>
-            <div class='spinner'></div>
-        </div>
+            <div class='twitter'><i class='fa fa-twitter'></i></div>
         </li>
         <!-- tweet button -->
         <li class='right li-post'><div onclick='tweetDialog.open()'>Tweet</div></li>
@@ -68,8 +65,6 @@
 </nav>
 
 <script>
-spin_center(false);
-
 var scrollTop = 0;
 $(document).ready(function() {
     $(window).scroll(function() {
@@ -84,16 +79,6 @@ $(document).ready(function() {
         }
     });
 });
-
-function spin_center(loading) {
-    if(loading) {
-        _('.twitter').style.display = 'none';
-        _('.center_loader').style.display = 'block';
-    } else {
-        _('.twitter').style.display = 'block';
-        _('.center_loader').style.display = 'none';
-    }
-}
 
 function showMenu() {
     if(auth && auth.username) {
@@ -112,6 +97,3 @@ function backToTop() {
     $('html, body').stop().animate({ scrollTop: 0 }, 150);
 }
 </script>
-
-@include('navigation/navigation_style')
-@include('navigation/navigation_mobile')

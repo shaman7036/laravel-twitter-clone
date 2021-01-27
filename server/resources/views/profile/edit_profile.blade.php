@@ -111,7 +111,4 @@ function changeAvatar(e) {
     }
 }
 </script>
-
-@include('profile/edit_profile_style')
-@include('profile/edit_profile_mobile')
 @endsection

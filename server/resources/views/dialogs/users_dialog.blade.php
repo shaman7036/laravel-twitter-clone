@@ -127,5 +127,3 @@ const usersDialog = {
     },
 };
 </script>
-
-@include('dialogs.users_dialog_style')

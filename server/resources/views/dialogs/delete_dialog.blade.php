@@ -80,5 +80,3 @@ $(document).ajaxError(function(e){
     console.log(e);
 });
 </script>
-
-@include('dialogs/delete_dialog_style')

@@ -1,0 +1,185 @@
+$twitter-blue: rgb(29, 161, 242)
+
+.auth
+    position: fixed
+    z-index: 2000
+    width: 100%
+    height: 100%
+    top: 0px
+    background: #fff
+    font-weight: bold !important
+
+    & > .left,
+    & > .right
+        position: absolute
+        display: inline-block
+        width: 50%
+        height: 100%
+        overflow: hidden
+
+    & > .right
+        left: 50%
+
+    & > .left
+        background: $twitter-blue
+        left: 0px
+
+    & > .right
+        background: #fff
+
+    & .left .bg
+        position: relative
+        top: -25%
+        left: 65%
+        transform: translateX(-50%)
+
+    & .left .bg i
+        font-size: 1200px
+        color: rgb(14, 146, 227)
+
+    & .left ul
+        position: absolute
+        left: 50%
+        top: 35%
+        transform: translate(-50%)
+        color: #fff
+        z-index: 2001
+
+    & .left ul li
+        white-space: nowrap
+
+    & .left ul li i
+        font-size: 28px
+        margin: 20px 0
+        margin-right: 15px
+
+    & .left ul li span
+        font-size: 18px
+        font-weight: bold
+
+    & .right
+        border: 0px solid
+
+    & .right > .wrapper
+        position: absolute
+        display: inline-block
+        left: 25%
+        top: 50%
+        transform: translateX(-50%)
+        transform: translateY(-50%)
+
+    & .right > .wrapper > *
+        display: block
+
+    & .right .wrapper i.fa-twitter
+        font-size: 46px
+        color: $twitter-blue
+        margin-bottom: 7px
+
+    & .right .wrapper p
+        font-size: 26px
+        line-height: 32px
+        margin-bottom: 45px
+
+    & .right .wrapper h1
+        font-size: 18px
+        font-weight: bold
+        margin-bottom: 16px
+
+    & .right .wrapper .btn
+        display: inline-block
+        border-radius: 30px !important
+        width: 350px
+        height: 32px
+        font-weight: bold
+        padding-top: 4px !important
+
+    & .right .wrapper .to-signup
+        margin-bottom: 16px !important
+        border: 0px solid
+
+    & .right .wrapper .to-signup
+        background: $twitter-blue
+
+    & .right .wrapper .to-login
+        background: #fff
+        color: $twitter-blue
+
+    & .right input
+        padding-bottom: 2px
+
+.signup
+    position: absolute
+    width: 350px
+    left: 25%
+    top: 50%
+    transform: translateX(-50%)
+    transform: translateY(-50%)
+
+    & header i
+        font-size: 46px
+        color: $twitter-blue
+        margin-bottom: 7px
+
+    & h1
+        font-size: 26px
+        font-weight: bold
+        margin-bottom: 32px
+
+    & input
+        border-radius: 30px
+        font-weight: normal
+
+    & input.button
+        background: $twitter-blue
+        color: #fff
+        border: 0px solid
+        font-weight: bold
+        margin-top: 15px
+        hieght: 32px
+
+    & .message
+        color: #f00
+
+    & .to-login p a
+        color: $twitter-blue
+        cursor: pointer
+
+.login
+    position: absolute
+    width: 350px
+    left: 25%
+    top: 50%
+    transform: translateX(-50%)
+    transform: translateY(-50%)
+
+    & header i
+        font-size: 46px
+        color: $twitter-blue
+        margin-bottom: 7px
+
+    & h1
+        font-size: 26px
+        font-weight: bold
+        margin-bottom: 32px
+
+    & input
+        border-radius: 30px
+
+    & input.button
+        background: #fff
+        color: $twitter-blue
+        border: 1px solid $twitter-blue
+        font-weight: bold
+        margin-top: 15px
+        height: 32px
+
+    & .message
+        color: #f00
+
+    & .to-signup p a
+        color: $twitter-blue
+        cursor: pointer
+
+strong
+    color: #f00

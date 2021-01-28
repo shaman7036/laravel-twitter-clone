@@ -28,5 +28,3 @@
         @endif
     </ul>
 </div>
-
-@include('tweets/tweet_menu_style')

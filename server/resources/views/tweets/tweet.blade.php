@@ -94,5 +94,3 @@
         }
     </script>
 </div>
-
-@include('tweets/tweet_style')

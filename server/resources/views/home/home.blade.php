@@ -91,6 +91,3 @@ if (window.location.href.indexOf('?page=') === -1) {
     window.history.pushState({} , 'home', window.location.href + '?page=1');
 }
 </script>
-
-@include('home.home_style')
-@include('home.home_mobile')

@@ -32,7 +32,6 @@
         </div>
     </div>
 </li>
-@include('profile/user-style')
 
 <script>
 function click_user(username) {

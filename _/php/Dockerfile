@@ -31,5 +31,14 @@ RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources
 RUN apt-get update && apt-get install -y nodejs yarn
 
 COPY ./_/php/php.ini /usr/local/etc/php/php.ini
+COPY ./server /var/www
+
+RUN chmod -R 775 /var/www/storage/*
+RUN chmod -R 775 /var/www/storage/logs/*
+RUN chmod -R 775 /var/www/storage/framework/*
+RUN chmod -R 775 /var/www/storage/framework/sessions/*
 
 WORKDIR /var/www
+
+RUN composer install
+RUN php artisan key:generate

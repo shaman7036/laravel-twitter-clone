@@ -33,10 +33,11 @@ RUN apt-get update && apt-get install -y nodejs yarn
 COPY ./_/php/php.ini /usr/local/etc/php/php.ini
 COPY ./server /var/www
 
-RUN chmod -R 775 /var/www/storage/*
-RUN chmod -R 775 /var/www/storage/logs/*
-RUN chmod -R 775 /var/www/storage/framework/*
-RUN chmod -R 775 /var/www/storage/framework/sessions/*
+RUN chmod -R 747 /var/www/storage
+RUN chmod -R 747 /var/www/storage/*
+RUN chmod -R 747 /var/www/storage/logs/*
+RUN chmod -R 747 /var/www/storage/framework/*
+RUN chmod -R 747 /var/www/storage/framework/sessions/*
 
 WORKDIR /var/www
 

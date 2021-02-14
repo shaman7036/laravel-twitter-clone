@@ -9,10 +9,18 @@ use App\Models\Tweet;
 use App\Models\Retweet;
 use App\Models\Like;
 use App\Models\Follow;
+use App\Repositories\UserRepositoryInterface;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class ProfileController extends Controller
 {
+    protected $userRepository;
+
+    public function __construct(UserRepositoryInterface $userRepositoryInterface)
+    {
+        $this->userRepository = $userRepositoryInterface;
+    }
+
     /**
      * @param Request $request
      * @param string $username
@@ -28,8 +36,9 @@ class ProfileController extends Controller
         }
 
         // show the edit profile page for auth
-        $profile = User::where('username', $authUsername)->first();
-        return view('profile.edit_profile', ['profile' => $profile]);
+        $user = $this->userRepository->findByUsername($username);
+
+        return view('profile.edit_profile', ['profile' => $user]);
     }
 
     /**
@@ -47,7 +56,7 @@ class ProfileController extends Controller
         }
 
         // get user to edit
-        $user = User::where('username', $username)->first();
+        $user = $this->userRepository->findByUsername($username);
         if (!isset($user)) {
             return view('profile.edit_profile', [], 402);
         }
@@ -125,7 +134,7 @@ class ProfileController extends Controller
         $user->save();
 
         // update auth data in session
-        $auth = User::getProfile(['users.id' => $user->id]);
+        $auth = $this->userRepository->findProfile(['users.id' => $user->id]);
         $request->session()->put('auth', $auth);
 
         return redirect('/profile/tweets/' . $user->username);
@@ -153,7 +162,7 @@ class ProfileController extends Controller
         $authId = $request->get('auth_id');
 
         // get a profile by username
-        $profile = User::getProfile(['users.username' => $username], $authId);
+        $profile = $this->userRepository->findProfile(['users.username' => $username], $authId);
 
         // get pinned tweets
         $pinnedTweetIds = $profile->pins()->orderBy('updated_at', 'desc')->pluck('tweet_id')->toArray();
@@ -202,7 +211,7 @@ class ProfileController extends Controller
         $authId = $request->get('auth_id');
 
         // get a profile by username
-        $profile = User::getProfile(['users.username' => $username], $authId);
+        $profile = $this->userRepository->findProfile(['users.username' => $username], $authId);
 
         // count total follownig in profile
         $pagination->total = Follow::getQueryForProfileFollowing($profile->id, $authId)->count();
@@ -231,7 +240,7 @@ class ProfileController extends Controller
         $authId = $request->get('auth_id');
 
         // get a profile by username
-        $profile = User::getProfile(['users.username' => $username], $authId);
+        $profile = $this->userRepository->findProfile(['users.username' => $username], $authId);
 
         // count total followers in profile
         $pagination->total = Follow::getQueryForProfileFollowers($profile->id, $authId)->count();
@@ -260,7 +269,7 @@ class ProfileController extends Controller
         $authId = $request->get('auth_id');
 
         // get a profile by username
-        $profile = User::getProfile(['users.username' => $username], $authId);
+        $profile = $this->userRepository->findProfile(['users.username' => $username], $authId);
 
         // set number of profile likes in pagination
         $pagination->total = $profile->num_likes;

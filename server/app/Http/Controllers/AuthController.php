@@ -6,10 +6,18 @@ use Illuminate\Http\Request;
 use App\Http\Requests\SignUpRequest;
 use App\Http\Requests\LogInRequest;
 use App\Models\User;
+use App\Repositories\UserRepositoryInterface;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    protected $userRepository;
+
+    public function __construct(UserRepositoryInterface $userRepositoryInterface)
+    {
+        $this->userRepository = $userRepositoryInterface;
+    }
+
     /**
      * @param App\Http\Requests\SignUpRequest $request
      */
@@ -22,7 +30,7 @@ class AuthController extends Controller
         $user->fullname = 'Name';
         $user->save();
 
-        $auth = User::getProfile(['users.id' => $user->id]);
+        $auth = $this->userRepository->findProfile(['users.id' => $user->id]);
         $request->session()->regenerate();
         $request->session()->put('auth', $auth);
 
@@ -34,7 +42,7 @@ class AuthController extends Controller
      */
     function logIn(LogInRequest $request)
     {
-        $user = User::where('username', $request->username)->first();
+        $user = $this->userRepository->findByUsername($request->username); // User::where('username', $request->username)->first();
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->view('auth.auth', [
                 'form' => 'login',
@@ -42,7 +50,7 @@ class AuthController extends Controller
             ], 402);
         }
 
-        $auth = User::getProfile(['users.id' => $user->id]);
+        $auth = $this->userRepository->findById($user->id);
         $request->session()->regenerate();
         $request->session()->put('auth', $auth);
 

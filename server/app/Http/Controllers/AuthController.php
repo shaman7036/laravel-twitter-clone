@@ -44,7 +44,7 @@ class AuthController extends Controller
     function logIn(LogInRequest $request)
     {
         // check the password
-        $user = $this->userRepository->findByUsername($request->username); // User::where('username', $request->username)->first();
+        $user = $this->userRepository->findByUsername($request->username);
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->view('auth.auth', [
                 'form' => 'login',

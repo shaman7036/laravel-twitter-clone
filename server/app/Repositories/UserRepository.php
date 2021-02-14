@@ -100,6 +100,22 @@ class UserRepository implements UserRepositoryInterface
     }
 
     /**
+     * search users by query string
+     *
+     * @param string $queryString
+     * @return User[] $users
+     */
+    public function search($queryString)
+    {
+        $users = User::select(['users.id as user_id', 'users.avatar', 'users.fullname', 'users.username'])
+            ->where('fullname', 'like', '%' . $queryString . '%')
+            ->orWhere('username', 'like', '%' . $queryString . '%')
+            ->orderBy('updated_at', 'desc')->limit(100)->get();
+
+        return $users;
+    }
+
+    /**
      * create a new user
      *
      * @param array $data

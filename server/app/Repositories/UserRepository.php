@@ -79,6 +79,27 @@ class UserRepository implements UserRepositoryInterface
     }
 
     /**
+     * get users in random order
+     *
+     * @param int $limit
+     * @param int $authId
+     * @return User[] $users
+     */
+    public function getInRandomOrder($limit = 10, $authId = 0)
+    {
+        $users = User::select(['users.id', 'users.username', 'users.fullname', 'users.avatar'])
+            ->selectRaw('case when f.follower_id = ' . $authId . ' then 1 else 0 end as is_followed')
+            ->leftJoin('follows as f', function ($join) use ($authId) {
+                $join->on('users.id', '=', 'f.followed_id')->whereNull('f.deleted_at')->where('f.follower_id', $authId);
+            })->groupBy('f.id')->groupBy('users.id')
+            ->inRandomOrder()
+            ->limit($limit)
+            ->get();
+
+        return $users;
+    }
+
+    /**
      * create a new user
      *
      * @param array $data

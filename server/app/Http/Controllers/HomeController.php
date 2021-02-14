@@ -5,10 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Tweet;
 use App\Models\Follow;
-use App\Models\User;
+use App\Repositories\UserRepositoryInterface;
 
 class HomeController extends Controller
 {
+    protected $userRepository;
+
+    public function __construct(UserRepositoryInterface $userRepositoryInterface)
+    {
+        $this->userRepository = $userRepositoryInterface;
+    }
+
     /**
      * get the timeline for public or auth user
      *
@@ -40,8 +47,7 @@ class HomeController extends Controller
                 ->get();
 
             // get users in random order
-            $users = User::select(['id', 'username', 'fullname', 'avatar'])
-                ->inRandomOrder()->limit(10)->get();
+            $users = $this->userRepository->getInRandomOrder(10);
         } else {
             /**
              * get the timeline for auth user
@@ -62,16 +68,11 @@ class HomeController extends Controller
                 ->get();
 
             // get users in random order
-            $users = User::select(['users.id', 'users.username', 'users.fullname', 'users.avatar'])
-                ->selectRaw('case when f.follower_id = ' . $authId . ' then 1 else 0 end as is_followed')
-                ->leftJoin('follows as f', function ($join) use ($authId) {
-                    $join->on('users.id', '=', 'f.followed_id')->whereNull('f.deleted_at')->where('f.follower_id', $authId);
-                })->groupBy('f.id')->groupBy('users.id')
-                ->inRandomOrder()->limit(10)->get();
+            $users = $this->userRepository->getInRandomOrder(10, $authId);
         }
 
         // get auth profile
-        $profile = $authId ? User::getProfile(['users.id' => $authId]) : null;
+        $profile = $authId ? $this->userRepository->findProfile(['users.id' => $authId]) : null;
 
         return view('home.home', [
             'tweets' => $tweets, 'pagination' => $pagination, 'hashtag' => '',
@@ -109,15 +110,10 @@ class HomeController extends Controller
             ->get();
 
         // get users in random order
-        $users = User::select(['users.id', 'users.username', 'users.fullname', 'users.avatar'])
-            ->selectRaw('case when f.follower_id = ' . $authId . ' then 1 else 0 end as is_followed')
-            ->leftJoin('follows as f', function ($join) use ($authId) {
-                $join->on('users.id', '=', 'f.followed_id')->whereNull('f.deleted_at')->where('f.follower_id', $authId);
-            })->groupBy('f.id')->groupBy('users.id')
-            ->inRandomOrder()->limit(10)->get();
+        $users = $this->userRepository->getInRandomOrder(10, $authId);
 
         // get auth profile
-        $profile = $authId ? User::getProfile(['users.id' => $authId]) : null;
+        $profile = $authId ? $this->userRepository->findProfile(['users.id' => $authId]) : null;
 
         return view('home.home', [
             'tweets' => $tweets, 'pagination' => $pagination, 'hashtag' => $hashtag,

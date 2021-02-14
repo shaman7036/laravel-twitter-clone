@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\SignUpRequest;
 use App\Http\Requests\LogInRequest;
-use App\Models\User;
 use App\Repositories\UserRepositoryInterface;
 use Illuminate\Support\Facades\Hash;
 
@@ -23,13 +22,15 @@ class AuthController extends Controller
      */
     function signUp(SignUpRequest $request)
     {
-        $user = new User();
-        $user->username = $request->username;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
-        $user->fullname = 'Name';
-        $user->save();
+        // create a new user
+        $user = $this->userRepository->create([
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'fullname' => 'Name',
+        ]);
 
+        // store user data as auth data in session
         $auth = $this->userRepository->findProfile(['users.id' => $user->id]);
         $request->session()->regenerate();
         $request->session()->put('auth', $auth);
@@ -42,6 +43,7 @@ class AuthController extends Controller
      */
     function logIn(LogInRequest $request)
     {
+        // check the password
         $user = $this->userRepository->findByUsername($request->username); // User::where('username', $request->username)->first();
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->view('auth.auth', [
@@ -50,6 +52,7 @@ class AuthController extends Controller
             ], 402);
         }
 
+        // store auth data in session
         $auth = $this->userRepository->findById($user->id);
         $request->session()->regenerate();
         $request->session()->put('auth', $auth);

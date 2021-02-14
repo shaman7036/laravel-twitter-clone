@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateProfileRequest;
-use App\Models\User;
 use App\Models\Tweet;
-use App\Models\Retweet;
 use App\Models\Like;
 use App\Models\Follow;
 use App\Repositories\UserRepositoryInterface;
@@ -55,7 +53,7 @@ class ProfileController extends Controller
             return view('profile.edit_profile', [], 402);
         }
 
-        // get user to edit
+        // get user to update
         $user = $this->userRepository->findByUsername($username);
         if (!isset($user)) {
             return view('profile.edit_profile', [], 402);
@@ -66,14 +64,8 @@ class ProfileController extends Controller
             return view('profile.edit_profile', [], 402);
         }
 
-        $user->email = $request->email;
-        $user->fullname = $request->fullname;
-        $user->description = $request->description;
-        $user->location = $request->location;
-        $user->website = $request->website;
-
         // upload bg
-        $bg = $request->file('bg');
+        $bg = $request->file('bg') !== null ? $request->file('bg') : null;
         if (isset($bg)) {
             $dir = 'storage/media/' . $authId . '/bg';
             $files = glob($dir . '/*');
@@ -101,11 +93,11 @@ class ProfileController extends Controller
             $img->reset();
             $img->resize(400, 100);
             $img->save($dir . '/thumbnail.' . $ext);
-            $user->bg = $ext;
+            $bg = $ext;
         }
 
         // upload avatar
-        $avatar = $request->file('avatar');
+        $avatar = $request->file('avatar') !== null ? $request->file('avatar') : null;
         if (isset($avatar)) {
             $dir = 'storage/media/' . $authId . '/avatar';
             $ext = $avatar->extension();
@@ -127,11 +119,19 @@ class ProfileController extends Controller
             $img->reset();
             $img->resize(75, 75);
             $img->save($dir . '/thumbnail.' . $ext);
-            $user->avatar = $ext;
+            $avatar = $ext;
         }
 
-        // save profile
-        $user->save();
+        // update user data
+        $this->userRepository->update($user->id, [
+            'email' => $request->email,
+            'fullname' => $request->fullname,
+            'description' => $request->description,
+            'location' => $request->location,
+            'website' => $request->website,
+            'bg' => $bg,
+            'avatar' => $avatar,
+        ]);
 
         // update auth data in session
         $auth = $this->userRepository->findProfile(['users.id' => $user->id]);

@@ -7,6 +7,8 @@ use App\Models\User;
 class UserRepository implements UserRepositoryInterface
 {
     /**
+     * find a user by id
+     *
      * @param int $id
      * @return User $user
      */
@@ -18,6 +20,8 @@ class UserRepository implements UserRepositoryInterface
     }
 
     /**
+     * find a user by username
+     *
      * @param string $username
      * @return User $user
      */
@@ -29,6 +33,8 @@ class UserRepository implements UserRepositoryInterface
     }
 
     /**
+     * find user's profile
+     *
      * @param array $where
      * @param int $authId
      * @return User $user
@@ -70,5 +76,30 @@ class UserRepository implements UserRepositoryInterface
             ->GroupBy('users.id')->where($where)->first();
 
         return $profile;
+    }
+
+    /**
+     * create a new user
+     *
+     * @param array $data
+     * @return User $user
+     */
+    public function create($data)
+    {
+        $user = User::create($data);
+
+        return $user;
+    }
+
+    /**
+     * update the user
+     *
+     * @param array $data
+     */
+    public function update($id, $data)
+    {
+        if (!isset($data['bg'])) unset($data['bg']);
+        if (!isset($data['avatar'])) unset($data['avatar']);
+        User::where('id', $id)->update($data);
     }
 }

@@ -6,14 +6,18 @@ use Illuminate\Http\Request;
 use App\Models\Tweet;
 use App\Models\Follow;
 use App\Repositories\UserRepositoryInterface;
+use App\Repositories\TweetRepositoryInterface;
 
 class HomeController extends Controller
 {
     protected $userRepository;
 
-    public function __construct(UserRepositoryInterface $userRepositoryInterface)
-    {
+    public function __construct(
+        UserRepositoryInterface $userRepositoryInterface,
+        TweetRepositoryInterface $tweetRepositoryInterface
+    ) {
         $this->userRepository = $userRepositoryInterface;
+        $this->tweetRepository = $tweetRepositoryInterface;
     }
 
     /**
@@ -36,7 +40,7 @@ class HomeController extends Controller
              * get the timeline for public
              */
             // set number of tweets and retweets in pagination
-            $pagination->total = Tweet::countTweetsAndRetweets();
+            $pagination->total = $this->tweetRepository->countTweetsAndRetweets();
             // get tweets and retweets in all users
             $query_t = Tweet::getQueryForTweets();
             $query_r = Tweet::getQueryForRetweets();
@@ -57,7 +61,7 @@ class HomeController extends Controller
             // push auth id to user ids
             array_push($userIds, $authId);
             // count tweets and retweets by user ids, and set number in pagination
-            $pagination->total = Tweet::countTweetsAndRetweets($userIds);
+            $pagination->total = $this->tweetRepository->countTweetsAndRetweets($userIds);
             // get tweets and retweets by user ids
             $query_t = Tweet::getQueryForTweets($authId)->whereIn('tweets.user_id', $userIds);
             $query_r = Tweet::getQueryForRetweets($authId)->whereIn('retweets.user_id', $userIds);

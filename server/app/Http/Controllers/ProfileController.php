@@ -8,15 +8,20 @@ use App\Models\Tweet;
 use App\Models\Like;
 use App\Models\Follow;
 use App\Repositories\UserRepositoryInterface;
+use App\Repositories\TweetRepositoryInterface;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class ProfileController extends Controller
 {
     protected $userRepository;
+    protected $tweetRepository;
 
-    public function __construct(UserRepositoryInterface $userRepositoryInterface)
-    {
+    public function __construct(
+        UserRepositoryInterface $userRepositoryInterface,
+        TweetRepositoryInterface $tweetRepositoryInterface
+    ) {
         $this->userRepository = $userRepositoryInterface;
+        $this->tweetRepository = $tweetRepositoryInterface;
     }
 
     /**
@@ -175,7 +180,7 @@ class ProfileController extends Controller
         }
 
         // count tweets and retweets by profile id, and set number in pagination
-        $pagination->total = Tweet::countTweetsAndRetweets([$profile->id], $pinnedTweetIds, $withReplies);
+        $pagination->total = $this->tweetRepository->countTweetsAndRetweets([$profile->id], $pinnedTweetIds, $withReplies);
 
         // get tweets and retweets by profile id
         $query_t = Tweet::getQueryForTweets($authId)

@@ -170,13 +170,12 @@ class ProfileController extends Controller
         $profile = $this->userRepository->findProfile(['users.username' => $username], $authId);
 
         // get pinned tweets
-        $pinnedTweetIds = $profile->pins()->orderBy('updated_at', 'desc')->pluck('tweet_id')->toArray();
         $pinnedTweets = collect();
-        if ($pagination->current_page == 1 && count($pinnedTweetIds) > 0) {
-            $pinnedTweets = Tweet::getQueryForTweets($authId)
-                ->whereIn('tweets.id', $pinnedTweetIds)
-                ->orderByRaw('FIELD(tweets.id, ' . implode(',', $pinnedTweetIds) . ')')
-                ->get();
+        if ($pagination->current_page == 1) {
+            $pinnedTweetIds = $profile->pins()->orderBy('updated_at', 'desc')->pluck('tweet_id')->toArray();
+            if (count($pinnedTweetIds) > 0) {
+                $pinnedTweets = $this->tweetRepository->getPinnedTweets($pinnedTweetIds, $authId);
+            }
         }
 
         // count tweets and retweets by profile id, and set number in pagination

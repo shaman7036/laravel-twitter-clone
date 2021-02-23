@@ -67,12 +67,13 @@ class TweetRepository implements TweetRepositoryInterface
      * @param int $authId
      * @param array $pinnedTweetIds (NOT IN)
      * @param bool $withReplies
-     * @param int $offset
-     * @param int $limit
+     * @param object $pagination
      * @return Tweet[] $tweets
      */
-    public function getTweetsAndRetweetsForProfile($userId, $authId, $pinnedTweetIds, $withReplies, $offset, $limit)
+    public function getTweetsAndRetweetsForProfile($userId, $authId, $pinnedTweetIds, $withReplies, $pagination)
     {
+        $offset = $pagination->per_page * ($pagination->current_page - 1);
+        $limit = $pagination->per_page;
         $query_t = $this->getQueryForTweets($authId)
             ->where('tweets.user_id', $userId)->whereNotIn('tweets.id', $pinnedTweetIds);
         $query_r = $this->getQueryForRetweets($authId)
@@ -81,6 +82,33 @@ class TweetRepository implements TweetRepositoryInterface
         // make tweets without replies if the url is not with_replies
         if (!$withReplies) {
             $query_t->whereNull('rp_b.id');
+        }
+        $tweets = $query_t->union($query_r)
+            ->orderBy('time', 'desc')
+            ->offset($offset)
+            ->limit($limit)
+            ->get();
+
+        return $tweets;
+    }
+
+    /**
+     * get tweets and retweets for the timeline
+     *
+     * @param array $userIds
+     * @param int $authId
+     * @param object $pagination
+     * @return Tweet[] $tweets
+     */
+    public function getTweetsAndRetweetsForTimeline($userIds, $authId, $pagination)
+    {
+        $offset = $pagination->per_page * ($pagination->current_page - 1);
+        $limit = $pagination->per_page;
+        $query_t = $this->getQueryForTweets($authId);
+        $query_r = $this->getQueryForRetweets($authId);
+        if (!empty($userIds)) {
+            $query_t->whereIn('tweets.user_id', $userIds);
+            $query_r->whereIn('retweets.user_id', $userIds);
         }
         $tweets = $query_t->union($query_r)
             ->orderBy('time', 'desc')

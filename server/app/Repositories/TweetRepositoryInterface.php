@@ -8,5 +8,7 @@ interface TweetRepositoryInterface
 
     public function getPinnedTweets($pinnedTweetIds, $authId = 0);
 
-    public function getTweetsAndRetweetsForProfile($userId, $authId, $pinnedTweetIds, $withReplies, $offset, $limit);
+    public function getTweetsAndRetweetsForProfile($userId, $authId, $pinnedTweetIds, $withReplies, $pagination);
+
+    public function getTweetsAndRetweetsForTimeline($userIds, $authId, $pagination);
 }

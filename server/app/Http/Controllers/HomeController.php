@@ -21,7 +21,7 @@ class HomeController extends Controller
     }
 
     /**
-     * get the timeline for public or auth user
+     * get the timeline for the public or auth user
      *
      * @param Request $request
      * @return JSON ['tweets', 'pagination', 'hashtag', 'auth', 'users']
@@ -37,19 +37,12 @@ class HomeController extends Controller
 
         if (empty($authId)) {
             /**
-             * get the timeline for public
+             * get the timeline for the public
              */
             // set number of tweets and retweets in pagination
             $pagination->total = $this->tweetRepository->countTweetsAndRetweets();
             // get tweets and retweets in all users
-            $query_t = Tweet::getQueryForTweets();
-            $query_r = Tweet::getQueryForRetweets();
-            $tweets = $query_t->union($query_r)
-                ->orderBy('time', 'desc')
-                ->offset($pagination->per_page * ($pagination->current_page - 1))
-                ->limit($pagination->per_page)
-                ->get();
-
+            $tweets = $this->tweetRepository->getTweetsAndRetweetsForTimeline([], 0, $pagination);
             // get users in random order
             $users = $this->userRepository->getInRandomOrder(10);
         } else {
@@ -63,14 +56,7 @@ class HomeController extends Controller
             // count tweets and retweets by user ids, and set number in pagination
             $pagination->total = $this->tweetRepository->countTweetsAndRetweets($userIds);
             // get tweets and retweets by user ids
-            $query_t = Tweet::getQueryForTweets($authId)->whereIn('tweets.user_id', $userIds);
-            $query_r = Tweet::getQueryForRetweets($authId)->whereIn('retweets.user_id', $userIds);
-            $tweets = $query_t->union($query_r)
-                ->orderBy('time', 'desc')
-                ->offset($pagination->per_page * ($pagination->current_page - 1))
-                ->limit($pagination->per_page)
-                ->get();
-
+            $tweets = $this->tweetRepository->getTweetsAndRetweetsForTimeline($userIds, $authId, $pagination);
             // get users in random order
             $users = $this->userRepository->getInRandomOrder(10, $authId);
         }

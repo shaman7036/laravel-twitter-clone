@@ -181,9 +181,7 @@ class ProfileController extends Controller
         $pagination->total = $this->tweetRepository->countTweetsAndRetweets([$profile->id], $pinnedTweetIds, $withReplies);
 
         // get tweets and retweets by profile id
-        $offset = $pagination->per_page * ($pagination->current_page - 1);
-        $limit = $pagination->per_page;
-        $tweets = $this->tweetRepository->getTweetsAndRetweetsForProfile($profile->id, $authId, $pinnedTweetIds, $withReplies, $offset, $limit);
+        $tweets = $this->tweetRepository->getTweetsAndRetweetsForProfile($profile->id, $authId, $pinnedTweetIds, $withReplies, $pagination);
 
         return view('profile.profile', [
             'profile' => $profile, 'pinnedTweets' => $pinnedTweets, 'tweets' => $tweets, 'pagination' => $pagination

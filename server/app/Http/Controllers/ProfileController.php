@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateProfileRequest;
-use App\Models\Tweet;
 use App\Models\Like;
 use App\Models\Follow;
 use App\Repositories\UserRepositoryInterface;
@@ -182,19 +181,9 @@ class ProfileController extends Controller
         $pagination->total = $this->tweetRepository->countTweetsAndRetweets([$profile->id], $pinnedTweetIds, $withReplies);
 
         // get tweets and retweets by profile id
-        $query_t = Tweet::getQueryForTweets($authId)
-            ->where('tweets.user_id', $profile->id)->whereNotIn('tweets.id', $pinnedTweetIds);
-        $query_r = Tweet::getQueryForRetweets($authId)
-            ->where('retweets.user_id', $profile->id)->whereNotIn('tweets.id', $pinnedTweetIds);
-        // make tweets without replies if the url is not with_replies
-        if (!$withReplies) {
-            $query_t->whereNull('rp_b.id');
-        }
-        $tweets = $query_t->union($query_r)
-            ->orderBy('time', 'desc')
-            ->offset($pagination->per_page * ($pagination->current_page - 1))
-            ->limit($pagination->per_page)
-            ->get();
+        $offset = $pagination->per_page * ($pagination->current_page - 1);
+        $limit = $pagination->per_page;
+        $tweets = $this->tweetRepository->getTweetsAndRetweetsForProfile($profile->id, $authId, $pinnedTweetIds, $withReplies, $offset, $limit);
 
         return view('profile.profile', [
             'profile' => $profile, 'pinnedTweets' => $pinnedTweets, 'tweets' => $tweets, 'pagination' => $pagination

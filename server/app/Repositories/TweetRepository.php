@@ -8,40 +8,34 @@ use Illuminate\Support\Facades\DB;
 class TweetRepository implements TweetRepositoryInterface
 {
     /**
-     * get number of tweets and retweets
+     * find a tweet
      *
-     * @param array $userIds
-     * @param array $notIn (tweet ids)
-     * @param bool $withReplies
-     * @return int
+     * @param int $tweetId
+     * @param int $authId
+     * @return Tweet $tweet
      */
-    public function countTweetsAndRetweets($userIds = [], $notIn = [], $withReplies = true)
+    public function findById($tweetId, $authId = 0)
     {
-        $query_t = Tweet::select('tweets.id', 'replies.reply_id')
-            ->leftJoin('replies', function ($join) {
-                $join->on('tweets.id', '=', 'replies.reply_id')->whereNull('replies.deleted_at');
-            });
-        $query_r = Tweet::select('tweets.id')->selectRaw('"" as reply_id')
-            ->join('retweets', function ($join) {
-                $join->on('tweets.id', '=', 'retweets.tweet_id')->whereNull('retweets.deleted_at');
-            });
-        if (!empty($userIds)) {
-            // to count tweets in user ids
-            $query_t->whereIn('tweets.user_id', $userIds);
-            $query_r->whereIn('retweets.user_id', $userIds);
-        }
-        if (!empty($notIn)) {
-            // to count tweets not in some tweet ids
-            $query_t->whereNotIn('tweets.id', $notIn);
-            $query_r->whereNotIn('tweets.id', $notIn);
-        }
-        if (!$withReplies) {
-            // to count tweets without replies
-            $query_t->whereNull('replies.reply_id');
-        }
-        $query_t->unionAll($query_r);
+        $tweet = Tweet::getQueryForTweets($authId)->where('tweets.id', $tweetId)->first();
 
-        return $query_t->count();
+        return $tweet;
+    }
+
+    /**
+     * get replies for the tweet
+     *
+     * @param int $tweetId
+     * @param int $authId
+     * @return Tweet[] $replies
+     */
+    public function getRepliesForTweet($tweetId, $authId = 0)
+    {
+        $replies = Tweet::getQueryForTweets($authId)->whereIn('tweets.id', function ($query) use ($tweetId) {
+            $query->select('replies.reply_id')->from('replies')
+                ->where('replies.reply_to', $tweetId)->whereNull('replies.deleted_at');
+        })->orderBy('tweets.updated_at', 'desc')->get();
+
+        return $replies;
     }
 
     /**
@@ -117,6 +111,80 @@ class TweetRepository implements TweetRepositoryInterface
             ->get();
 
         return $tweets;
+    }
+
+    /**
+     * get number of tweets and retweets
+     *
+     * @param array $userIds
+     * @param array $notIn (tweet ids)
+     * @param bool $withReplies
+     * @return int
+     */
+    public function countTweetsAndRetweets($userIds = [], $notIn = [], $withReplies = true)
+    {
+        $query_t = Tweet::select('tweets.id', 'replies.reply_id')
+            ->leftJoin('replies', function ($join) {
+                $join->on('tweets.id', '=', 'replies.reply_id')->whereNull('replies.deleted_at');
+            });
+        $query_r = Tweet::select('tweets.id')->selectRaw('"" as reply_id')
+            ->join('retweets', function ($join) {
+                $join->on('tweets.id', '=', 'retweets.tweet_id')->whereNull('retweets.deleted_at');
+            });
+        if (!empty($userIds)) {
+            // to count tweets in user ids
+            $query_t->whereIn('tweets.user_id', $userIds);
+            $query_r->whereIn('retweets.user_id', $userIds);
+        }
+        if (!empty($notIn)) {
+            // to count tweets not in some tweet ids
+            $query_t->whereNotIn('tweets.id', $notIn);
+            $query_r->whereNotIn('tweets.id', $notIn);
+        }
+        if (!$withReplies) {
+            // to count tweets without replies
+            $query_t->whereNull('replies.reply_id');
+        }
+        $query_t->unionAll($query_r);
+
+        return $query_t->count();
+    }
+
+    /**
+     * save a new tweet
+     *
+     * @param int $authId
+     * @param string $text
+     */
+    public function save($authId, $text)
+    {
+        $tweet = new Tweet;
+        $tweet->user_id = $authId;
+        $tweet->text = $text;
+        $tweet->save();
+    }
+
+    /**
+     * delete the tweet
+     *
+     * @param int $tweetId
+     * @param int $authId
+     * @return bool $deleted
+     */
+    public function delete($tweetId, $authId)
+    {
+        $tweet = Tweet::findOrFail($tweetId);
+
+        if ($authId != $tweet->user_id) {
+            // unauthorized
+            $deleted = false;
+        } else {
+            // delete tweet
+            $tweet->delete();
+            $deleted = true;
+        }
+
+        return $deleted;
     }
 
     /**

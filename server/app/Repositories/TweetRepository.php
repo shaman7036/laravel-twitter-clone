@@ -155,6 +155,7 @@ class TweetRepository implements TweetRepositoryInterface
      *
      * @param int $authId
      * @param string $text
+     * @return int $tweetId
      */
     public function save($authId, $text)
     {
@@ -162,6 +163,9 @@ class TweetRepository implements TweetRepositoryInterface
         $tweet->user_id = $authId;
         $tweet->text = $text;
         $tweet->save();
+        $tweetId = $tweet->id;
+
+        return $tweetId;
     }
 
     /**

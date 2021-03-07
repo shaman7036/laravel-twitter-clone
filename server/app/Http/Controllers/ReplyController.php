@@ -3,11 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Reply;
-use App\Models\Tweet;
+use App\Repositories\ReplyRepositoryInterface;
+use App\Repositories\TweetRepositoryInterface;
 
 class ReplyController extends Controller
 {
+    protected $replyRepository;
+    protected $tweetRepository;
+
+    public function __construct(
+        ReplyRepositoryInterface $replyRepositoryInterface,
+        TweetRepositoryInterface $tweetRepositoryInterface
+    ) {
+        $this->replyRepository = $replyRepositoryInterface;
+        $this->tweetRepository = $tweetRepositoryInterface;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -20,10 +31,7 @@ class ReplyController extends Controller
             return response()->json([], 400);
         }
         $reply_to = $request->input('reply_to');
-        $replies = Tweet::getQueryForTweets($authId)->whereIn('tweets.id', function ($query) use ($reply_to) {
-            $query->select('replies.reply_id')->from('replies')
-                ->where('replies.reply_to', $reply_to)->whereNull('replies.deleted_at');
-        })->orderBy('tweets.updated_at', 'desc')->get();
+        $replies = $this->tweetRepository->getRepliesForTweet($reply_to, $authId);
 
         return response()->json(['replies' => $replies]);
     }
@@ -49,16 +57,10 @@ class ReplyController extends Controller
         $authId = $request->get('auth_id');
 
         // save as tweet
-        $tweet = new Tweet;
-        $tweet->user_id = $authId;
-        $tweet->text = $request->text;
-        $tweet->save();
+        $tweetId = $this->tweetRepository->save($authId, $request->text);
 
-        // save ids
-        $reply = new Reply;
-        $reply->reply_id = $tweet->id;
-        $reply->reply_to = $request->reply_to;
-        $reply->save();
+        // save tweet id and target id (reply_to)
+        $this->replyRepository->save($tweetId, $request->reply_to);
 
         return redirect('/profile/with_replies/' . $request->get('auth_username'));
     }

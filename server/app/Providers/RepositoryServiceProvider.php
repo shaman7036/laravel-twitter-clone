@@ -22,6 +22,11 @@ class RepositoryServiceProvider extends ServiceProvider
             \App\Repositories\TweetRepositoryInterface::class,
             \App\Repositories\TweetRepository::class
         );
+
+        $this->app->bind(
+            \App\Repositories\LikeRepositoryInterface::class,
+            \App\Repositories\LikeRepository::class
+        );
     }
 
     /**

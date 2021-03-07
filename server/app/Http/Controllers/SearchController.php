@@ -4,14 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Tweet;
+use App\Repositories\TweetRepositoryInterface;
 use App\Repositories\UserRepositoryInterface;
 
 class SearchController extends Controller
 {
+    protected $tweetRepository;
     protected $userRepository;
 
-    public function __construct(UserRepositoryInterface $userRepositoryInterface)
-    {
+    public function __construct(
+        TweetRepositoryInterface $tweetRepositoryInterface,
+        UserRepositoryInterface $userRepositoryInterface
+    ) {
+        $this->tweetRepository = $tweetRepositoryInterface;
         $this->userRepository = $userRepositoryInterface;
     }
 
@@ -29,18 +34,7 @@ class SearchController extends Controller
         $q = $request->input('q');
 
         // get hashtags by search query
-        $hashtags = array();
-        $texts = Tweet::where('text', 'like', '%#' . $q . '%')
-            ->orderBy('updated_at', 'desc')->limit(100)->pluck('text')->toArray();
-        foreach ($texts as $text) {
-            preg_match('/(#' . $q . '\b)|(#' . $q . '\w+)/', $text, $matches);
-            if (!$matches) continue;
-            if (array_key_exists($matches[0], $hashtags)) {
-                $hashtags[$matches[0]] += 1;
-            } else {
-                $hashtags[$matches[0]] = 1;
-            }
-        }
+        $hashtags = $this->tweetRepository->searchHashtags($q);
 
         // get users by search query
         $users = $this->userRepository->search($q);

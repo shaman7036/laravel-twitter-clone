@@ -132,6 +132,30 @@ class TweetRepository implements TweetRepositoryInterface
     }
 
     /**
+     * search hashtags
+     *
+     * @param string $searchQuery
+     * @return string[] $texts
+     */
+    public function searchHashtags($searchQuery)
+    {
+        $hashtags = array();
+        $texts = Tweet::where('text', 'like', '%#' . $searchQuery . '%')
+            ->orderBy('updated_at', 'desc')->limit(100)->pluck('text')->toArray();
+        foreach ($texts as $text) {
+            preg_match('/(#' . $searchQuery . '\b)|(#' . $searchQuery . '\w+)/', $text, $matches);
+            if (!$matches) continue;
+            if (array_key_exists($matches[0], $hashtags)) {
+                $hashtags[$matches[0]] += 1;
+            } else {
+                $hashtags[$matches[0]] = 1;
+            }
+        }
+
+        return $hashtags;
+    }
+
+    /**
      * get number of tweets and retweets
      *
      * @param array $userIds

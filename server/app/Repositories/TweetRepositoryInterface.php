@@ -16,6 +16,8 @@ interface TweetRepositoryInterface
 
     public function getTweetsByHashtag($hashtag, $pagination);
 
+    public function searchHashtags($searchQuery);
+
     public function countTweetsAndRetweets($userIds = [], $notIn = [], $withReplies = true);
 
     public function countTweetsByHashtag($hashtag);

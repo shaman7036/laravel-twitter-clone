@@ -48,6 +48,12 @@ class RepositoryServiceProvider extends ServiceProvider
             \App\Repositories\FollowRepositoryInterface::class,
             \App\Repositories\FollowRepository::class
         );
+
+        // pin repository
+        $this->app->bind(
+            \App\Repositories\PinRepositoryInterface::class,
+            \App\Repositories\PinRepository::class
+        );
     }
 
     /**

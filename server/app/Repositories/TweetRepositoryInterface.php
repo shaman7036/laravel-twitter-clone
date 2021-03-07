@@ -16,6 +16,8 @@ interface TweetRepositoryInterface
 
     public function countTweetsAndRetweets($userIds = [], $notIn = [], $withReplies = true);
 
+    public function exists($where);
+
     public function save($authId, $text);
 
     public function delete($tweetId, $authId);

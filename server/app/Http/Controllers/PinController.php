@@ -3,11 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Pin;
-use App\Models\Tweet;
+use App\Repositories\PinRepositoryInterface;
+use App\Repositories\TweetRepositoryInterface;
 
 class PinController extends Controller
 {
+    protected $pinRepository;
+    protected $tweetRepository;
+
+    public function __construct(
+        PinRepositoryInterface $pinRepositoryInterface,
+        TweetRepositoryInterface $tweetRepositoryInterface
+    ) {
+        $this->pinRepository = $pinRepositoryInterface;
+        $this->tweetRepository = $tweetRepositoryInterface;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -39,50 +49,13 @@ class PinController extends Controller
         $authId = $request->get('auth_id');
 
         // check the auth owns the target tweet
-        if (!Tweet::where(['user_id' => $authId, 'id' => $request->tweet_id])->exists()) {
+        if (!$this->tweetRepository->exists(['user_id' => $authId, 'id' => $request->tweet_id])) {
             return response()->json([], 400);
         }
 
-        // check the current number of pins in the profile
-        $num_pins = Pin::where('user_id', $authId)->count();
-        $isExceeded = $num_pins >= env('PINS_PER_PROFILE', 1) ? true : false;
+        $result = $this->pinRepository->save($authId, $request->tweet_id);
 
-        $pin = Pin::withTrashed()
-            ->where(['user_id' => $authId, 'tweet_id' => $request->tweet_id])->first();
-        $isPinned = false;
-
-        if (!isset($pin)) {
-            if ($isExceeded) {
-                // remove the oldest pin to replace
-                $oldestPin = Pin::where('user_id', $authId)->orderBy('updated_at', 'asc')->first();
-                $oldestPin->delete();
-            }
-            // new pin
-            $pin = new Pin;
-            $pin->user_id = $authId;
-            $pin->tweet_id = $request->tweet_id;
-            $pin->save();
-            $isPinned = true;
-        } else {
-            if ($pin->deleted_at) {
-                if ($isExceeded) {
-                    // remove the oldest pin to replace
-                    $oldestPin = Pin::where('user_id', $authId)->orderBy('updated_at', 'asc')->first();
-                    $oldestPin->delete();
-                }
-                // pin again
-                $pin->deleted_at = null;
-                $pin->save();
-                $isPinned = true;
-            } else {
-                // unpin
-                $pin->delete();
-                $isPinned = false;
-            }
-        }
-        $unpinnedTweetId = isset($oldestPin) ? $oldestPin->tweet_id : 0;
-
-        return response()->json(['isPinned' => $isPinned, 'unpinnedTweetId' => $unpinnedTweetId]);
+        return response()->json($result);
     }
 
     /**

@@ -119,7 +119,7 @@ class TweetRepository implements TweetRepositoryInterface
      * @param array $userIds
      * @param array $notIn (tweet ids)
      * @param bool $withReplies
-     * @return int
+     * @return int $number
      */
     public function countTweetsAndRetweets($userIds = [], $notIn = [], $withReplies = true)
     {
@@ -145,9 +145,22 @@ class TweetRepository implements TweetRepositoryInterface
             // to count tweets without replies
             $query_t->whereNull('replies.reply_id');
         }
-        $query_t->unionAll($query_r);
+        $number = $query_t->unionAll($query_r)->count();
 
-        return $query_t->count();
+        return $number;
+    }
+
+    /**
+     * check if the tweet exists or not
+     *
+     * @param array $where
+     * @return bool isExisted
+     */
+    public function exists($where)
+    {
+        $isExisted = Tweet::where($where)->exists();
+
+        return $isExisted;
     }
 
     /**

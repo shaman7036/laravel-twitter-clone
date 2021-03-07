@@ -42,6 +42,12 @@ class RepositoryServiceProvider extends ServiceProvider
             \App\Repositories\ReplyRepositoryInterface::class,
             \App\Repositories\ReplyRepository::class
         );
+
+        // follow repository
+        $this->app->bind(
+            \App\Repositories\FollowRepositoryInterface::class,
+            \App\Repositories\FollowRepository::class
+        );
     }
 
     /**

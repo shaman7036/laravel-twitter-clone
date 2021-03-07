@@ -4,10 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\FollowRequest;
-use App\Models\Follow;
+use App\Repositories\FollowRepositoryInterface;
 
 class FollowController extends Controller
 {
+    protected $followRepository;
+
+    public function __construct(FollowRepositoryInterface $followRepositoryInterface)
+    {
+        $this->followRepository = $followRepositoryInterface;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -43,28 +50,7 @@ class FollowController extends Controller
             return response()->json([], 400);
         }
 
-        $follow = Follow::withTrashed()
-            ->where(['follower_id' => $authId, 'followed_id' => $request->followed_id])->first();
-        $isFollowed = false;
-
-        if (!isset($follow)) {
-            // new follow
-            $follow = new Follow;
-            $follow->follower_id = $authId;
-            $follow->followed_id = $request->followed_id;
-            $follow->save();
-            $isFollowed = true;
-        } else {
-            if ($follow->deleted_at) {
-                // follow again
-                $follow->deleted_at = null;
-                $follow->save();
-                $isFollowed = true;
-            } else {
-                // unfollow
-                $follow->delete();
-            }
-        }
+        $isFollowed = $this->followRepository->save($authId, $request->followed_id);
 
         return response()->json(['isFollowed' => $isFollowed], 200);
     }

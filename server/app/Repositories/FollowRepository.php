@@ -7,6 +7,19 @@ use App\Models\Follow;
 class FollowRepository implements FollowRepositoryInterface
 {
     /**
+     * get following ids
+     *
+     * @param int $followerId
+     * @return int[] $userIds
+     */
+    public function getFollowingIds($followerId)
+    {
+        $userIds = Follow::where('follower_id', $followerId)->pluck('followed_id')->toArray();
+
+        return $userIds;
+    }
+
+    /**
      * follow or unfollow the user
      *
      * @param int $followerId

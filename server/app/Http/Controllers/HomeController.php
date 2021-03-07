@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Tweet;
-use App\Models\Follow;
 use App\Repositories\UserRepositoryInterface;
 use App\Repositories\TweetRepositoryInterface;
+use App\Repositories\FollowRepositoryInterface;
 
 class HomeController extends Controller
 {
@@ -14,10 +14,12 @@ class HomeController extends Controller
 
     public function __construct(
         UserRepositoryInterface $userRepositoryInterface,
-        TweetRepositoryInterface $tweetRepositoryInterface
+        TweetRepositoryInterface $tweetRepositoryInterface,
+        FollowRepositoryInterface $followRepositoryInterface
     ) {
         $this->userRepository = $userRepositoryInterface;
         $this->tweetRepository = $tweetRepositoryInterface;
+        $this->followRepository = $followRepositoryInterface;
     }
 
     /**
@@ -50,7 +52,7 @@ class HomeController extends Controller
              * get the timeline for auth user
              */
             // get user ids that are followed by auth id
-            $userIds = Follow::where('follower_id', $authId)->pluck('followed_id')->toArray();
+            $userIds = $this->followRepository->getFollowingIds($authId);
             // push auth id to user ids
             array_push($userIds, $authId);
             // count tweets and retweets by user ids, and set number in pagination

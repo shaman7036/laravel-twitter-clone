@@ -27,6 +27,11 @@ class RepositoryServiceProvider extends ServiceProvider
             \App\Repositories\LikeRepositoryInterface::class,
             \App\Repositories\LikeRepository::class
         );
+
+        $this->app->bind(
+            \App\Repositories\RetweetRepositoryInterface::class,
+            \App\Repositories\RetweetRepository::class
+        );
     }
 
     /**

@@ -114,6 +114,24 @@ class TweetRepository implements TweetRepositoryInterface
     }
 
     /**
+     * get tweets by hashtag
+     *
+     * @param string $hashtag
+     * @return Tweet[] $tweets
+     */
+    public function getTweetsByHashtag($hashtag, $pagination)
+    {
+        $tweets = Tweet::getQueryForTweets()->where('tweets.text', 'like', '%#' . $hashtag . ' %')
+            ->orWhere('tweets.text', 'like', '%#' . $hashtag)
+            ->orderBy('time', 'desc')
+            ->offset($pagination->per_page * ($pagination->current_page - 1))
+            ->limit($pagination->per_page)
+            ->get();
+
+        return $tweets;
+    }
+
+    /**
      * get number of tweets and retweets
      *
      * @param array $userIds
@@ -146,6 +164,21 @@ class TweetRepository implements TweetRepositoryInterface
             $query_t->whereNull('replies.reply_id');
         }
         $number = $query_t->unionAll($query_r)->count();
+
+        return $number;
+    }
+
+    /**
+     * count tweets by hashtag
+     *
+     * @param string $hashtag
+     * @return int $number
+     */
+    public function countTweetsByHashtag($hashtag)
+    {
+        $number = Tweet::where('tweets.text', 'like', '%#' . $hashtag . ' %')
+            ->orWhere('tweets.text', 'like', '%#' . $hashtag)
+            ->count();
 
         return $number;
     }

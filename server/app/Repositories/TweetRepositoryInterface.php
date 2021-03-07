@@ -14,7 +14,11 @@ interface TweetRepositoryInterface
 
     public function getTweetsAndRetweetsForTimeline($userIds, $authId, $pagination);
 
+    public function getTweetsByHashtag($hashtag, $pagination);
+
     public function countTweetsAndRetweets($userIds = [], $notIn = [], $withReplies = true);
+
+    public function countTweetsByHashtag($hashtag);
 
     public function exists($where);
 

@@ -89,17 +89,10 @@ class HomeController extends Controller
         $authId = $request->get('auth_id');
 
         // set number of tweets that have the hashtag in text
-        $pagination->total = Tweet::where('tweets.text', 'like', '%#' . $hashtag . ' %')
-            ->orWhere('tweets.text', 'like', '%#' . $hashtag)
-            ->count();
+        $pagination->total = $this->tweetRepository->countTweetsByHashtag($hashtag);
 
-        // get tweets
-        $tweets = Tweet::getQueryForTweets()->where('tweets.text', 'like', '%#' . $hashtag . ' %')
-            ->orWhere('tweets.text', 'like', '%#' . $hashtag)
-            ->orderBy('time', 'desc')
-            ->offset($pagination->per_page * ($pagination->current_page - 1))
-            ->limit($pagination->per_page)
-            ->get();
+        // get tweets by hashtag
+        $tweets = $this->tweetRepository->getTweetsByHashtag($hashtag, $pagination);
 
         // get users in random order
         $users = $this->userRepository->getInRandomOrder(10, $authId);

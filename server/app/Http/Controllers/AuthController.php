@@ -5,24 +5,33 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\SignUpRequest;
 use App\Http\Requests\LogInRequest;
-use App\Models\User;
+use App\Repositories\UserRepositoryInterface;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    protected $userRepository;
+
+    public function __construct(UserRepositoryInterface $userRepositoryInterface)
+    {
+        $this->userRepository = $userRepositoryInterface;
+    }
+
     /**
      * @param App\Http\Requests\SignUpRequest $request
      */
     function signUp(SignUpRequest $request)
     {
-        $user = new User();
-        $user->username = $request->username;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
-        $user->fullname = 'Name';
-        $user->save();
+        // create a new user
+        $user = $this->userRepository->create([
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'fullname' => 'Name',
+        ]);
 
-        $auth = User::getProfile(['users.id' => $user->id]);
+        // store user data as auth data in session
+        $auth = $this->userRepository->findProfile(['users.id' => $user->id]);
         $request->session()->regenerate();
         $request->session()->put('auth', $auth);
 
@@ -34,7 +43,8 @@ class AuthController extends Controller
      */
     function logIn(LogInRequest $request)
     {
-        $user = User::where('username', $request->username)->first();
+        // check the password
+        $user = $this->userRepository->findByUsername($request->username);
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->view('auth.auth', [
                 'form' => 'login',
@@ -42,7 +52,8 @@ class AuthController extends Controller
             ], 402);
         }
 
-        $auth = User::getProfile(['users.id' => $user->id]);
+        // store auth data in session
+        $auth = $this->userRepository->findById($user->id);
         $request->session()->regenerate();
         $request->session()->put('auth', $auth);
 

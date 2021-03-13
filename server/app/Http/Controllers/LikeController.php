@@ -4,13 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\LikeRequest;
-use Auth;
-use App\Models\User;
-use App\Models\Tweet;
-use App\Models\Like;
+use App\Repositories\LikeRepositoryInterface;
 
 class LikeController extends Controller
 {
+    protected $likeRepository;
+
+    public function __construct(LikeRepositoryInterface $likeRepositoryInterface)
+    {
+        $this->likeRepository = $likeRepositoryInterface;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -20,19 +24,7 @@ class LikeController extends Controller
     {
         $authId = $request->get('auth_id');
         $tweetId = $request->input('tweet_id');
-
-        $select = [
-            'u.id as user_id', 'u.avatar', 'u.fullname', 'u.username', 'u.description',
-        ];
-        $likedUsers = Like::select($select)
-            ->selectRaw('case when f.follower_id = ' . $authId . ' then 1 else 0 end as is_followed')
-            ->join('users as u', function ($join) use ($tweetId) {
-                $join->on('likes.user_id', '=', 'u.id')->whereNull('u.deleted_at')->where('likes.tweet_id', $tweetId);
-            })
-            ->leftJoin('follows as f', function ($join) use ($authId) {
-                $join->on('u.id', '=', 'f.followed_id')->whereNull('f.deleted_at')->where('f.follower_id', $authId);
-            })->groupBy('f.id')->groupBy('likes.id')
-            ->orderBy('likes.updated_at', 'desc')->get();
+        $likedUsers = $this->likeRepository->getLikedUsersForTweet($tweetId, $authId);
 
         return response()->json(['users' => $likedUsers]);
     }
@@ -56,29 +48,10 @@ class LikeController extends Controller
     public function store(LikeRequest $request)
     {
         $authId = $request->get('auth_id');
-        $like = Like::withTrashed()
-            ->where(['user_id' => $authId, 'tweet_id' => $request->tweet_id])->first();
-        $isLiked = false;
-
-        if (!isset($like)) {
-            // new like
-            $like = new Like;
-            $like->user_id = $authId;
-            $like->tweet_id = $request->tweet_id;
-            $like->save();
-            $isLiked = true;
-        } else {
-            if ($like->deleted_at) {
-                // like again
-                $like->deleted_at = null;
-                $like->save();
-                $isLiked = true;
-            } else {
-                // unlike
-                $like->delete();
-                $isLiked = false;
-            }
-        }
+        $isLiked = $this->likeRepository->createOrToggleActivity([
+            'user_id' => $authId,
+            'tweet_id' => $request->tweet_id,
+        ]);
 
         return response()->json(['isLiked' => $isLiked]);
     }

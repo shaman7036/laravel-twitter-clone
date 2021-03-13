@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Pin;
-use App\Models\Tweet;
 
 class PinRepository implements PinRepositoryInterface
 {

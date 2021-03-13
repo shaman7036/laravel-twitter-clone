@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateProfileRequest;
-use App\Models\Like;
-use App\Models\Follow;
 use App\Repositories\UserRepositoryInterface;
 use App\Repositories\TweetRepositoryInterface;
 use App\Repositories\FollowRepositoryInterface;

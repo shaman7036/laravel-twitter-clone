@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Tweet;
 use App\Repositories\TweetRepositoryInterface;
 use App\Repositories\UserRepositoryInterface;
 

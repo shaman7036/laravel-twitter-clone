@@ -27,7 +27,7 @@
         <script src="{{ asset('js/script.js') }}"></script>
         <script src="{{ asset('js/jquery.min.js') }}"></script>
         <script src="{{ asset('js/moment.js') }}"></script>
-        <script src="{{ asset('js/parsley.min.js') }}"></script>
+        <script src="{{ asset('js/parsley.min.js') }}" type="javascript"></script>
         @include('layouts.variables')
         @include('navigation.navigation')
         @yield('content')

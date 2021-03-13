@@ -8,19 +8,23 @@ use App\Models\Like;
 use App\Models\Follow;
 use App\Repositories\UserRepositoryInterface;
 use App\Repositories\TweetRepositoryInterface;
+use App\Repositories\FollowRepositoryInterface;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class ProfileController extends Controller
 {
     protected $userRepository;
     protected $tweetRepository;
+    protected $followRepository;
 
     public function __construct(
         UserRepositoryInterface $userRepositoryInterface,
-        TweetRepositoryInterface $tweetRepositoryInterface
+        TweetRepositoryInterface $tweetRepositoryInterface,
+        FollowRepositoryInterface $followRepositoryInterface
     ) {
         $this->userRepository = $userRepositoryInterface;
         $this->tweetRepository = $tweetRepositoryInterface;
+        $this->followRepository = $followRepositoryInterface;
     }
 
     /**
@@ -205,14 +209,10 @@ class ProfileController extends Controller
         $profile = $this->userRepository->findProfile(['users.username' => $username], $authId);
 
         // count total follownig in profile
-        $pagination->total = Follow::getQueryForProfileFollowing($profile->id, $authId)->count();
+        $pagination->total = $this->followRepository->countFollowingByUserId($profile->id);
 
         // get following in profile
-        $users = Follow::getQueryForProfileFollowing($profile->id, $authId)
-            ->orderBy('follows.updated_at', 'desc')
-            ->offset($pagination->per_page * ($pagination->current_page - 1))
-            ->limit($pagination->per_page)
-            ->get();
+        $users = $this->followRepository->getFollowingByUserId($profile->id, $authId, $pagination);
 
         return view('profile.profile', ['profile' => $profile, 'users' => $users, 'pagination' => $pagination]);
     }
@@ -234,14 +234,10 @@ class ProfileController extends Controller
         $profile = $this->userRepository->findProfile(['users.username' => $username], $authId);
 
         // count total followers in profile
-        $pagination->total = Follow::getQueryForProfileFollowers($profile->id, $authId)->count();
+        $pagination->total = $this->followRepository->countFollowersByUserId($profile->id);
 
         // get followers in profile
-        $users = Follow::getQueryForProfileFollowers($profile->id, $authId)
-            ->orderBy('follows.updated_at', 'desc')
-            ->offset($pagination->per_page * ($pagination->current_page - 1))
-            ->limit($pagination->per_page)
-            ->get();
+        $users = $this->followRepository->getFollowersByUserId($profile->id, $authId, $pagination);
 
         return view('profile.profile', ['profile' => $profile, 'users' => $users, 'pagination' => $pagination]);
     }

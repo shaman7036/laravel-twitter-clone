@@ -35,6 +35,7 @@ const tweetEvents = {
             url: '/likes',
             data: {"_token": "{{ csrf_token() }}", tweet_id: tweetId},
             success: (res) => {
+                if (profileId === undefined) var profileId = null;
                 if (res.isLiked) {
                     // liked
                     icon.addClass('active');

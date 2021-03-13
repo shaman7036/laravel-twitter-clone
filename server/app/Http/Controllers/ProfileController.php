@@ -9,6 +9,7 @@ use App\Models\Follow;
 use App\Repositories\UserRepositoryInterface;
 use App\Repositories\TweetRepositoryInterface;
 use App\Repositories\FollowRepositoryInterface;
+use App\Repositories\LikeRepositoryInterface;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class ProfileController extends Controller
@@ -16,15 +17,18 @@ class ProfileController extends Controller
     protected $userRepository;
     protected $tweetRepository;
     protected $followRepository;
+    protected $likeRepository;
 
     public function __construct(
         UserRepositoryInterface $userRepositoryInterface,
         TweetRepositoryInterface $tweetRepositoryInterface,
-        FollowRepositoryInterface $followRepositoryInterface
+        FollowRepositoryInterface $followRepositoryInterface,
+        LikeRepositoryInterface $likeRepositoryInterface
     ) {
         $this->userRepository = $userRepositoryInterface;
         $this->tweetRepository = $tweetRepositoryInterface;
         $this->followRepository = $followRepositoryInterface;
+        $this->likeRepository = $likeRepositoryInterface;
     }
 
     /**
@@ -262,11 +266,7 @@ class ProfileController extends Controller
         $pagination->total = $profile->num_likes;
 
         // get liked tweets by profile id
-        $tweets = Like::getQueryForUserLikes($profile->id, $authId)
-            ->orderBy('likes.updated_at', 'desc')
-            ->offset($pagination->per_page * ($pagination->current_page - 1))
-            ->limit($pagination->per_page)
-            ->get();
+        $tweets = $this->likeRepository->getLikedTweetsForUser($profile->id, $authId, $pagination);
 
         return view('profile.profile', ['profile' => $profile, 'tweets' => $tweets, 'pagination' => $pagination]);
     }

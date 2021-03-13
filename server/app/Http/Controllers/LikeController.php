@@ -48,7 +48,10 @@ class LikeController extends Controller
     public function store(LikeRequest $request)
     {
         $authId = $request->get('auth_id');
-        $isLiked = $this->likeRepository->save($request->tweet_id, $authId);
+        $isLiked = $this->likeRepository->createOrToggleActivity([
+            'user_id' => $authId,
+            'tweet_id' => $request->tweet_id,
+        ]);
 
         return response()->json(['isLiked' => $isLiked]);
     }

@@ -7,6 +7,4 @@ interface LikeRepositoryInterface
     public function getLikedUsersForTweet($tweetId, $authId = 0);
 
     public function getLikedTweetsForUser($userId, $authId, $pagination);
-
-    public function save($tweetId, $authId);
 }

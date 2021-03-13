@@ -4,8 +4,10 @@ namespace App\Repositories;
 
 use App\Models\Follow;
 
-class FollowRepository implements FollowRepositoryInterface
+class FollowRepository extends AbstractRepository implements FollowRepositoryInterface
 {
+    protected $model = 'App\Models\Follow';
+
     /**
      * get following ids
      *
@@ -81,41 +83,6 @@ class FollowRepository implements FollowRepositoryInterface
         $number = $this->getQueryForFollowers($userId)->count();
 
         return $number;
-    }
-
-    /**
-     * follow or unfollow the user
-     *
-     * @param int $followerId
-     * @param int $followedId
-     * @return bool $isFollowed
-     */
-    public function save($followerId, $followedId)
-    {
-        $follow = Follow::withTrashed()
-            ->where(['follower_id' => $followerId, 'followed_id' => $followedId])->first();
-        $isFollowed = false;
-
-        if (!isset($follow)) {
-            // new follow
-            $follow = new Follow;
-            $follow->follower_id = $followerId;
-            $follow->followed_id = $followedId;
-            $follow->save();
-            $isFollowed = true;
-        } else {
-            if ($follow->deleted_at) {
-                // follow again
-                $follow->deleted_at = null;
-                $follow->save();
-                $isFollowed = true;
-            } else {
-                // unfollow
-                $follow->delete();
-            }
-        }
-
-        return $isFollowed;
     }
 
     /**

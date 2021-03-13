@@ -13,6 +13,4 @@ interface FollowRepositoryInterface
     public function countFollowingByUserId($userId);
 
     public function countFollowersByUserId($userId);
-
-    public function save($followerId, $followedId);
 }

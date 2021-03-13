@@ -4,8 +4,10 @@ namespace App\Repositories;
 
 use App\Models\Retweet;
 
-class RetweetRepository implements RetweetRepositoryInterface
+class RetweetRepository extends AbstractRepository implements RetweetRepositoryInterface
 {
+    protected $model = 'App\Models\Retweet';
+
     /**
      * get retweeted users for the tweet
      *
@@ -29,41 +31,5 @@ class RetweetRepository implements RetweetRepositoryInterface
             ->orderBy('retweets.updated_at', 'desc')->get();
 
         return $retweetedUsers;
-    }
-
-    /**
-     * retweet or unretweet the tweet
-     *
-     * @param int $authId
-     * @param int $tweetId
-     * @return bool $isRetweeted
-     */
-    public function save($tweetId, $authId = 0)
-    {
-        $retweet = Retweet::withTrashed()
-            ->where(['user_id' => $authId, 'tweet_id' => $tweetId])->first();
-        $isRetweeted = false;
-
-        if (!isset($retweet)) {
-            // new retweet
-            $retweet = new Retweet;
-            $retweet->user_id = $authId;
-            $retweet->tweet_id = $tweetId;
-            $retweet->save();
-            $isRetweeted = true;
-        } else {
-            if ($retweet->deleted_at) {
-                // retweet again
-                $retweet->deleted_at = null;
-                $retweet->save();
-                $isRetweeted = true;
-            } else {
-                // unretweet
-                $retweet->delete();
-                $isRetweeted = false;
-            }
-        }
-
-        return $isRetweeted;
     }
 }

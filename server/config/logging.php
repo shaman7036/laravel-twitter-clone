@@ -104,7 +104,7 @@ return [
             'driver' => 'monolog',
             'handler' => \App\Loggers\LogsTableProcessingHandler::class,
             'via' => \App\Loggers\LogsTableCustomLogger::class,
-            'level' => env('LOG_LEVEL', 'debug'),
+            'level' => env('LOG_LEVEL_DATABASE', 'error'),
         ],
     ],
 

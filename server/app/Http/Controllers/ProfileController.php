@@ -176,6 +176,7 @@ class ProfileController extends Controller
 
         // get pinned tweets
         $pinnedTweets = collect();
+        $pinnedTweetIds = array();
         if ($pagination->current_page == 1) {
             $pinnedTweetIds = $profile->pins()->orderBy('updated_at', 'desc')->pluck('tweet_id')->toArray();
             if (count($pinnedTweetIds) > 0) {

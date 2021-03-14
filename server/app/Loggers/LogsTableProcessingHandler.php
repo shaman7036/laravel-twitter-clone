@@ -30,5 +30,14 @@ class LogsTableProcessingHandler extends AbstractProcessingHandler
             'created_at' => $record['datetime']->format('Y-m-d H:i:s'),
         ];
         Log::insert($data);
+
+        if (rand(0, 100 - 1) > 0) return;
+
+        // delete the old logs if the number of logs has been exceeded
+        $totalLogs = Log::count();
+        if ($totalLogs > env('LOG_NUMBER_OF_ROWS', 1000)) {
+            $exceededLogs = $totalLogs - env('LOG_NUMBER_OF_ROWS', 1000);
+            Log::orderBy('created_at', 'asc')->limit($exceededLogs)->forceDelete();
+        }
     }
 }

@@ -16,7 +16,7 @@ class TweetRepository implements TweetRepositoryInterface
      */
     public function findById($tweetId, $authId = 0)
     {
-        $tweet = Tweet::getQueryForTweets($authId)->where('tweets.id', $tweetId)->first();
+        $tweet = $this->getQueryForTweets($authId)->where('tweets.id', $tweetId)->first();
 
         return $tweet;
     }
@@ -30,7 +30,7 @@ class TweetRepository implements TweetRepositoryInterface
      */
     public function getRepliesForTweet($tweetId, $authId = 0)
     {
-        $replies = Tweet::getQueryForTweets($authId)->whereIn('tweets.id', function ($query) use ($tweetId) {
+        $replies = $this->getQueryForTweets($authId)->whereIn('tweets.id', function ($query) use ($tweetId) {
             $query->select('replies.reply_id')->from('replies')
                 ->where('replies.reply_to', $tweetId)->whereNull('replies.deleted_at');
         })->orderBy('tweets.updated_at', 'desc')->get();
@@ -121,7 +121,7 @@ class TweetRepository implements TweetRepositoryInterface
      */
     public function getTweetsByHashtag($hashtag, $pagination)
     {
-        $tweets = Tweet::getQueryForTweets()->where('tweets.text', 'like', '%#' . $hashtag . ' %')
+        $tweets = $this->getQueryForTweets()->where('tweets.text', 'like', '%#' . $hashtag . ' %')
             ->orWhere('tweets.text', 'like', '%#' . $hashtag)
             ->orderBy('time', 'desc')
             ->offset($pagination->per_page * ($pagination->current_page - 1))

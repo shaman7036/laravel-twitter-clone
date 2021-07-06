@@ -50,6 +50,7 @@ class FollowController extends Controller
             return response()->json([], 400);
         }
 
+        // follow or unfollow the user
         $isFollowed = $this->followRepository->createOrToggleActivity([
             'follower_id' => $authId,
             'followed_id' => $request->followed_id,

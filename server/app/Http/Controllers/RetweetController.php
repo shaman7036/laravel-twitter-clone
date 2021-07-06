@@ -48,7 +48,8 @@ class RetweetController extends Controller
     public function store(RetweetRequest $request)
     {
         $authId = $request->get('auth_id');
-        // $isRetweeted = $this->retweetRepository->save($request->tweet_id, $authId);
+
+        // retweet or unretweet the tweet
         $isRetweeted = $this->retweetRepository->createOrToggleActivity([
             'user_id' => $authId,
             'tweet_id' => $request->tweet_id,

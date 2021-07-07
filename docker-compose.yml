@@ -17,7 +17,7 @@ services:
       context: .
       dockerfile: ./_/db/Dockerfile
     environment:
-      MYSQL_DATABASE: b_twitter_laravel
+      MYSQL_DATABASE: laravel_twitter_clone
       MYSQL_USER: root
       MYSQL_PASSWORD: docker
       MYSQL_ROOT_PASSWORD: docker

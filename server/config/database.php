@@ -48,7 +48,7 @@ return [
             'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', 'db'),
             'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'b_twitter_laravel'),
+            'database' => env('DB_DATABASE', 'laravel_twitter_clone'),
             'username' => env('DB_USERNAME', 'root'),
             'password' => env('DB_PASSWORD', 'docker'),
             'unix_socket' => env('DB_SOCKET', ''),

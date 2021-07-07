@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS b_twitter_laravel;
-CREATE DATABASE b_twitter_laravel;
-USE b_twitter_laravel;
+DROP DATABASE IF EXISTS laravel_twitter_clone;
+CREATE DATABASE laravel_twitter_clone;
+USE laravel_twitter_clone;
 
 --
 -- Table structure for table `failed_jobs`

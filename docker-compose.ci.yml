@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  php:
+    image: docker.pkg.github.com/goartisan/laravel-twitter-clone/php:php
+    volumes:
+      - ./server:/var/www
+      - ./server/.env.example:/var/www/.env
+    ports:
+      - 80:80
+
+  db:
+    image: docker.pkg.github.com/goartisan/laravel-twitter-clone/db:db
+    environment:
+      MYSQL_DATABASE: laravel_twitter_clone
+      MYSQL_ROOT_PASSWORD: docker
+    ports:
+      - 3306:3306

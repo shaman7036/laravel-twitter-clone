@@ -1,0 +1,39 @@
+name: Laravel
+
+on: [push]
+
+jobs:
+  laravel-tests:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
+      with:
+        php-version: '7.4'
+    - uses: actions/checkout@v2
+
+    - name: Run docker login
+      run: echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u ${GITHUB_ACTOR} --password-stdin
+
+    - name: Run docker-compose up -d
+      run: |
+        docker-compose -f docker-compose.ci.yml up -d
+        docker-compose -f docker-compose.ci.yml ps
+
+    - name: Run composer install
+      run: docker-compose -f docker-compose.ci.yml exec -T php composer install
+
+    - name: Run php artisan key:generate
+      run: docker-compose -f docker-compose.ci.yml exec -T php php artisan key:generate
+
+    - name: Sleep for 5s
+      uses: juliangruber/sleep-action@v1
+      with:
+        time: 5s
+
+    - name: Run php artisan migrate:refresh
+      run: docker-compose -f docker-compose.ci.yml exec -T php php artisan migrate:refresh
+ 
+    - name: Run source docker-entrypoint-initdb.d/init.sql
+      run: docker-compose -f docker-compose.ci.yml exec -T db mysql -u root -pdocker -e "source docker-entrypoint-initdb.d/init.sql"

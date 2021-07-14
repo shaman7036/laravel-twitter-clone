@@ -1,0 +1,27 @@
+name: Builds for GitHub
+
+on: [push]
+
+env:
+  IMAGE_NAME_PHP: php
+  IMAGE_TAG_PHP: latest
+  IMAGE_NAME_DB: db
+  IMAGE_TAG_DB: latest
+
+jobs:
+  builds-for-github:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Login
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u ${GITHUB_ACTOR} --password-stdin
+
+      - name: Build and push a php image
+        run: |
+          docker build -t docker.pkg.github.com/${{ github.repository }}/${IMAGE_NAME_PHP}:${IMAGE_TAG_PHP} -f ./_/php/Dockerfile .
+          docker push docker.pkg.github.com/${{ github.repository }}/${IMAGE_NAME_PHP}:${IMAGE_TAG_PHP}
+
+      - name: Build and push a db image
+        run: |
+          docker build -t docker.pkg.github.com/${{ github.repository }}/${IMAGE_NAME_DB}:${IMAGE_TAG_DB} -f ./_/db/Dockerfile .
+          docker push docker.pkg.github.com/${{ github.repository }}/${IMAGE_NAME_DB}:${IMAGE_TAG_DB}

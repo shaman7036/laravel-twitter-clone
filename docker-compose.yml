@@ -7,10 +7,9 @@ services:
       dockerfile: ./_/php/Dockerfile
     volumes:
       - ./server:/var/www
-      - ./server/.env.example:/var/www/.env
     ports:
       - 80:80
-    # command: bash -c "php artisan serv --host=0.0.0.0 --port=80"
+    command: bash -c "php artisan serv --host=0.0.0.0 --port=80"
 
   db:
     build:
@@ -22,7 +21,6 @@ services:
       TZ: "Asia/Tokyo"
     volumes:
       - data:/var/lib/mysql:cached
-      - ./_/db/initdb.d:/docker-entrypoint-initdb.d
     ports:
       - 3306:3306
 

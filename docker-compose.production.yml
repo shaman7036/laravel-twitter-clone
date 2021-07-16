@@ -27,14 +27,10 @@ services:
       dockerfile: ./_/db/Dockerfile
     environment:
       MYSQL_DATABASE: laravel_twitter_clone
-      MYSQL_USER: root
-      MYSQL_PASSWORD: docker
       MYSQL_ROOT_PASSWORD: docker
       TZ: "Asia/Tokyo"
     volumes:
       - data:/var/lib/mysql:cached
-      - ./_/db/initdb.d:/docker-entrypoint-initdb.d
-    tty: true
     ports:
       - 3306:3306
 

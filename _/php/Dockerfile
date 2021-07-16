@@ -32,6 +32,7 @@ RUN apt-get update && apt-get install -y nodejs yarn
 
 COPY ./_/php/php.ini /usr/local/etc/php/php.ini
 COPY ./server /var/www
+COPY ./server/.env.example /var/www/.env
 
 WORKDIR /var/www
 

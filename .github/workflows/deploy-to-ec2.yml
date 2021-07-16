@@ -1,0 +1,25 @@
+name: Deploy to EC2
+
+on: [push]
+
+env:
+  EC2_ID_RSA: ${{ secrets.EC2_ID_RSA }}
+  EC2_USER_HOST: ${{ secrets.EC2_USER_HOST }}
+
+jobs:
+  deploy-to-ec2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Connect to EC2, then pull new commits
+        run: |
+          echo "$EC2_ID_RSA" > id_rsa && chmod 600 id_rsa
+          ssh -o StrictHostKeyChecking=no -i id_rsa ${EC2_USER_HOST} '
+          cd ~/laravel-twitter-clone &&
+          git fetch --all &&
+          branch=origin/$(git rev-parse --abbrev-ref HEAD) &&
+          git reset --hard $branch &&
+          git pull
+          '
+
+# ssh-keygen -m pem -N ""
+# cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys

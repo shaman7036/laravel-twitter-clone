@@ -37,3 +37,6 @@ jobs:
  
     - name: Run source docker-entrypoint-initdb.d/init.sql
       run: docker-compose -f docker-compose.ci.yml exec -T db mysql -u root -pdocker -e "source docker-entrypoint-initdb.d/init.sql"
+
+    - name: Run php artisan test
+      run: docker-compose -f docker-compose.ci.yml exec -T php php artisan test --testsuite=Feature

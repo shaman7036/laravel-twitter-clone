@@ -25,15 +25,22 @@ jobs:
       run: docker-compose -f docker-compose.ci.yml exec -T php composer install
 
     - name: Run php artisan key:generate
-      run: docker-compose -f docker-compose.ci.yml exec -T php php artisan key:generate
+      run: |
+        docker-compose -f docker-compose.ci.yml exec -T php php artisan key:generate
+        docker-compose -f docker-compose.ci.yml exec -T php php artisan key:generate --env=testing
 
     - name: Sleep for 5s
       uses: juliangruber/sleep-action@v1
       with:
         time: 5s
 
+    - name: Create a database for testing
+      run: docker-compose -f docker-compose.ci.yml exec -T db mysql -uroot -pdocker -e "create database laravel_twitter_clone_testing;"
+
     - name: Run php artisan migrate:refresh
-      run: docker-compose -f docker-compose.ci.yml exec -T php php artisan migrate:refresh
+      run: |
+        docker-compose -f docker-compose.ci.yml exec -T php php artisan migrate:refresh
+        docker-compose -f docker-compose.ci.yml exec -T php php artisan migrate:refresh --env=testing
  
     - name: Run source docker-entrypoint-initdb.d/init.sql
       run: docker-compose -f docker-compose.ci.yml exec -T db mysql -u root -pdocker -e "source docker-entrypoint-initdb.d/init.sql"

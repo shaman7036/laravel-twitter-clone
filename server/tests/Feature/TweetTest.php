@@ -34,9 +34,14 @@ class TweetTest extends TestCase
      */
     public function test_show()
     {
-        $tweetId = 1;
+        // login
+        $auth = (new AuthTest())->logIn($this);
 
-        $response = $this->get('/tweets/' . $tweetId);
+        // create a tweet
+        $tweet = (new TweetTest())->createTweet($auth->id);
+
+        // show
+        $response = $this->get('/tweets/' . $tweet->id);
 
         $response->assertJsonStructure(['tweet', 'replies']);
     }

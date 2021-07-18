@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Models\User;
 
 class FollowTest extends TestCase
 {
@@ -17,15 +18,12 @@ class FollowTest extends TestCase
     public function test_store()
     {
         // login
-        $auth = (new AuthTest())->logIn($this);
-
-        // create a tweet
-        $tweet = (new TweetTest())->createTweet($auth->id);
+        (new AuthTest())->logIn($this);
 
         // follow
-        $followed_id = 1;
+        $user = User::where('username', 'user')->first();
         $response = $this->post('/follows', [
-            'followed_id' => $followed_id,
+            'followed_id' => $user->id,
         ]);
 
         $response
@@ -34,7 +32,7 @@ class FollowTest extends TestCase
 
         // unfollow
         $response = $this->post('/follows', [
-            'followed_id' => $followed_id,
+            'followed_id' => $user->id,
         ]);
 
         $response

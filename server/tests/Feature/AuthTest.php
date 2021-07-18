@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 use App\Models\User;
@@ -12,6 +13,34 @@ use App\Models\User;
 class AuthTest extends TestCase
 {
     use DatabaseTransactions;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        // migrate
+        Artisan::call('migrate:refresh');
+
+        // create default users
+        $password = Hash::make('password');
+
+        User::insert([
+            'username' => 'auth',
+            'email' => 'auth@example.com',
+            'password' => $password,
+        ]);
+
+        User::insert([
+            'username' => 'user',
+            'email' => 'user@example.com',
+            'password' => $password,
+        ]);
+    }
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+    }
 
     /**
      * Test POST '/signup'
@@ -62,24 +91,8 @@ class AuthTest extends TestCase
      */
     public function logIn(TestCase $testCase)
     {
-        $username = 'test';
-        $email = 'test@example.com';
+        $username = 'auth';
         $password = 'password';
-        $password_hash = Hash::make($password);
-
-        // create auth user if not exists
-        if (User::where('email', $email)->exists()) {
-            User::where('email', $email)->update([
-                'username' => $username,
-                'password' => $password_hash,
-            ]);
-        } else {
-            User::insert([
-                'username' => $username,
-                'email' => $email,
-                'password' => $password_hash,
-            ]);
-        }
 
         // log in
         $response = $testCase->post('/login', [

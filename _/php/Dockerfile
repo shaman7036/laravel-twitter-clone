@@ -35,6 +35,3 @@ COPY ./server /var/www
 COPY ./server/.env.example /var/www/.env
 
 WORKDIR /var/www
-
-RUN composer install
-RUN php artisan key:generate

@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: laravel-twitter-clone-deployment
+spec:
+  selector:
+    matchLabels:
+      app: laravel-twitter-clone
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: laravel-twitter-clone
+    spec:
+      containers:
+      - name: php
+        image: goartisan/laravel-twitter-clone-php:latest
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /var/www
+          name: php-server
+      - name: db
+        image: goartisan/laravel-twitter-clone-db:latest
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_DATABASE
+          value: laravel_twitter_clone
+        - name: MYSQL_ROOT_PASSWORD
+          value: docker
+        volumeMounts:
+        - mountPath: /docker-entrypoint-initdb.d/init.sql
+          name: db-init
+      volumes:
+      - name: php-server
+        hostPath:
+          path: /data/laravel-twitter-clone/server
+          type: Directory
+      - name: db-init
+        hostPath:
+          path: /data/laravel-twitter-clone/_/db/initdb.d/init.sql
+          type: File

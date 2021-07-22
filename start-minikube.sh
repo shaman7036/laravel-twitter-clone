@@ -25,11 +25,8 @@ then
 fi
 
 # Install docker
-if ! command -v docker
-then
-    sudo apt-get update && sudo apt-get install docker.io -y
-    sudo apt-get install conntrack
-fi
+sudo apt-get update && sudo apt-get install docker.io -y
+sudo apt-get install conntrack
 
 # Move the repository to /data
 path=$(pwd)
@@ -64,6 +61,11 @@ sleep 5
 sudo kubectl exec -it deploy/${APP_NAME}-deployment -c php -- /bin/bash -c "php artisan migrate"
 
 # Apply ingress.yml
+if grep "host: example.com" .k8s/ingress.yml; then
+    echo -n host: && read HOST_NAME
+    sed -i "s/- host: example.com/- host: ${HOST_NAME}/g" .k8s/ingress.yml
+    echo .k8s/ingress.yml
+fi
 sudo kubectl apply -f .k8s/ingress.yml
 
 # Start laravel

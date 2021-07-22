@@ -4,7 +4,7 @@ services:
   php:
     build:
       context: .
-      dockerfile: ./_/php/Dockerfile
+      dockerfile: ./.docker/php/Dockerfile
     volumes:
       - ./server:/var/www
     ports:
@@ -13,7 +13,7 @@ services:
   db:
     build:
       context: .
-      dockerfile: ./_/db/Dockerfile
+      dockerfile: ./.docker/db/Dockerfile
     environment:
       MYSQL_DATABASE: laravel_twitter_clone
       MYSQL_ROOT_PASSWORD: docker

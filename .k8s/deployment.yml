@@ -40,5 +40,5 @@ spec:
           type: Directory
       - name: db-init
         hostPath:
-          path: /data/laravel-twitter-clone/_/db/initdb.d/init.sql
+          path: /data/laravel-twitter-clone/.docker/db/initdb.d/init.sql
           type: File

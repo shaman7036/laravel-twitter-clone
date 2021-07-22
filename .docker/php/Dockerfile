@@ -1,4 +1,3 @@
-
 FROM php:7.4-fpm-buster
 SHELL ["/bin/bash", "-oeux", "pipefail", "-c"]
 
@@ -30,7 +29,7 @@ RUN curl https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 RUN apt-get update && apt-get install -y nodejs yarn
 
-COPY ./_/php/php.ini /usr/local/etc/php/php.ini
+COPY ./.docker/php/php.ini /usr/local/etc/php/php.ini
 COPY ./server /var/www
 COPY ./server/.env.example /var/www/.env
 

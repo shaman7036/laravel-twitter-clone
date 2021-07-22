@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: laravel-twitter-clone-service
+  labels:
+    app: laravel-twitter-clone
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: http-port
+  selector:
+    app: laravel-twitter-clone

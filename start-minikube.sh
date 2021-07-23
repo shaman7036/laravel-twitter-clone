@@ -48,9 +48,22 @@ sudo minikube addons enable ingress
 cd /
 cd /data/${APP_NAME}
 sudo kubectl apply -f .k8s/deployment.yml -f .k8s/service.yml
-sleep 10
+
+# Wait for a pod to start running
+echo "Waiting for a pod is ready..."
+sleep 5
+while :
+do
+    POD_NAME=$(kubectl get pods -o jsonpath='{range .items[0]}{.metadata.name}{"\n"}')
+    if [ "$(kubectl get pods ${POD_NAME} --no-headers -o custom-columns=':status.phase')" = "Running" ]
+    then 
+        echo ${POD_NAME}" is running"
+        break
+    else 
+        sleep 1
+    fi
+done
 sudo kubectl get pods
-sleep 20
 
 # Set up laravel
 sudo kubectl exec -it deploy/${APP_NAME}-deployment -c php -- /bin/bash -c "cp .env.example .env"

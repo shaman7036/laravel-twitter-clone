@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Filesystem\Filesystem;
 use App\Http\Requests\UpdateProfileRequest;
 use App\Repositories\UserRepositoryInterface;
 use App\Repositories\TweetRepositoryInterface;
@@ -78,12 +79,7 @@ class ProfileController extends Controller
         $bg = $request->file('bg') !== null ? $request->file('bg') : null;
         if (isset($bg)) {
             $dir = 'storage/media/' . $authId . '/bg';
-            $files = glob($dir . '/*');
-            if (isset($files)) {
-                foreach ($files as $f) {
-                    unlink($f);
-                }
-            }
+            (new Filesystem)->cleanDirectory($dir);
             $ext = $bg->extension();
             $path = $bg->move($dir, 'bg.' . $ext);
             $img = Image::make($path);
@@ -110,6 +106,7 @@ class ProfileController extends Controller
         $avatar = $request->file('avatar') !== null ? $request->file('avatar') : null;
         if (isset($avatar)) {
             $dir = 'storage/media/' . $authId . '/avatar';
+            (new Filesystem)->cleanDirectory($dir);
             $ext = $avatar->extension();
             $path = $avatar->move($dir, 'avatar.' . $ext);
             $img = Image::make($path);

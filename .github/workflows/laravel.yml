@@ -39,8 +39,8 @@ jobs:
 
     - name: Run php artisan migrate:refresh
       run: |
-        docker-compose -f docker-compose.ci.yml exec -T php php artisan migrate:refresh
-        docker-compose -f docker-compose.ci.yml exec -T php php artisan migrate:refresh --env=testing
+        docker-compose -f docker-compose.ci.yml exec -T php php artisan migrate:refresh --force
+        docker-compose -f docker-compose.ci.yml exec -T php php artisan migrate:refresh --env=testing --force
  
     - name: Run source docker-entrypoint-initdb.d/init.sql
       run: docker-compose -f docker-compose.ci.yml exec -T db mysql -u root -pdocker -e "source docker-entrypoint-initdb.d/init.sql"

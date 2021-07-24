@@ -3,6 +3,8 @@ name: Builds for GitHub
 on: [push]
 
 env:
+  IMAGE_NAME_NGINX: nginx
+  IMAGE_TAG_NGINX: latest
   IMAGE_NAME_PHP: php
   IMAGE_TAG_PHP: latest
   IMAGE_NAME_DB: db
@@ -15,6 +17,11 @@ jobs:
       - uses: actions/checkout@v2
       - name: Login
         run: echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u ${GITHUB_ACTOR} --password-stdin
+
+      - name: Build and push a nginx image
+        run: |
+          docker build -t docker.pkg.github.com/${{ github.repository }}/${IMAGE_NAME_NGINX}:${IMAGE_TAG_NGINX} -f ./.docker/nginx/Dockerfile .
+          docker push docker.pkg.github.com/${{ github.repository }}/${IMAGE_NAME_NGINX}:${IMAGE_TAG_NGINX}
 
       - name: Build and push a php image
         run: |

@@ -1,13 +1,20 @@
 version: "3"
 
 services:
+  nginx:
+    image: docker.pkg.github.com/goartisan/laravel-twitter-clone/nginx:latest
+    ports:
+      - 80:80
+    depends_on:
+      - "php"
   php:
     image: docker.pkg.github.com/goartisan/laravel-twitter-clone/php:latest
     volumes:
       - ./server:/var/www
-      - ./server/.env.example:/var/www/.env
     ports:
-      - 80:80
+      - 9000:9000
+    depends_on:
+      - "db"
 
   db:
     image: docker.pkg.github.com/goartisan/laravel-twitter-clone/db:latest

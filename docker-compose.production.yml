@@ -7,9 +7,10 @@ services:
       dockerfile: ./.docker/nginx/Dockerfile
     volumes:
       - app-volume:/var/www
-      - ./.docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     ports:
       - 80:80
+    depends_on:
+      - "php"
 
   php:
     build:
@@ -17,9 +18,10 @@ services:
       dockerfile: ./.docker/php/Dockerfile
     volumes:
       - app-volume:/var/www
-      - ./server/.env.example:/var/www/.env
     ports:
       - 9000:9000
+    depends_on:
+      - "db"
 
   db:
     build:

@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# git clone https://github.com/goartisan/laravel-twitter-clone.git
+# cd laravel-twitter-clone
+
 APP_NAME=laravel-twitter-clone
 
 # Check if a user is root or not

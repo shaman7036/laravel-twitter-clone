@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# git clone https://github.com/goartisan/laravel-twitter-clone.git
-# cd laravel-twitter-clone
+# git clone https://github.com/goartisan/laravel-twitter-clone.git && cd laravel-twitter-clone
 
 # Check if a user is root or not
 if [ $(id -u) -ne 0 ]; then

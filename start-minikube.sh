@@ -1,7 +1,6 @@
 #!/bin/sh
 
-# git clone https://github.com/goartisan/laravel-twitter-clone.git
-# cd laravel-twitter-clone
+# git clone https://github.com/goartisan/laravel-twitter-clone.git && cd laravel-twitter-clone
 
 APP_NAME=laravel-twitter-clone
 

@@ -1,34 +1,41 @@
 ## アプリケーションの実行につきまして
-必須技術
-- docker
-- docker-compose
-- git 
- 
-必須メモリー
-- 1GB
 
-### リポジトリーのクローン
-> git clone https://github.com/goartisan/b-twitter-laravel.git b_twitter_laravel  
-> cd b_twitter_laravel
+Ubuntuにおけるインフラの構築をShellスクリプトとしてまとめました。  
+リポジトリ内にある各環境に対応したShellを実行することによってアプリケーションを自動展開する事ができます。
 
-### phpコンテナの作成
-> docker-compose run php
+### リポジトリのクローン
 
-作成に伴い依存パッケージがインスートールされ、APP_KEYが生成されます。
-### 各コンテナの起動
-> docker-compose up -d
+```
+git clone https://github.com/goartisan/laravel-twitter-clone.git && cd laravel-twitter-clone
+```
 
-### 各コンテナの動作の確認
-> docker-compose ps  
+### Dockerによる実行
 
-3つのコンテナのStateが全て```Up```になってるのを確認してください。
+環境
+- Linux Ubuntu (16.04 | 18.04 | 20.04)
+- 1GB Memory
 
-### データベースの作成と初期データの投入
-> docker-compose exec db mysql -u root -pdocker -e "source docker-entrypoint-initdb.d/init.sql"  
+```
+bash start-docker.sh
+```
 
-パスワード入力実行のため[Warning]が出ますが、データベースが作成され初期データが投入されます。
+### Docker Composeによる実行
 
-### アクセス
-> http://localhost/home  
+環境
+- Linux Ubuntu (16.04 | 18.04 | 20.04)
+- 1GB Memory
 
-(VMを介したDocker環境の場合、VMへのIPへアクセスしてください。)
+```
+bash start-docker-compose.sh
+```
+
+### Kubernetes(Minikube)による実行
+
+環境
+- Linux Ubuntu (16.04 | 18.04 | 20.04)
+- 2GB Memory
+- 2 CPUs
+
+```
+bash start-minikube.sh
+```

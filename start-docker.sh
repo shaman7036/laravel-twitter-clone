@@ -33,7 +33,7 @@ fi
 docker volume create app-volume
 docker volume create data
 
-# Stop all container
+# Stop all containers
 docker stop $(docker ps -aq)
 
 # Build and run a db image
@@ -48,6 +48,10 @@ docker run --rm -d \
   laravel-twitter-clone/db:latest
 
 # Build and run a php image
+if grep "DB_HOST=db" server/.env.example; then
+    sed -i "s/DB_HOST=db/DB_HOST=127.0.0.1/g" server/.env.example
+    echo 'Replaced "DB_HOST=db" with "DB_HOST=127.0.0.1" in server/.env.example'
+fi
 docker build -t laravel-twitter-clone/php:latest -f ./.docker/php/Dockerfile .
 docker run --rm -d \
   --name php \
@@ -57,6 +61,11 @@ docker run --rm -d \
   laravel-twitter-clone/php:latest
 
 # Build and run a nginx image
+if grep "fastcgi_pass php:9000;" .docker/nginx/default.conf; then
+    sed -i "s/fastcgi_pass php:9000;/fastcgi_pass 127.0.0.1:9000;/g" .docker/nginx/default.conf
+    echo 'Replaced "fastcgi_pass php:9000;" with "fastcgi_pass 127.0.0.1:9000;" in .docker/nginx/default.conf'
+fi
+cp .env.example .env
 docker build -t laravel-twitter-clone/nginx:latest -f ./.docker/nginx/Dockerfile .
 docker run --rm -d \
   --name nginx \
